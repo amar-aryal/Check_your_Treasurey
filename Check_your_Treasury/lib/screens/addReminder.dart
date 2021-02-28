@@ -1,4 +1,7 @@
+import 'package:Check_your_Treasury/models/reminder.dart';
+import 'package:Check_your_Treasury/screens/addTransaction.dart';
 import 'package:Check_your_Treasury/screens/exchangeRates.dart';
+import 'package:Check_your_Treasury/services/api.dart';
 import 'package:Check_your_Treasury/utilities/decorations.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -10,6 +13,8 @@ class AddReminder extends StatefulWidget {
 
 class _AddReminderState extends State<AddReminder> {
   DateTime now = new DateTime.now();
+  TextEditingController _billController = TextEditingController();
+  TextEditingController _amountController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +48,7 @@ class _AddReminderState extends State<AddReminder> {
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 10, horizontal: 70),
                 child: TextField(
+                  controller: _billController,
                   decoration: buildInputDecoration('Enter your bill'),
                 ),
               ),
@@ -57,6 +63,7 @@ class _AddReminderState extends State<AddReminder> {
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 10, horizontal: 70),
                 child: TextField(
+                  controller: _amountController,
                   keyboardType: TextInputType.number,
                   decoration: buildInputDecoration('Enter your amount'),
                 ),
@@ -96,10 +103,22 @@ class _AddReminderState extends State<AddReminder> {
               SizedBox(height: 15),
               FlatButton(
                 padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-                onPressed: () {},
+                onPressed: () {
+                  if (_billController.text == "" ||
+                      _amountController.text == "") {
+                    showMyDialog(context, "Empty fields!",
+                        "Do not leave the fields empty");
+                  } else {
+                    Reminder reminder = Reminder(
+                        billName: _billController.text,
+                        billAmount: double.parse(_amountController.text),
+                        paymentDate: now);
+                    API().addReminder(reminder);
+                  }
+                },
                 color: Colors.cyan,
                 child: Text(
-                  'Confirm'.toUpperCase(),
+                  'ADD',
                   style: TextStyle(
                     fontSize: 18,
                     color: Colors.white,

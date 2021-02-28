@@ -1,0 +1,39 @@
+#header {
+    background: #462a82;
+}
+
+#header #branding h1 {
+    font-weight: bold;
+    font-family: New Century Schoolbook, serif;
+}
+
+div.breadcrumbs {
+    background: #a77db0;
+}
+
+#changelist-filter h2,
+#content-main div table caption,
+#nav-sidebar div table caption {
+    background-color: #462a82;
+}
+
+#recent-actions-module h2 {
+    background: #462a82;
+}
+
+.login #main .content {
+    background-color: #aeaaf2;
+}
+
+#login-form label {
+    font-size: 18px;
+}
+
+.form-row {
+    text-align: center;
+}
+
+#login-form input[type=submit] {
+    background-color: #462a82;
+    width: 40%;
+}

@@ -3,11 +3,15 @@ import 'dart:convert';
 import 'package:Check_your_Treasury/models/expense.dart';
 import 'package:Check_your_Treasury/models/income.dart';
 import 'package:Check_your_Treasury/models/rate.dart';
+import 'package:Check_your_Treasury/models/reminder.dart';
+import 'package:Check_your_Treasury/screens/addTransaction.dart';
 import 'package:Check_your_Treasury/screens/exchangeRates.dart';
 import 'package:Check_your_Treasury/screens/homeScreen.dart';
 import 'package:Check_your_Treasury/screens/login.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
+import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 SharedPreferences pref;
@@ -189,11 +193,14 @@ List currencies = [
 ];
 
 String url = 'http://10.0.2.2:8000/';
+
 final String registerUrl = url + 'api/auth/register';
 
 final String loginUrl = url + 'api/auth/login';
 
 final String logoutUrl = url + 'api/auth/logout';
+
+final String userProfileUrl = url + 'api/auth/user';
 
 class API {
   Future<Rate> getdata() async {
@@ -273,11 +280,24 @@ class API {
     }
   }
 
-  void addIncome(
-      String incomename, String category, double amount, DateTime date) async {
-    Income income = Income(
-        incomename: incomename, category: category, amount: amount, date: date);
+  getUserProfile() async {
+    http.Response response = await http.get(
+      userProfileUrl,
+      headers: {
+        'Content-Type': "application/json",
+        "Authorization": "Token " + pref.getString('token'),
+      },
+    );
 
+    print(response.statusCode);
+
+    var data = json.decode(response.body);
+    if (response.statusCode == 200) {
+      return data;
+    }
+  }
+
+  void addIncome(Income income) async {
     http.Response response = await http.post(
       url + 'incomes/',
       headers: {
@@ -295,14 +315,17 @@ class API {
     }
   }
 
-  void addExpense(
-      String expensename, String category, double amount, DateTime date) async {
-    Expense expense = Expense(
-        expensename: expensename,
-        category: category,
-        amount: amount,
-        date: date);
+  void deleteIncome(Income income, int id) async {
+    http.Response response = await http.delete(
+      url + 'incomes/$id',
+      headers: {
+        "Authorization": "Token " + pref.getString('token'),
+      },
+    );
+    if (response.statusCode == 204) {}
+  }
 
+  void addExpense(Expense expense) async {
     http.Response response = await http.post(
       url + 'expenses/',
       headers: {
@@ -320,11 +343,11 @@ class API {
     }
   }
 
-  Future<dynamic> getIncomeList() async {
+  Future<dynamic> getIncomeList(DateTime date) async {
     pref = await SharedPreferences.getInstance();
 
     http.Response response = await http.get(
-      url + 'incomes/',
+      url + 'incomes?date=${DateFormat("yyyy-MM-dd").format(date)}',
       headers: {
         'Content-Type': "application/json",
         "Authorization": "Token " + pref.getString('token'),
@@ -341,11 +364,11 @@ class API {
     }
   }
 
-  Future<dynamic> getExpenseList() async {
+  Future<dynamic> getExpenseList(DateTime date) async {
     pref = await SharedPreferences.getInstance();
 
     http.Response response = await http.get(
-      url + 'expenses/',
+      url + 'expenses?date=${DateFormat("yyyy-MM-dd").format(date)}',
       headers: {
         'Content-Type': "application/json",
         "Authorization": "Token " + pref.getString('token'),
@@ -359,6 +382,58 @@ class API {
     if (response.statusCode == 200) {
       print(data);
       return data;
+    }
+  }
+
+  void addReminder(Reminder reminder) async {
+    http.Response response = await http.post(
+      url + 'reminders/',
+      headers: {
+        'Content-Type': "application/json",
+        "Authorization": "Token " + pref.getString('token'),
+      },
+      body: reminderToJson(reminder),
+    );
+    var data = json.decode(response.body);
+    print(response.statusCode);
+    print(data);
+
+    if (response.statusCode == 201) {
+      // show success message
+    }
+  }
+
+  Future<dynamic> getReminders() async {
+    pref = await SharedPreferences.getInstance();
+
+    http.Response response = await http.get(
+      url + 'reminders',
+      headers: {
+        'Content-Type': "application/json",
+        "Authorization": "Token " + pref.getString('token'),
+      },
+    );
+
+    print(response.statusCode);
+
+    var data = json.decode(response.body);
+
+    if (response.statusCode == 200) {
+      print(data);
+      return data;
+    }
+  }
+
+  deleteReminder(int id) async {
+    http.Response response = await http.delete(
+      url + 'reminders/$id/',
+      headers: {
+        "Authorization": "Token " + pref.getString('token'),
+      },
+    );
+    print(response.statusCode);
+    if (response.statusCode == 204) {
+      print('deleted');
     }
   }
 }

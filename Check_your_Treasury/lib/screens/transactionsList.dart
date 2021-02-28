@@ -141,7 +141,8 @@ class _TransactionsListState extends State<TransactionsList> {
                       )
                     ],
                   ),
-                  _incomeClicked ? Income() : Expense(),
+                  //passing the selected date as parameter
+                  _incomeClicked ? Income(date: now) : Expense(date: now),
                 ],
               ),
             ),
@@ -160,6 +161,9 @@ class _TransactionsListState extends State<TransactionsList> {
 }
 
 class Income extends StatefulWidget {
+  final DateTime date;
+
+  Income({this.date});
   @override
   _IncomeState createState() => _IncomeState();
 }
@@ -168,7 +172,7 @@ class _IncomeState extends State<Income> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: API().getIncomeList(),
+      future: API().getIncomeList(widget.date),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           List<dynamic> incomes = snapshot.data;
@@ -221,6 +225,9 @@ class _IncomeState extends State<Income> {
 }
 
 class Expense extends StatefulWidget {
+  final DateTime date;
+
+  Expense({this.date});
   @override
   _ExpenseState createState() => _ExpenseState();
 }
@@ -229,7 +236,7 @@ class _ExpenseState extends State<Expense> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: API().getExpenseList(),
+      future: API().getExpenseList(widget.date),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           List<dynamic> expenses = snapshot.data;

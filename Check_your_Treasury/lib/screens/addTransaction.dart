@@ -1,3 +1,5 @@
+import 'package:Check_your_Treasury/models/expense.dart';
+import 'package:Check_your_Treasury/models/income.dart';
 import 'package:Check_your_Treasury/screens/exchangeRates.dart';
 import 'package:Check_your_Treasury/services/api.dart';
 import 'package:Check_your_Treasury/utilities/decorations.dart';
@@ -154,16 +156,25 @@ class _AddTransactionState extends State<AddTransaction> {
                 onPressed: () {
                   if (_transactionController.text == "" ||
                       _amountController.text == "") {
-                    _showMyDialog(context);
+                    showMyDialog(context, "Empty fields!",
+                        "Do not leave the fields empty");
                   }
                   if (_checkboxIncome) {
-                    API().addIncome(_transactionController.text, category,
-                        double.parse(_amountController.text), DateTime.now());
+                    Income income = Income(
+                        incomename: _transactionController.text,
+                        category: category,
+                        amount: double.parse(_amountController.text),
+                        date: DateTime.now());
+                    API().addIncome(income);
                   }
 
                   if (_checkboxExpense) {
-                    API().addExpense(_transactionController.text, category,
-                        double.parse(_amountController.text), DateTime.now());
+                    Expense expense = Expense(
+                        expensename: _transactionController.text,
+                        category: category,
+                        amount: double.parse(_amountController.text),
+                        date: DateTime.now());
+                    API().addExpense(expense);
                   }
                 },
                 color: Colors.cyan[600],
@@ -205,17 +216,18 @@ List<String> categories = [
   'Dividends'
 ];
 
-Future<void> _showMyDialog(BuildContext context) async {
+Future<void> showMyDialog(
+    BuildContext context, String title, String message) async {
   return showDialog<void>(
     context: context,
     barrierDismissible: false, // user must tap button!
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text('Empty fields!'),
+        title: Text(title),
         content: SingleChildScrollView(
           child: ListBody(
             children: <Widget>[
-              Text('Do not leavve the fields empty!'),
+              Text(message),
             ],
           ),
         ),

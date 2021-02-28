@@ -1,4 +1,5 @@
 import 'package:Check_your_Treasury/screens/homeScreen.dart';
+import 'package:Check_your_Treasury/screens/register.dart';
 import 'package:Check_your_Treasury/services/api.dart';
 import 'package:Check_your_Treasury/utilities/decorations.dart';
 import 'package:flutter/material.dart';
@@ -55,7 +56,19 @@ class Login extends StatelessWidget {
                   color: Colors.white,
                 ),
               ),
-            )
+            ),
+            FlatButton(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Register()));
+              },
+              child: Text(
+                'Register',
+                style: TextStyle(
+                  fontSize: 18,
+                ),
+              ),
+            ),
           ],
         ),
       ),

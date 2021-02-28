@@ -1,3 +1,5 @@
+import 'package:Check_your_Treasury/screens/receipt.dart';
+import 'package:Check_your_Treasury/screens/userProfile.dart';
 import 'package:Check_your_Treasury/services/api.dart';
 import 'package:flutter/material.dart';
 
@@ -14,6 +16,22 @@ class CustomDrawer extends StatelessWidget {
             decoration: BoxDecoration(
               color: Colors.cyan[100],
             ),
+          ),
+          ListTile(
+            leading: Icon(Icons.logout),
+            title: Text('Profile'),
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => UserProfile()));
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.logout),
+            title: Text('Save receipts'),
+            onTap: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => Receipt()));
+            },
           ),
           ListTile(
             leading: Icon(Icons.logout),
