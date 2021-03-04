@@ -1,5 +1,6 @@
 import 'package:Check_your_Treasury/screens/homeScreen.dart';
 import 'package:Check_your_Treasury/screens/login.dart';
+import 'package:Check_your_Treasury/screens/receiptAdd.dart';
 import 'package:Check_your_Treasury/screens/reminders.dart';
 import 'package:flutter/material.dart';
 

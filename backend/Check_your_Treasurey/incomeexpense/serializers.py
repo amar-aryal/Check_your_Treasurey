@@ -4,7 +4,6 @@ from django.db.models.aggregates import Sum
 
 class IncomeSerializer(serializers.ModelSerializer):
     userID = serializers.ReadOnlyField(source='userID.id')
-    # total_income = serializers.SerializerMethodField()
 
     class Meta:
         fields = [

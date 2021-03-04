@@ -1,8 +1,12 @@
+import 'dart:convert';
+
 import 'package:Check_your_Treasury/screens/addTransaction.dart';
 import 'package:Check_your_Treasury/screens/exchangeRates.dart';
 import 'package:Check_your_Treasury/services/api.dart';
 import 'package:Check_your_Treasury/utilities/bottomNavBar.dart';
 import 'package:flutter/material.dart';
+import 'package:gallery_saver/files.dart';
+import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
 class TransactionsList extends StatefulWidget {
@@ -14,6 +18,23 @@ class _TransactionsListState extends State<TransactionsList> {
   bool _incomeClicked = false;
   bool _expenseClicked = true;
   DateTime now = DateTime.now();
+
+  Future getDailyTotal() async {
+    http.Response response = await http.get(
+      'http://10.0.2.2:8000/today_total?date=${DateFormat("yyyy-MM-dd").format(now)}',
+      headers: {
+        'Content-Type': "application/json",
+        "Authorization": "Token " + pref.getString('token'),
+      },
+    );
+
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      return data;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,17 +99,30 @@ class _TransactionsListState extends State<TransactionsList> {
               ),
               borderRadius: BorderRadius.circular(15),
             ),
-            child: Column(
-              children: [
-                Text(
-                  'Total Income: $selectedCurrency 1000',
-                  style: TextStyle(fontSize: 20),
-                ),
-                Text(
-                  'Total Expenses: $selectedCurrency 1000',
-                  style: TextStyle(fontSize: 20),
-                ),
-              ],
+            child: Expanded(
+              child: FutureBuilder(
+                future: getDailyTotal(),
+                builder: (context, snapshot) {
+                  var data = snapshot.data;
+                  print(data);
+                  if (snapshot.hasData) {
+                    return Column(
+                      children: [
+                        Text(
+                          'Total Income: $selectedCurrency ${data["today_total_income"]}',
+                          style: TextStyle(fontSize: 20),
+                        ),
+                        Text(
+                          'Total Expenses: $selectedCurrency ${data["today_total_expense"]}',
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      ],
+                    );
+                  } else {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                },
+              ),
             ),
           ),
           Expanded(

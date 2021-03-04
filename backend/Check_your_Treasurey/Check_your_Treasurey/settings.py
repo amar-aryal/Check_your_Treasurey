@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'incomeexpense',
     'reminders',
     'receipts',
+    'budgetPlan',
 ]
 
 REST_FRAMEWORK = {

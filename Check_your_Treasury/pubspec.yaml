@@ -38,7 +38,7 @@ dependencies:
   permission_handler: ^5.1.0+2
   fluttertoast: ^7.1.8
   dio: ^3.0.10
-  camera:
+  # camera:
   path: ^1.7.0
   provider: ^4.3.3
   

@@ -2,7 +2,7 @@ import 'package:Check_your_Treasury/services/api.dart';
 import 'package:Check_your_Treasury/utilities/bottomNavBar.dart';
 import 'package:flutter/material.dart';
 
-final String selectedCurrency = "NPR";
+String selectedCurrency = "NPR";
 
 class ExchangeRate extends StatefulWidget {
   @override

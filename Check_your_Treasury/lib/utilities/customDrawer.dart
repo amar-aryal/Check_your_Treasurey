@@ -1,4 +1,5 @@
-import 'package:Check_your_Treasury/screens/receipt.dart';
+import 'package:Check_your_Treasury/screens/budgetList.dart';
+import 'package:Check_your_Treasury/screens/receiptAdd.dart';
 import 'package:Check_your_Treasury/screens/userProfile.dart';
 import 'package:Check_your_Treasury/services/api.dart';
 import 'package:flutter/material.dart';
@@ -31,6 +32,14 @@ class CustomDrawer extends StatelessWidget {
             onTap: () {
               Navigator.push(
                   context, MaterialPageRoute(builder: (context) => Receipt()));
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.logout),
+            title: Text('Plan your budget'),
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => BudgetList()));
             },
           ),
           ListTile(
