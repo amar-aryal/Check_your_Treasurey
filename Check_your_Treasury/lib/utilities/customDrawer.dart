@@ -1,5 +1,6 @@
 import 'package:Check_your_Treasury/screens/budgetList.dart';
 import 'package:Check_your_Treasury/screens/receiptAdd.dart';
+import 'package:Check_your_Treasury/screens/reportScreen.dart';
 import 'package:Check_your_Treasury/screens/userProfile.dart';
 import 'package:Check_your_Treasury/services/api.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +28,7 @@ class CustomDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: Icon(Icons.logout),
+            leading: Icon(Icons.receipt),
             title: Text('Save receipts'),
             onTap: () {
               Navigator.push(
@@ -35,11 +36,19 @@ class CustomDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: Icon(Icons.logout),
+            leading: Icon(Icons.money_sharp),
             title: Text('Plan your budget'),
             onTap: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => BudgetList()));
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.show_chart),
+            title: Text('View reports'),
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => ReportScreen()));
             },
           ),
           ListTile(

@@ -207,13 +207,21 @@ List<DropdownMenuItem<String>> ditem() {
 }
 
 List<String> categories = [
-  'None',
   'Salary',
   'Transportation',
+  'Education',
   'Entertainment',
+  'Housing',
+  'Food',
+  'Shopping',
+  'Investment',
   'Health',
   'Travel',
-  'Dividends'
+  'Utility',
+  'Tax',
+  'Dividends',
+  'Insurance',
+  'Miscellaneous',
 ];
 
 Future<void> showMyDialog(
