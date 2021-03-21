@@ -1,5 +1,6 @@
 from django.urls import path
-from .views import IncomeList, IncomeRUD, ExpenseList, ExpenseRUD, IncomeExpenseDailyStats, MonthlyStats
+from . import views
+from .views import IncomeList, IncomeRUD, ExpenseList, ExpenseRUD, IncomeExpenseDailyStats, MonthlyStats, ReportPdfView
 
 urlpatterns = [
     path('incomes/', IncomeList.as_view()),
@@ -8,4 +9,5 @@ urlpatterns = [
     path('expenses/<int:pk>/', ExpenseRUD.as_view()),
     path('today_total/', IncomeExpenseDailyStats.as_view()),
     path('monthly_total/', MonthlyStats.as_view()),
+    path('report/',ReportPdfView.as_view()),
 ]

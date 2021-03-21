@@ -113,7 +113,7 @@ class _AddReminderState extends State<AddReminder> {
                         billName: _billController.text,
                         billAmount: double.parse(_amountController.text),
                         paymentDate: now);
-                    API().addReminder(reminder);
+                    API().addReminder(context, reminder);
                   }
                 },
                 color: Colors.cyan,

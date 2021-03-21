@@ -4,6 +4,7 @@ import 'package:Check_your_Treasury/screens/addTransaction.dart';
 import 'package:Check_your_Treasury/screens/exchangeRates.dart';
 import 'package:Check_your_Treasury/services/api.dart';
 import 'package:Check_your_Treasury/utilities/bottomNavBar.dart';
+import 'package:Check_your_Treasury/utilities/customDrawer.dart';
 import 'package:flutter/material.dart';
 import 'package:gallery_saver/files.dart';
 import 'package:http/http.dart' as http;
@@ -45,6 +46,7 @@ class _TransactionsListState extends State<TransactionsList> {
         backgroundColor: Colors.cyan,
       ),
       bottomNavigationBar: BottomBar(selectedIndex: 0),
+      drawer: CustomDrawer(),
       body: Column(
         children: [
           Row(
@@ -106,14 +108,23 @@ class _TransactionsListState extends State<TransactionsList> {
                   var data = snapshot.data;
                   print(data);
                   if (snapshot.hasData) {
+                    double today_total_income =
+                        data["today_total_income"] == null
+                            ? 0.0
+                            : data["today_total_income"];
+                    double today_total_expense =
+                        data["today_total_expense"] == null
+                            ? 0.0
+                            : data["today_total_expense"];
+
                     return Column(
                       children: [
                         Text(
-                          'Total Income: $selectedCurrency ${data["today_total_income"]}',
+                          'Total Income: $selectedCurrency $today_total_income',
                           style: TextStyle(fontSize: 20),
                         ),
                         Text(
-                          'Total Expenses: $selectedCurrency ${data["today_total_expense"]}',
+                          'Total Expenses: $selectedCurrency $today_total_expense',
                           style: TextStyle(fontSize: 20),
                         ),
                       ],

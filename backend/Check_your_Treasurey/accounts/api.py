@@ -29,7 +29,7 @@ class UserLoginAPI(generics.GenericAPIView):
         })
 
 
-class UserAPI(generics.RetrieveAPIView):
+class UserAPI(generics.RetrieveUpdateAPIView):
     permission_classes = [
         permissions.IsAuthenticated,
     ]

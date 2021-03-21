@@ -11,7 +11,6 @@ import 'package:Check_your_Treasury/screens/login.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 SharedPreferences pref;
@@ -209,7 +208,8 @@ class API {
     return fetcheddata; //returns Rate object
   }
 
-  register(String username, String email, String password) async {
+  register(BuildContext context, String username, String email,
+      String password) async {
     Map<String, String> user = {
       'username': username,
       'email': email,
@@ -225,6 +225,11 @@ class API {
     print(response.statusCode);
     if (response.statusCode == 200) {
       print(response.body);
+      showMyDialog(
+          context, 'Successfully registered!', 'You have been registered');
+    } else {
+      showMyDialog(
+          context, 'Error!', 'There was some problem.Please try again');
     }
   }
 
@@ -256,6 +261,12 @@ class API {
             transitionDuration: Duration(seconds: 0),
           ),
           (Route<dynamic> route) => false);
+    } else if (response.statusCode == 400) {
+      showMyDialog(context, 'Incorrect username/password!',
+          'Your username or password was incorrect');
+    } else {
+      showMyDialog(
+          context, 'Error!', 'There was some problem.Please try again');
     }
   }
 
@@ -277,6 +288,9 @@ class API {
             transitionDuration: Duration(seconds: 0),
           ),
           (Route<dynamic> route) => false);
+    } else {
+      showMyDialog(context, 'Error!',
+          'There was some problem logging out.Please try again');
     }
   }
 
@@ -297,7 +311,7 @@ class API {
     }
   }
 
-  void addIncome(Income income) async {
+  void addIncome(BuildContext context, Income income) async {
     http.Response response = await http.post(
       url + 'incomes/',
       headers: {
@@ -311,7 +325,8 @@ class API {
     print(data);
 
     if (response.statusCode == 201) {
-      // show success message
+      showMyDialog(
+          context, "Transaction added!", "Transaction added successfully");
     }
   }
 
@@ -325,7 +340,7 @@ class API {
     if (response.statusCode == 204) {}
   }
 
-  void addExpense(Expense expense) async {
+  void addExpense(BuildContext context, Expense expense) async {
     http.Response response = await http.post(
       url + 'expenses/',
       headers: {
@@ -339,7 +354,8 @@ class API {
     print(data);
 
     if (response.statusCode == 201) {
-      // show success message
+      showMyDialog(
+          context, "Transaction added!", "Transaction added successfully");
     }
   }
 
@@ -385,7 +401,7 @@ class API {
     }
   }
 
-  void addReminder(Reminder reminder) async {
+  void addReminder(BuildContext context, Reminder reminder) async {
     http.Response response = await http.post(
       url + 'reminders/',
       headers: {
@@ -399,7 +415,7 @@ class API {
     print(data);
 
     if (response.statusCode == 201) {
-      // show success message
+      showMyDialog(context, "Reminder added!", "Reminder added successfully");
     }
   }
 
@@ -421,19 +437,6 @@ class API {
     if (response.statusCode == 200) {
       print(data);
       return data;
-    }
-  }
-
-  deleteReminder(int id) async {
-    http.Response response = await http.delete(
-      url + 'reminders/$id/',
-      headers: {
-        "Authorization": "Token " + pref.getString('token'),
-      },
-    );
-    print(response.statusCode);
-    if (response.statusCode == 204) {
-      print('deleted');
     }
   }
 }

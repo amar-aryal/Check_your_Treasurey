@@ -14,7 +14,7 @@ class AddTransaction extends StatefulWidget {
 class _AddTransactionState extends State<AddTransaction> {
   bool _checkboxIncome = false;
   bool _checkboxExpense = false;
-  String category = 'None';
+  String category = 'Salary';
   DateTime now = new DateTime.now();
 
   TextEditingController _transactionController = TextEditingController();
@@ -165,7 +165,7 @@ class _AddTransactionState extends State<AddTransaction> {
                         category: category,
                         amount: double.parse(_amountController.text),
                         date: DateTime.now());
-                    API().addIncome(income);
+                    API().addIncome(context, income);
                   }
 
                   if (_checkboxExpense) {
@@ -174,7 +174,7 @@ class _AddTransactionState extends State<AddTransaction> {
                         category: category,
                         amount: double.parse(_amountController.text),
                         date: DateTime.now());
-                    API().addExpense(expense);
+                    API().addExpense(context, expense);
                   }
                 },
                 color: Colors.cyan[600],

@@ -14,13 +14,17 @@ class CustomDrawer extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
-            child: Text('Drawer Header'),
+            child: Center(
+                child: CircleAvatar(
+              radius: 30,
+              child: Icon(Icons.person),
+            )),
             decoration: BoxDecoration(
               color: Colors.cyan[100],
             ),
           ),
           ListTile(
-            leading: Icon(Icons.logout),
+            leading: Icon(Icons.person, color: Colors.cyan),
             title: Text('Profile'),
             onTap: () {
               Navigator.push(context,
@@ -28,7 +32,7 @@ class CustomDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: Icon(Icons.receipt),
+            leading: Icon(Icons.receipt, color: Colors.orange),
             title: Text('Save receipts'),
             onTap: () {
               Navigator.push(
@@ -36,7 +40,7 @@ class CustomDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: Icon(Icons.money_sharp),
+            leading: Icon(Icons.money_sharp, color: Colors.green),
             title: Text('Plan your budget'),
             onTap: () {
               Navigator.push(context,
@@ -44,7 +48,7 @@ class CustomDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: Icon(Icons.show_chart),
+            leading: Icon(Icons.show_chart, color: Colors.red),
             title: Text('View reports'),
             onTap: () {
               Navigator.push(context,
@@ -52,7 +56,7 @@ class CustomDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: Icon(Icons.logout),
+            leading: Icon(Icons.logout, color: Colors.blue),
             title: Text('Logout'),
             onTap: () {
               API().logout(context);

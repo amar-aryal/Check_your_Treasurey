@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:pie_chart/pie_chart.dart';
+import 'package:Check_your_Treasury/screens/createPdf.dart';
 
 void main() {
   runApp(MaterialApp(home: ReportScreen()));
@@ -38,18 +39,20 @@ class _ReportScreenState extends State<ReportScreen> {
     }
   }
 
-  Map<String, double> data = {
-    "Bill": 6000,
-    "Shopping": 5000,
-    "Transportation": 4000,
-    'hh': 900,
-  };
+  // Map<String, double> data = {
+  //   "Bill": 6000,
+  //   "Shopping": 5000,
+  //   "Transportation": 4000,
+  //   'hh': 900,
+  // };
 
   List<Color> colorList = [
     Colors.cyan,
     Colors.lightGreen,
     Colors.purple,
-    Colors.yellow[700]
+    Colors.yellow[700],
+    Colors.blue[800],
+    Colors.deepOrange,
   ];
 
   DateTime now = DateTime.now();
@@ -128,15 +131,51 @@ class _ReportScreenState extends State<ReportScreen> {
                         ),
                         Divider(color: Colors.grey[600]),
                         Text('Income Stats',
-                            style: TextStyle(fontWeight: FontWeight.bold)),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.green,
+                                fontSize:
+                                    MediaQuery.of(context).size.height * 0.05)),
                         incomeData.isNotEmpty
                             ? _showIncomeChart(incomeData)
-                            : Container(),
+                            : Container(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.09,
+                                child: Text('No data'),
+                              ),
                         Text('Expense Stats',
-                            style: TextStyle(fontWeight: FontWeight.bold)),
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.red,
+                              fontSize:
+                                  MediaQuery.of(context).size.height * 0.05,
+                            )),
                         expenseData.isNotEmpty
                             ? _showExpenseChart(expenseData)
-                            : Container(),
+                            : Container(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.09,
+                                child: Text('No data'),
+                              ),
+                        FlatButton(
+                          child: Text(
+                            "Download pdf",
+                            style: TextStyle(fontSize: 18),
+                          ),
+                          color: Colors.blue[900],
+                          textColor: Colors.white,
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => PDF(
+                                  year: now.year.toString(),
+                                  month: now.month.toString(),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
                       ],
                     );
                   }

@@ -1,5 +1,6 @@
 import 'package:Check_your_Treasury/services/api.dart';
 import 'package:Check_your_Treasury/utilities/bottomNavBar.dart';
+import 'package:Check_your_Treasury/utilities/customDrawer.dart';
 import 'package:flutter/material.dart';
 
 String selectedCurrency = "NPR";
@@ -25,6 +26,7 @@ class _ExchangeRateState extends State<ExchangeRate> {
         backgroundColor: Colors.cyan,
       ),
       bottomNavigationBar: BottomBar(selectedIndex: 3),
+      drawer: CustomDrawer(),
       body: FutureBuilder(
           future: API().getdata(),
           builder: (context, snapshot) {
@@ -38,7 +40,7 @@ class _ExchangeRateState extends State<ExchangeRate> {
                       leading: Text(
                         '1 ${data.base}',
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 18,
                           fontWeight: FontWeight.bold,
                           color: Colors.blue,
                         ),
@@ -46,7 +48,7 @@ class _ExchangeRateState extends State<ExchangeRate> {
                       trailing: Text(
                           '${data.rates[currencies[index]].toString()} ${currencies[index]}',
                           style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 18,
                             fontWeight: FontWeight.bold,
                             color: Colors.green,
                           )));

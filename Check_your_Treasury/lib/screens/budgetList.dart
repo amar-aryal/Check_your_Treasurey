@@ -101,6 +101,7 @@ class _BudgetListState extends State<BudgetList> {
                           });
                         },
                         child: Container(
+                          color: Colors.white,
                           margin:
                               EdgeInsets.symmetric(vertical: 8, horizontal: 10),
                           padding: EdgeInsets.all(15),
@@ -115,7 +116,7 @@ class _BudgetListState extends State<BudgetList> {
                     },
                   );
                 } else {
-                  return CircularProgressIndicator();
+                  return Center(child: CircularProgressIndicator());
                 }
               },
             ),

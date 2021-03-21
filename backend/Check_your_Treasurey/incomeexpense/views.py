@@ -11,6 +11,13 @@ from rest_framework import generics
 from django.contrib.auth.models import User
 from datetime import date
 from django.db.models.aggregates import Sum
+from django.core.mail import send_mail
+
+import io
+from django.http import FileResponse, HttpResponse
+from reportlab.pdfgen import canvas
+from reportlab.graphics.shapes import Drawing, String
+from reportlab.graphics.charts.barcharts import HorizontalBarChart
 
 
 class IncomeList(generics.ListCreateAPIView): # for listing the incomes and creating incomes
@@ -132,3 +139,97 @@ class MonthlyStats(APIView):
             expense_category_info[cat] = cat_expense
 
         return Response({'total_income':total_monthly_income, 'total_expenses':total_monthly_expense,'savings':savings,'income_details':income_category_info, 'expense_details':expense_category_info}, status=status.HTTP_200_OK)
+
+class ReportPdfView(APIView):
+
+    permission_classes = (IsAuthenticated,IsOwner)
+
+    def get(self,request):
+
+        year = self.request.query_params.get('year')
+        month = self.request.query_params.get('month')
+
+
+        """Calculating the total income and expenses of the url passed month-year"""
+
+        total_monthly_income = Income.objects.filter(userID = self.request.user,date__year=year, date__month=month).aggregate(total=Sum('amount'))["total"]
+        total_monthly_expense = Expense.objects.filter(userID = self.request.user,date__year=year, date__month=month).aggregate(total=Sum('amount'))["total"]
+        savings = 0
+
+        if total_monthly_expense is not None and total_monthly_income is not None:
+            if total_monthly_income > total_monthly_expense:
+                savings = total_monthly_income - total_monthly_expense
+            else:
+                savings = 0
+            
+
+        """Now calculating the total spending and income in each category for report and chart"""
+
+        """FOR INCOME"""
+
+        # income_category_list = Income.objects.filter(userID = self.request.user,date__year=year, date__month=month).values_list('category',flat=True) #flat = True returns a single value instead of list or tuple
+
+        # income_category_info = {}
+
+        # for cat in income_category_list:
+        #     cat_income = Income.objects.filter(userID = self.request.user,date__year=year, date__month=month, category=cat).aggregate(total=Sum('amount'))["total"]
+        #     income_category_info[cat] = cat_income
+
+        # """FOR EXPENSE"""
+        # expense_category_list = Expense.objects.filter(userID = self.request.user,date__year=year, date__month=month).values_list('category',flat=True) #flat = True returns a single value instead of list or tuple
+
+        # expense_category_info = {}
+
+        # for cat in expense_category_list:
+        #     cat_expense = Expense.objects.filter(userID = self.request.user,date__year=year, date__month=month, category=cat).aggregate(total=Sum('amount'))["total"]
+        #     expense_category_info[cat] = cat_expense
+
+    # Create a file-like buffer to receive PDF data.
+        buffer = io.BytesIO()
+
+        # Create the PDF object, using the buffer as its "file."
+        p = canvas.Canvas(buffer)
+
+        # Draw things on the PDF. Here's where the PDF generation happens.
+        # See the ReportLab documentation for the full list of functionality.
+        p.drawString(100, 500, "Total Income: "+str(total_monthly_income))
+        p.drawString(100, 700, "Total Expenses: "+str(total_monthly_expense))
+        p.drawString(100, 800, "Total Savings: "+str(savings))
+
+        # Close the PDF object cleanly, and we're done.
+        p.showPage()
+        p.save()
+
+        # FileResponse sets the Content-Disposition header so that browsers
+        # present the option to save the file.
+        buffer.seek(0)
+        return FileResponse(buffer, as_attachment=True, filename='Report.pdf')
+
+
+from . import mycharts
+        
+def barchart(request):
+
+    #instantiate a drawing object
+    d = mycharts.MyBarChartDrawing()
+
+    #extract the request params of interest.
+    #I suggest having a default for everything.
+    if 'height' in request:
+        d.height = int(request['height'])
+    if 'width' in request:
+        d.width = int(request['width'])
+    
+    if 'numbers' in request:
+        strNumbers = request['numbers']
+        numbers = map(int, strNumbers.split(','))    
+        d.chart.data = [numbers]   #bar charts take a list-of-lists for data
+
+    if 'title' in request:
+        d.title.text = request['title']
+  
+
+    #get a GIF (or PNG, JPG, or whatever)
+    binaryStuff = d.asString('gif')
+    return HttpResponse(binaryStuff, 'image/gif')
+

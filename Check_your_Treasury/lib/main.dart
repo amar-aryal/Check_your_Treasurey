@@ -1,14 +1,33 @@
 import 'package:Check_your_Treasury/screens/homeScreen.dart';
 import 'package:Check_your_Treasury/screens/login.dart';
-import 'package:Check_your_Treasury/screens/receiptAdd.dart';
-import 'package:Check_your_Treasury/screens/reminders.dart';
+import 'package:Check_your_Treasury/services/api.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  pref = await SharedPreferences.getInstance();
+
+  await FlutterDownloader.initialize(
+      debug: true // optional: set false to disable printing logs to console
+      );
+
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -24,47 +43,8 @@ class MyApp extends StatelessWidget {
           ),
           floatingActionButtonTheme:
               FloatingActionButtonThemeData(backgroundColor: Colors.cyan)),
-      home: Login(),
-    );
-  }
-}
-
-class SplashScreen extends StatefulWidget {
-  @override
-  _SplashScreenState createState() => _SplashScreenState();
-}
-
-class _SplashScreenState extends State<SplashScreen> {
-  @override
-  void initState() {
-    super.initState();
-    Future.delayed(const Duration(seconds: 3), () {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => HomeScreen()));
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          Center(
-            child: Padding(
-              padding: EdgeInsets.all(15.0),
-              child: SizedBox(
-                height: MediaQuery.of(context).size.height * 0.15,
-                child: Image.asset('assets/budget.png'),
-              ),
-            ),
-          ),
-          Text(
-            'Your budgeting tool',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-          CircularProgressIndicator(),
-        ],
-      ),
+      home: pref.getString("token") == null ? Login() : HomeScreen(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }

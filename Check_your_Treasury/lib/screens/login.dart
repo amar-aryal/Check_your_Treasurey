@@ -1,16 +1,26 @@
+import 'package:Check_your_Treasury/screens/addTransaction.dart';
 import 'package:Check_your_Treasury/screens/homeScreen.dart';
 import 'package:Check_your_Treasury/screens/register.dart';
 import 'package:Check_your_Treasury/services/api.dart';
 import 'package:Check_your_Treasury/utilities/decorations.dart';
 import 'package:flutter/material.dart';
 
-class Login extends StatelessWidget {
+class Login extends StatefulWidget {
+  @override
+  _LoginState createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
   TextEditingController _userNameController = TextEditingController();
+
   TextEditingController _passwordController = TextEditingController();
+
+  bool _obscure = true;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -38,16 +48,24 @@ class Login extends StatelessWidget {
                 controller: _passwordController,
                 decoration: buildInputDecorationWithIcon(
                     'Enter your password', Icons.lock),
-                obscureText: true,
+                obscureText: _obscure,
               ),
             ),
-            SizedBox(height: 30),
+            FlatButton(
+              onPressed: () {
+                setState(() {
+                  _obscure ? _obscure = false : _obscure = true;
+                });
+              },
+              child: Text(
+                _obscure ? 'Show password' : 'Hide password',
+                style: TextStyle(color: Colors.cyan),
+              ),
+            ),
+            SizedBox(height: 20),
             FlatButton(
               padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-              onPressed: () {
-                API().login(context, _userNameController.text,
-                    _passwordController.text);
-              },
+              onPressed: _login,
               color: Colors.blue[800],
               child: Text(
                 'Login',
@@ -57,6 +75,9 @@ class Login extends StatelessWidget {
                 ),
               ),
             ),
+            SizedBox(height: 15),
+            Text('Do not have an account?', style: TextStyle(fontSize: 16)),
+            SizedBox(height: 15),
             FlatButton(
               onPressed: () {
                 Navigator.push(context,
@@ -64,14 +85,20 @@ class Login extends StatelessWidget {
               },
               child: Text(
                 'Register',
-                style: TextStyle(
-                  fontSize: 18,
-                ),
+                style: TextStyle(fontSize: 18, color: Colors.cyan),
               ),
             ),
           ],
         ),
       ),
     );
+  }
+
+  _login() {
+    if (_userNameController.text == "" || _passwordController.text == "") {
+      showMyDialog(context, "Empty fields!", "Do not leave the fieds empty");
+    } else {
+      API().login(context, _userNameController.text, _passwordController.text);
+    }
   }
 }
