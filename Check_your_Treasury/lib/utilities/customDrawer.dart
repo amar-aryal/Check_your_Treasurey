@@ -16,8 +16,8 @@ class CustomDrawer extends StatelessWidget {
           DrawerHeader(
             child: Center(
                 child: CircleAvatar(
-              radius: 30,
-              child: Icon(Icons.person),
+              radius: 50,
+              child: Image.asset('assets/account.png'),
             )),
             decoration: BoxDecoration(
               color: Colors.cyan[100],

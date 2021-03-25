@@ -20,76 +20,104 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.blue,
       resizeToAvoidBottomInset: false,
       body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'Login',
-              style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
-              ),
+        child: Stack(children: [
+          Card(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20))),
+            margin: EdgeInsets.only(
+              top: MediaQuery.of(context).size.height * 0.14,
             ),
-            Divider(),
-            Padding(
-              padding: EdgeInsets.all(10.0),
-              child: TextFormField(
-                controller: _userNameController,
-                decoration: buildInputDecorationWithIcon(
-                    'Enter your username', Icons.person),
-              ),
-            ),
-            SizedBox(height: 15),
-            Padding(
-              padding: EdgeInsets.all(10.0),
-              child: TextFormField(
-                controller: _passwordController,
-                decoration: buildInputDecorationWithIcon(
-                    'Enter your password', Icons.lock),
-                obscureText: _obscure,
-              ),
-            ),
-            FlatButton(
-              onPressed: () {
-                setState(() {
-                  _obscure ? _obscure = false : _obscure = true;
-                });
-              },
-              child: Text(
-                _obscure ? 'Show password' : 'Hide password',
-                style: TextStyle(color: Colors.cyan),
-              ),
-            ),
-            SizedBox(height: 20),
-            FlatButton(
-              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-              onPressed: _login,
-              color: Colors.blue[800],
-              child: Text(
-                'Login',
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.white,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Login',
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
+                Divider(),
+                Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child: TextFormField(
+                    controller: _userNameController,
+                    decoration: buildInputDecorationWithIcon(
+                        'Enter your username', Icons.person),
+                  ),
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.008),
+                Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child: TextFormField(
+                    controller: _passwordController,
+                    decoration: buildInputDecorationWithIcon(
+                        'Enter your password', Icons.lock),
+                    obscureText: _obscure,
+                  ),
+                ),
+                FlatButton(
+                  onPressed: () {
+                    setState(() {
+                      _obscure ? _obscure = false : _obscure = true;
+                    });
+                  },
+                  child: Text(
+                    _obscure ? 'Show password' : 'Hide password',
+                    style: TextStyle(color: Colors.cyan, fontSize: 18),
+                  ),
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.008),
+                ButtonTheme(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30)),
+                  minWidth: MediaQuery.of(context).size.width * 0.8,
+                  child: FlatButton(
+                    padding: EdgeInsets.symmetric(vertical: 15),
+                    onPressed: _login,
+                    color: Colors.blue[800],
+                    child: Text(
+                      'LOGIN',
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.09),
+                Text('Do not have an account?', style: TextStyle(fontSize: 16)),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.008),
+                FlatButton(
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Register()));
+                  },
+                  child: Text(
+                    'Register',
+                    style: TextStyle(fontSize: 18, color: Colors.cyan),
+                  ),
+                ),
+              ],
             ),
-            SizedBox(height: 15),
-            Text('Do not have an account?', style: TextStyle(fontSize: 16)),
-            SizedBox(height: 15),
-            FlatButton(
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Register()));
-              },
-              child: Text(
-                'Register',
-                style: TextStyle(fontSize: 18, color: Colors.cyan),
-              ),
-            ),
-          ],
-        ),
+          ),
+          Positioned(
+            top: MediaQuery.of(context).size.height * 0.052,
+            left: MediaQuery.of(context).size.width * 0.40,
+            child: CircleAvatar(
+                radius: 40,
+                backgroundColor: Colors.grey[200],
+                child: Icon(
+                  Icons.person,
+                  size: MediaQuery.of(context).size.height * 0.08,
+                )),
+          ),
+        ]),
       ),
     );
   }

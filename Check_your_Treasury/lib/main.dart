@@ -4,6 +4,7 @@ import 'package:Check_your_Treasury/services/api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,6 +36,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
+          textTheme: TextTheme(bodyText1: GoogleFonts.roboto()),
           buttonTheme: ButtonThemeData(
             buttonColor: Colors.cyan,
             shape: RoundedRectangleBorder(

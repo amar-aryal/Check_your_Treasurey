@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:Check_your_Treasury/screens/exchangeRates.dart';
 import 'package:Check_your_Treasury/services/api.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 
@@ -143,13 +144,17 @@ class _ReportScreenState extends State<ReportScreen> {
                                     MediaQuery.of(context).size.height * 0.09,
                                 child: Text('No data'),
                               ),
-                        Text('Expense Stats',
-                            style: TextStyle(
+                        Text(
+                          'Expense Stats',
+                          style: GoogleFonts.workSans(
+                            textStyle: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.red,
                               fontSize:
                                   MediaQuery.of(context).size.height * 0.05,
-                            )),
+                            ),
+                          ),
+                        ),
                         expenseData.isNotEmpty
                             ? _showExpenseChart(expenseData)
                             : Container(
@@ -159,7 +164,7 @@ class _ReportScreenState extends State<ReportScreen> {
                               ),
                         FlatButton(
                           child: Text(
-                            "Download pdf",
+                            "Export to files",
                             style: TextStyle(fontSize: 18),
                           ),
                           color: Colors.blue[900],
@@ -259,8 +264,8 @@ class MonthlyTotal extends StatelessWidget {
   final double expenseTotal;
   final double savings;
 
-  final TextStyle _style1 =
-      TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
+  final TextStyle _style1 = GoogleFonts.workSans(
+      textStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold));
 
   MonthlyTotal({this.incomeTotal = 0, this.expenseTotal = 0, this.savings = 0});
 

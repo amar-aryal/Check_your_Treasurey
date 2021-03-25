@@ -210,7 +210,8 @@ class _PDFState extends State<PDF> {
               height: 60,
             ),
             FlatButton(
-              child: Text("Start Downloading", style: TextStyle(fontSize: 18)),
+              child:
+                  Text("Start Downloading Pdf", style: TextStyle(fontSize: 18)),
               color: Colors.cyan,
               textColor: Colors.white,
               onPressed: () async {
@@ -234,7 +235,33 @@ class _PDFState extends State<PDF> {
                   print("Permission deined");
                 }
               },
-            )
+            ),
+            SizedBox(height: 80),
+            FlatButton(
+              child: Text("Export to excel", style: TextStyle(fontSize: 18)),
+              color: Colors.cyan,
+              textColor: Colors.white,
+              onPressed: () async {
+                final status = await Permission.storage.request();
+
+                if (status.isGranted) {
+                  final externalDir = await getExternalStorageDirectory();
+
+                  final id = await FlutterDownloader.enqueue(
+                    url: "http://10.0.2.2:8000/export",
+                    // headers: {
+                    //   "Authorization": "Token " + pref.getString("token"),
+                    // },
+                    savedDir: externalDir.path,
+                    fileName: "ExcelReport",
+                    showNotification: true,
+                    openFileFromNotification: true,
+                  );
+                } else {
+                  print("Permission deined");
+                }
+              },
+            ),
           ],
         ),
       ),

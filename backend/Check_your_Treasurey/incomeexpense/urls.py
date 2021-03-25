@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import IncomeList, IncomeRUD, ExpenseList, ExpenseRUD, IncomeExpenseDailyStats, MonthlyStats, ReportPdfView
+from .views import IncomeList, IncomeRUD, ExpenseList, ExpenseRUD, IncomeExpenseDailyStats, MonthlyStats, ReportPdfView, ExportToExcel
 
 urlpatterns = [
     path('incomes/', IncomeList.as_view()),
@@ -10,4 +10,5 @@ urlpatterns = [
     path('today_total/', IncomeExpenseDailyStats.as_view()),
     path('monthly_total/', MonthlyStats.as_view()),
     path('report/',ReportPdfView.as_view()),
+    path('export/',ExportToExcel.as_view()),
 ]

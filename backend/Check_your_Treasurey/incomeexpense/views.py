@@ -19,6 +19,8 @@ from reportlab.pdfgen import canvas
 from reportlab.graphics.shapes import Drawing, String
 from reportlab.graphics.charts.barcharts import HorizontalBarChart
 
+import xlwt
+
 
 class IncomeList(generics.ListCreateAPIView): # for listing the incomes and creating incomes
     
@@ -167,34 +169,53 @@ class ReportPdfView(APIView):
 
         """FOR INCOME"""
 
-        # income_category_list = Income.objects.filter(userID = self.request.user,date__year=year, date__month=month).values_list('category',flat=True) #flat = True returns a single value instead of list or tuple
+        income_category_list = Income.objects.filter(userID = self.request.user,date__year=year, date__month=month).values_list('category',flat=True) #flat = True returns a single value instead of list or tuple
 
-        # income_category_info = {}
+        income_category_info = {}
 
-        # for cat in income_category_list:
-        #     cat_income = Income.objects.filter(userID = self.request.user,date__year=year, date__month=month, category=cat).aggregate(total=Sum('amount'))["total"]
-        #     income_category_info[cat] = cat_income
+        for cat in income_category_list:
+            cat_income = Income.objects.filter(userID = self.request.user,date__year=year, date__month=month, category=cat).aggregate(total=Sum('amount'))["total"]
+            income_category_info[cat] = cat_income
 
-        # """FOR EXPENSE"""
-        # expense_category_list = Expense.objects.filter(userID = self.request.user,date__year=year, date__month=month).values_list('category',flat=True) #flat = True returns a single value instead of list or tuple
+        """FOR EXPENSE"""
+        expense_category_list = Expense.objects.filter(userID = self.request.user,date__year=year, date__month=month).values_list('category',flat=True) #flat = True returns a single value instead of list or tuple
 
-        # expense_category_info = {}
+        expense_category_info = {}
 
-        # for cat in expense_category_list:
-        #     cat_expense = Expense.objects.filter(userID = self.request.user,date__year=year, date__month=month, category=cat).aggregate(total=Sum('amount'))["total"]
-        #     expense_category_info[cat] = cat_expense
+        for cat in expense_category_list:
+            cat_expense = Expense.objects.filter(userID = self.request.user,date__year=year, date__month=month, category=cat).aggregate(total=Sum('amount'))["total"]
+            expense_category_info[cat] = cat_expense
 
     # Create a file-like buffer to receive PDF data.
         buffer = io.BytesIO()
 
         # Create the PDF object, using the buffer as its "file."
         p = canvas.Canvas(buffer)
+        p.setPageSize((600,1000))
+
+        p.setFont('Helvetica',24)
 
         # Draw things on the PDF. Here's where the PDF generation happens.
         # See the ReportLab documentation for the full list of functionality.
-        p.drawString(100, 500, "Total Income: "+str(total_monthly_income))
-        p.drawString(100, 700, "Total Expenses: "+str(total_monthly_expense))
-        p.drawString(100, 800, "Total Savings: "+str(savings))
+        p.drawString(180, 950, "Monthly report - "+month+"/"+year)
+        p.drawString(180, 900, "Total Income: "+str(total_monthly_income))
+        p.drawString(180, 850, "Total Expenses: "+str(total_monthly_expense))
+        p.drawString(180, 800, "Total Savings: "+str(savings))
+        p.drawString(50, 700, "Incomes per Category")
+        p.drawString(320, 700, "Expenses per Category")
+        p.line(300,730,300,50)
+
+        """Iterating throgh income and expenses category dictionary to get data ready for pdf"""
+
+        yInc = 100
+        for key, value in income_category_info.items():
+            p.drawString(48, yInc, str(key) +  ' = ' +str(value))
+            yInc=yInc+50
+
+        yExp = 100
+        for key, value in expense_category_info.items():
+            p.drawString(320, yExp, str(key) +  ' = ' +str(value))
+            yExp=yExp+50
 
         # Close the PDF object cleanly, and we're done.
         p.showPage()
@@ -205,31 +226,85 @@ class ReportPdfView(APIView):
         buffer.seek(0)
         return FileResponse(buffer, as_attachment=True, filename='Report.pdf')
 
+class ExportToExcel(APIView):
 
-from . import mycharts
+    def get(self,request):
+
+        year = self.request.query_params.get('year')
+        month = self.request.query_params.get('month')
+
+        response = HttpResponse(content_type='application/ms-excel')
+        response['Content-Disposition'] = 'attachment; filename="ExcelReport.xls"'
+
+        wb = xlwt.Workbook(encoding='utf-8')
+        ws = wb.add_sheet('Monthly-Report')
+
+
+        # Sheet header, first row
+        row_num = 0
+
+        font_style = xlwt.XFStyle()
+        font_style.font.bold = True
+        font_style.num_format_str = 'DD-MM-YYYY'
+
+        columns = ['Month/Year','Total Income','Total Expense', 'Savings', ]
+
+        #writing header columns
+        for col_num in range(len(columns)):
+            ws.write(row_num, col_num, columns[col_num], font_style)
+
+        # Sheet body, remaining rows
+        font_style = xlwt.XFStyle()
+        # font_style.num_format_str = 'yyyy-mm-dd'
+
+        """ First writing total income, expenses and saving for a month"""
+
+        total_monthly_income = Income.objects.filter(userID = 2,date__year=year, date__month=month).aggregate(total=Sum('amount'))["total"]
+        total_monthly_expense = Expense.objects.filter(userID = 2,date__year=year, date__month=month).aggregate(total=Sum('amount'))["total"]
+        savings = 0
+
+        if total_monthly_expense is not None and total_monthly_income is not None:
+            if total_monthly_income > total_monthly_expense:
+                savings = total_monthly_income - total_monthly_expense
+            else:
+                savings = 0
+
+        ws.write(1,0,str(month)+"/"+str(year))
+        ws.write(1,1,total_monthly_income)
+        ws.write(1,2,total_monthly_expense)
+        ws.write(1,3,savings)
+
+        ws.write(3,0,"Income list")
+
+        ws.write(4,0,"Income name")
+        ws.write(4,1,"Category")
+        ws.write(4,2,"Amount")
+        ws.write(4,3,"Date")
+
+        """Now detail data of income and expense """
+
+        rows = Income.objects.filter(userID = 2,date__year=year, date__month=month).values_list('incomename','category','amount','date')
+        row_num = 5
+        for row in rows:
+            row_num += 1
+            for col_num in range(len(row)):
+                ws.write(row_num, col_num, row[col_num], font_style)
+
+        """gap of rows between income and expense data"""
+        row_num += 6
+        ws.write(row_num-1,0,"Expense list")
+        ws.write(row_num,0,"Expense name")
+        ws.write(row_num,1,"Category")
+        ws.write(row_num,2,"Amount")
+        ws.write(row_num,3,"Date")
+
+        rows1 = Expense.objects.filter(userID = 2,date__year=year, date__month=month).values_list('expensename','category','amount','date')
         
-def barchart(request):
+        row_num += 1
+        for row in rows1:
+            row_num += 1
+            for col_num in range(len(row)):
+                ws.write(row_num, col_num, row[col_num], font_style)
 
-    #instantiate a drawing object
-    d = mycharts.MyBarChartDrawing()
-
-    #extract the request params of interest.
-    #I suggest having a default for everything.
-    if 'height' in request:
-        d.height = int(request['height'])
-    if 'width' in request:
-        d.width = int(request['width'])
-    
-    if 'numbers' in request:
-        strNumbers = request['numbers']
-        numbers = map(int, strNumbers.split(','))    
-        d.chart.data = [numbers]   #bar charts take a list-of-lists for data
-
-    if 'title' in request:
-        d.title.text = request['title']
-  
-
-    #get a GIF (or PNG, JPG, or whatever)
-    binaryStuff = d.asString('gif')
-    return HttpResponse(binaryStuff, 'image/gif')
-
+        wb.save(response)
+        return response

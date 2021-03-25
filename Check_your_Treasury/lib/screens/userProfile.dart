@@ -15,7 +15,7 @@ class _UserProfileState extends State<UserProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.cyan[50],
+        backgroundColor: Colors.teal[200],
         appBar: AppBar(
           title: Text('Profile'),
           centerTitle: true,
@@ -33,64 +33,87 @@ class _UserProfileState extends State<UserProfile> {
                     child: Container(
                       margin:
                           EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                      child: Column(
+                      child: Stack(
                         children: [
-                          Center(
-                              child: CircleAvatar(
-                            radius: MediaQuery.of(context).size.height * 0.08,
-                            child: Icon(
-                              Icons.person,
-                              size: MediaQuery.of(context).size.height * 0.06,
-                            ),
-                          )),
-                          SizedBox(height: 30),
-                          Card(
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 15, horizontal: 10),
-                              child: Text('Username:   ${data["username"]}',
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  )),
-                            ),
-                          ),
-                          SizedBox(height: 15),
-                          Card(
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 15, horizontal: 10),
-                              child: Text('Email:  ${data["email"]}',
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  )),
-                            ),
-                          ),
-                          SizedBox(height: 30),
-                          FlatButton(
-                            padding: EdgeInsets.symmetric(
-                                vertical: 10, horizontal: 30),
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => UpdateProfile(
-                                    username: data["username"],
-                                    email: data["email"],
+                          Column(
+                            children: [
+                              Center(
+                                child: Card(
+                                  margin: EdgeInsets.only(
+                                      top: MediaQuery.of(context).size.height *
+                                          0.2),
+                                  elevation: 1.5,
+                                  child: Column(
+                                    children: [
+                                      SizedBox(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.08),
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 30),
+                                        child: Text(
+                                            'Username:   ${data["username"]}',
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                            )),
+                                      ),
+                                      SizedBox(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.03),
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 30),
+                                        child: Text('Email:  ${data["email"]}',
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                            )),
+                                      ),
+                                      SizedBox(height: 30),
+                                      FlatButton(
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 10, horizontal: 30),
+                                        onPressed: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  UpdateProfile(
+                                                username: data["username"],
+                                                email: data["email"],
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        color: Colors.blue[800],
+                                        child: Text(
+                                          'Update profile',
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(height: 30),
+                                    ],
                                   ),
                                 ),
-                              );
-                            },
-                            color: Colors.blue[800],
-                            child: Text(
-                              'Update profile',
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.white,
                               ),
-                            ),
+                            ],
                           ),
+                          Positioned(
+                              top: MediaQuery.of(context).size.height * 0.1,
+                              left: MediaQuery.of(context).size.width * 0.32,
+                              child: Center(
+                                child: CircleAvatar(
+                                  radius:
+                                      MediaQuery.of(context).size.height * 0.08,
+                                  child: Image.asset('assets/account.png'),
+                                ),
+                              )),
                         ],
                       ),
                     ),

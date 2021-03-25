@@ -87,18 +87,7 @@ class _TransactionsListState extends State<TransactionsList> {
             padding: EdgeInsets.symmetric(
                 vertical: MediaQuery.of(context).size.height * 0.04),
             decoration: BoxDecoration(
-              color: Colors.white,
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment(
-                    0.8, 0.0), // 10% of the width, so there are ten blinds.
-                colors: [
-                  const Color(0xff0983e0),
-                  const Color(0xff69c6d6)
-                ], // red to yellow
-                tileMode:
-                    TileMode.clamp, // repeats the gradient over the canvas
-              ),
+              color: Color(0xff400c99),
               borderRadius: BorderRadius.circular(15),
             ),
             child: Expanded(
@@ -121,11 +110,11 @@ class _TransactionsListState extends State<TransactionsList> {
                       children: [
                         Text(
                           'Total Income: $selectedCurrency $today_total_income',
-                          style: TextStyle(fontSize: 20),
+                          style: TextStyle(fontSize: 20, color: Colors.white),
                         ),
                         Text(
                           'Total Expenses: $selectedCurrency $today_total_expense',
-                          style: TextStyle(fontSize: 20),
+                          style: TextStyle(fontSize: 20, color: Colors.white),
                         ),
                       ],
                     );
@@ -142,7 +131,7 @@ class _TransactionsListState extends State<TransactionsList> {
               margin: EdgeInsets.only(top: 15),
               padding: EdgeInsets.all(15),
               decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Colors.grey[200],
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(25),
                       topRight: Radius.circular(25))),
@@ -245,6 +234,7 @@ class _IncomeState extends State<Income> {
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(15)),
                     child: ListTile(
+                      leading: categoryImage(incomes[index]["category"]),
                       title: Text(incomes[index]["incomename"],
                           style: TextStyle(fontWeight: FontWeight.bold)),
                       subtitle: Text(incomes[index]["category"]),
@@ -309,6 +299,7 @@ class _ExpenseState extends State<Expense> {
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(15)),
                     child: ListTile(
+                      leading: categoryImage(expenses[index]["category"]),
                       title: Text(expenses[index]["expensename"],
                           style: TextStyle(fontWeight: FontWeight.bold)),
                       subtitle: Text(expenses[index]["category"]),
@@ -333,20 +324,53 @@ class _ExpenseState extends State<Expense> {
   }
 }
 
-// Map incomes = {
-//   "incomeList": [
-//     {"Income": "Salary received", "Category": "Salary", "Amount": 10000},
-//     {"Income": "Stock dividend", "Category": "Dividend", "Amount": 1000},
-//     {"Income": "Rent received", "Category": "Rent", "Amount": 2000},
-//     {"Income": "Reward coupon", "Category": "Others", "Amount": 500},
-//   ]
-// };
-
-// Map expenses = {
-//   "expenseList": [
-//     {"Expense": "Eat at restaurant", "Category": "Food", "Amount": 400},
-//     {"Expense": "Bought shirt", "Category": "Shopping", "Amount": 700},
-//     {"Expense": "Taken taxi", "Category": "Transportation", "Amount": 800},
-//     {"Expense": "Electricity bill", "Category": "Bills", "Amount": 1500},
-//   ]
-// };
+Image categoryImage(String category) {
+  switch (category) {
+    case 'Salary':
+      return Image.asset('assets/salary.png');
+      break;
+    case 'Transportation':
+      return Image.asset('assets/transportation.png');
+      break;
+    case 'Education':
+      return Image.asset('assets/education.png');
+      break;
+    case 'Entertainment':
+      return Image.asset('assets/entertainment.png');
+      break;
+    case 'Housing':
+      return Image.asset('assets/housing.png');
+      break;
+    case 'Food':
+      return Image.asset('assets/food.png');
+      break;
+    case 'Shopping':
+      return Image.asset('assets/shopping.png');
+      break;
+    case 'Investment':
+      return Image.asset('assets/investment.png');
+      break;
+    case 'Health':
+      return Image.asset('assets/health.png');
+      break;
+    case 'Travel':
+      return Image.asset('assets/travel.png');
+      break;
+    case 'Utility':
+      return Image.asset('assets/utility.png');
+      break;
+    case 'Tax':
+      return Image.asset('assets/tax.png');
+      break;
+    case 'Dividends':
+      return Image.asset('assets/investment.png');
+      break;
+    case 'Insurance':
+      return Image.asset('assets/insurance.png');
+      break;
+    case 'Miscellaneous':
+      return Image.asset('assets/misc.png');
+      break;
+    default:
+  }
+}
