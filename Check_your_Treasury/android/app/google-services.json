@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "787475297131",
+    "project_id": "push-notif-1d254",
+    "storage_bucket": "push-notif-1d254.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:787475297131:android:38532c9ac197029b63522e",
+        "android_client_info": {
+          "package_name": "com.example.Check_your_Treasury"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "787475297131-1n58ar781fmq02s2lju8s54ino9kuh1m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKVPwqRvvNXMOrjo6p4Y8rm9JuNPcwAWw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "787475297131-1n58ar781fmq02s2lju8s54ino9kuh1m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

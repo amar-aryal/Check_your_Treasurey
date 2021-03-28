@@ -7,6 +7,7 @@ import 'package:Check_your_Treasury/utilities/bottomNavBar.dart';
 import 'package:Check_your_Treasury/utilities/customDrawer.dart';
 import 'package:flutter/material.dart';
 import 'package:gallery_saver/files.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
@@ -49,45 +50,15 @@ class _TransactionsListState extends State<TransactionsList> {
       drawer: CustomDrawer(),
       body: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              IconButton(
-                  icon: Icon(
-                    Icons.calendar_today_outlined,
-                    color: Colors.cyan,
-                    size: 30,
-                  ),
-                  onPressed: () async {
-                    DateTime selectedDate = await showDatePicker(
-                        context: context,
-                        initialDate: now,
-                        firstDate: DateTime(2015, 8),
-                        lastDate: DateTime(2100, 8));
-                    setState(() {
-                      if (selectedDate != null) {
-                        now = selectedDate;
-                        print(selectedDate);
-                      }
-                    });
-                  }),
-              Text(
-                DateFormat("yyyy-MM-dd").format(now),
-                style: TextStyle(
-                  color: Colors.blue[900],
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
           Container(
             width: double.infinity,
-            margin: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
-            padding: EdgeInsets.symmetric(
-                vertical: MediaQuery.of(context).size.height * 0.04),
+            margin: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+            padding: EdgeInsets.only(
+                left: MediaQuery.of(context).size.width * 0.05,
+                right: MediaQuery.of(context).size.width * 0.05,
+                bottom: MediaQuery.of(context).size.height * 0.05),
             decoration: BoxDecoration(
-              color: Color(0xff400c99),
+              color: Colors.white,
               borderRadius: BorderRadius.circular(15),
             ),
             child: Expanded(
@@ -108,13 +79,100 @@ class _TransactionsListState extends State<TransactionsList> {
 
                     return Column(
                       children: [
-                        Text(
-                          'Total Income: $selectedCurrency $today_total_income',
-                          style: TextStyle(fontSize: 20, color: Colors.white),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            IconButton(
+                                icon: Icon(
+                                  Icons.calendar_today_outlined,
+                                  color: Colors.cyan,
+                                  size: 30,
+                                ),
+                                onPressed: () async {
+                                  DateTime selectedDate = await showDatePicker(
+                                      context: context,
+                                      initialDate: now,
+                                      firstDate: DateTime(2015, 8),
+                                      lastDate: DateTime(2100, 8));
+                                  setState(() {
+                                    if (selectedDate != null) {
+                                      now = selectedDate;
+                                      print(selectedDate);
+                                    }
+                                  });
+                                }),
+                            Text(
+                              DateFormat("yyyy-MM-dd").format(now),
+                              style: TextStyle(
+                                color: Colors.blue[900],
+                                fontSize: 18,
+                              ),
+                            ),
+                          ],
                         ),
-                        Text(
-                          'Total Expenses: $selectedCurrency $today_total_expense',
-                          style: TextStyle(fontSize: 20, color: Colors.white),
+                        SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.03),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Icon(Icons.add, color: Colors.green),
+                                SizedBox(width: 5),
+                                Text(
+                                  'TOTAL INCOME',
+                                  style: GoogleFonts.montserrat(
+                                      textStyle: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                                ),
+                              ],
+                            ),
+                            Text(
+                              '$selectedCurrency $today_total_income',
+                              style: GoogleFonts.montserrat(
+                                  textStyle: TextStyle(
+                                fontSize: 18,
+                                color: Colors.green,
+                                fontWeight: FontWeight.bold,
+                              )),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.03),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Icon(Icons.remove, color: Colors.red),
+                                SizedBox(width: 5),
+                                Text(
+                                  'TOTAL EXPENSES',
+                                  style: GoogleFonts.montserrat(
+                                    textStyle: TextStyle(
+                                      fontSize: 18,
+                                      color: Colors.grey,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Text(
+                              '$selectedCurrency $today_total_expense',
+                              style: GoogleFonts.montserrat(
+                                textStyle: TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     );
@@ -133,8 +191,8 @@ class _TransactionsListState extends State<TransactionsList> {
               decoration: BoxDecoration(
                   color: Colors.grey[200],
                   borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(25),
-                      topRight: Radius.circular(25))),
+                      topLeft: Radius.circular(35),
+                      topRight: Radius.circular(35))),
               child: Column(
                 children: [
                   Row(
@@ -152,6 +210,7 @@ class _TransactionsListState extends State<TransactionsList> {
                         child: Text(
                           'Income',
                           style: TextStyle(
+                              fontSize: 20,
                               color:
                                   _incomeClicked ? Colors.white : Colors.black),
                         ),
@@ -168,6 +227,7 @@ class _TransactionsListState extends State<TransactionsList> {
                         child: Text(
                           'Expense',
                           style: TextStyle(
+                              fontSize: 20,
                               color: _expenseClicked
                                   ? Colors.white
                                   : Colors.black),
@@ -236,14 +296,18 @@ class _IncomeState extends State<Income> {
                     child: ListTile(
                       leading: categoryImage(incomes[index]["category"]),
                       title: Text(incomes[index]["incomename"],
-                          style: TextStyle(fontWeight: FontWeight.bold)),
+                          style: GoogleFonts.montserrat(
+                              textStyle:
+                                  TextStyle(fontWeight: FontWeight.bold))),
                       subtitle: Text(incomes[index]["category"]),
                       trailing: Text(
                         selectedCurrency +
                             '. ' +
                             incomes[index]["amount"].toString(),
-                        style: TextStyle(
-                            color: Colors.green, fontWeight: FontWeight.bold),
+                        style: GoogleFonts.montserrat(
+                            textStyle: TextStyle(
+                                color: Colors.green,
+                                fontWeight: FontWeight.bold)),
                       ),
                     ),
                   ),
@@ -372,5 +436,6 @@ Image categoryImage(String category) {
       return Image.asset('assets/misc.png');
       break;
     default:
+      return Image.asset('assets/misc.png');
   }
 }

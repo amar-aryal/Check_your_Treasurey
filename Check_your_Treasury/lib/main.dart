@@ -1,6 +1,7 @@
 import 'package:Check_your_Treasury/screens/homeScreen.dart';
 import 'package:Check_your_Treasury/screens/login.dart';
 import 'package:Check_your_Treasury/services/api.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -8,6 +9,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp();
 
   pref = await SharedPreferences.getInstance();
 

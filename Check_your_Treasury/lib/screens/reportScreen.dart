@@ -40,13 +40,6 @@ class _ReportScreenState extends State<ReportScreen> {
     }
   }
 
-  // Map<String, double> data = {
-  //   "Bill": 6000,
-  //   "Shopping": 5000,
-  //   "Transportation": 4000,
-  //   'hh': 900,
-  // };
-
   List<Color> colorList = [
     Colors.cyan,
     Colors.lightGreen,
@@ -124,13 +117,11 @@ class _ReportScreenState extends State<ReportScreen> {
 
                     return Column(
                       children: [
-                        Divider(color: Colors.grey[600]),
                         MonthlyTotal(
                           incomeTotal: total_income,
                           expenseTotal: total_expense,
                           savings: savings,
                         ),
-                        Divider(color: Colors.grey[600]),
                         Text('Income Stats',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
@@ -146,15 +137,14 @@ class _ReportScreenState extends State<ReportScreen> {
                               ),
                         Text(
                           'Expense Stats',
-                          style: GoogleFonts.workSans(
-                            textStyle: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.red,
-                              fontSize:
-                                  MediaQuery.of(context).size.height * 0.05,
-                            ),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.red,
+                            fontSize: MediaQuery.of(context).size.height * 0.05,
                           ),
                         ),
+                        expData(expenseData),
+                        incData(incomeData),
                         expenseData.isNotEmpty
                             ? _showExpenseChart(expenseData)
                             : Container(
@@ -208,7 +198,6 @@ class _ReportScreenState extends State<ReportScreen> {
       initialAngleInDegree: 0,
       chartType: ChartType.disc,
       ringStrokeWidth: 32,
-      // centerText: "HYBRID",
       legendOptions: LegendOptions(
         showLegendsInRow: false,
         legendPosition: LegendPosition.right,
@@ -238,7 +227,6 @@ class _ReportScreenState extends State<ReportScreen> {
       initialAngleInDegree: 0,
       chartType: ChartType.disc,
       ringStrokeWidth: 32,
-      // centerText: "HYBRID",
       legendOptions: LegendOptions(
         showLegendsInRow: false,
         legendPosition: LegendPosition.right,
@@ -257,6 +245,46 @@ class _ReportScreenState extends State<ReportScreen> {
               TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
     );
   }
+
+  Widget expData(Map expenseData) {
+    return Container(
+      height: 200,
+      child: ListView.builder(
+        itemCount: expenseData.keys.length,
+        itemBuilder: (BuildContext context, int index) {
+          return Padding(
+            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+            child: Row(
+              children: [
+                Text(expenseData.keys.toList()[index]),
+                Text(expenseData.values.toList()[index].toString()),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget incData(Map incomeData) {
+    return Container(
+      height: 200,
+      child: ListView.builder(
+        itemCount: incomeData.keys.length,
+        itemBuilder: (BuildContext context, int index) {
+          return Padding(
+            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+            child: Row(
+              children: [
+                Text(incomeData.keys.toList()[index]),
+                Text(incomeData.values.toList()[index].toString()),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
 }
 
 class MonthlyTotal extends StatelessWidget {
@@ -271,18 +299,20 @@ class MonthlyTotal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(height: 15),
-        Text('Total Income: $selectedCurrency. $incomeTotal', style: _style1),
-        SizedBox(height: 15),
-        Text('Total Expenses: $selectedCurrency. $expenseTotal',
-            style: _style1),
-        SizedBox(height: 15),
-        Text('Savings: $selectedCurrency. $savings', style: _style1),
-        SizedBox(height: 15),
-      ],
+    return Card(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(height: 15),
+          Text('Total Income: $selectedCurrency. $incomeTotal', style: _style1),
+          SizedBox(height: 15),
+          Text('Total Expenses: $selectedCurrency. $expenseTotal',
+              style: _style1),
+          SizedBox(height: 15),
+          Text('Savings: $selectedCurrency. $savings', style: _style1),
+          SizedBox(height: 15),
+        ],
+      ),
     );
   }
 }

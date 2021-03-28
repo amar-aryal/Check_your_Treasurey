@@ -48,7 +48,12 @@ INSTALLED_APPS = [
     'reminders',
     'receipts',
     'budgetPlan',
+    "fcm_django",
 ]
+
+FCM_DJANGO_SETTINGS = {
+    "FCM_SERVER_KEY": "AAAAt1kvc2s:APA91bHaCR75PQx0t0H517G3i2DpyVDRl4gZsB8asizauzXO3MVYrKa7aR_kydNZMb59NEikgKINs4UWKIk5o5mGS9MTSRoGrWhkJC9Rrt_VUjKOvSdQZDPc9JEdix6MAD1L5b8soD9X",
+}
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',),

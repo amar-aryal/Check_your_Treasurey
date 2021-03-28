@@ -5,6 +5,12 @@ from rest_framework.permissions import IsAuthenticated
 from .permissions import IsOwner
 from rest_framework import status
 from rest_framework import generics
+from rest_framework.views import APIView
+from fcm_django.models import FCMDevice
+from fcm_django.api.rest_framework import FCMDeviceSerializer
+
+from rest_framework.views import Response
+
 
 class ReminderListCreate(generics.ListCreateAPIView):
     permission_classes = (IsAuthenticated,IsOwner)
@@ -23,4 +29,12 @@ class ReminderRUD(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (IsAuthenticated,IsOwner)
     queryset = Reminder.objects.all()
     serializer_class = ReminderSerializer
+
+class Notify(APIView):
+    def get(self, request):
+        devices = FCMDevice.objects.all().first()
+        result = devices.send_message(title="Notification",body="Hello user",data={"success":"Okay"})
+        return Response(result)
+
+
 

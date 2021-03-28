@@ -27,76 +27,90 @@ class _RemindersState extends State<Reminders> {
       ),
       bottomNavigationBar: BottomBar(selectedIndex: 1),
       drawer: CustomDrawer(),
-      body: FutureBuilder(
-        future: API().getReminders(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            List<dynamic> reminders = snapshot.data;
+      body: Column(
+        children: [
+          Container(
+            height: 200,
+            color: Colors.blue,
+            child: Image.asset('assets/reminder_illustration.png'),
+          ),
+          Expanded(
+            child: FutureBuilder(
+              future: API().getReminders(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  List<dynamic> reminders = snapshot.data;
 
-            return ListView.builder(
-              itemCount: reminders.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Padding(
-                  padding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
-                  child: Container(
-                    height: MediaQuery.of(context).size.height * 0.1,
-                    decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black12,
-                            blurRadius: 1.0,
-                            spreadRadius: 1.0,
-                            offset: Offset(
-                              1.0,
-                              2.0,
+                  return ListView.builder(
+                    itemCount: reminders.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Padding(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+                        child: Container(
+                          height: MediaQuery.of(context).size.height * 0.1,
+                          decoration: BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black12,
+                                  blurRadius: 1.0,
+                                  spreadRadius: 1.0,
+                                  offset: Offset(
+                                    1.0,
+                                    2.0,
+                                  ),
+                                ),
+                              ],
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(15)),
+                          child: ListTile(
+                            leading: Icon(
+                              Icons.circle_notifications,
+                              color: Colors.yellow,
+                              size: 36,
+                            ),
+                            onTap: () {
+                              setState(() {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => UpdateDeleteReminder(
+                                      reminder: reminders[index]["billName"],
+                                      amount: reminders[index]["billAmount"],
+                                      id: reminders[index]["id"],
+                                    ),
+                                  ),
+                                );
+                              });
+                            },
+                            title: Text(reminders[index]["billName"],
+                                style: TextStyle(fontSize: 16)),
+                            subtitle: Text(
+                              selectedCurrency +
+                                  '. ' +
+                                  reminders[index]["billAmount"].toString(),
+                              style: TextStyle(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            trailing: Text(
+                              reminders[index]["paymentDate"],
+                              style: TextStyle(
+                                  color: Colors.blue,
+                                  fontWeight: FontWeight.bold),
                             ),
                           ),
-                        ],
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(15)),
-                    child: ListTile(
-                      leading: Icon(
-                        Icons.circle_notifications,
-                        color: Colors.yellow,
-                        size: 36,
-                      ),
-                      onTap: () {
-                        setState(() {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => UpdateDeleteReminder(
-                                reminder: reminders[index]["billName"],
-                                amount: reminders[index]["billAmount"],
-                                id: reminders[index]["id"],
-                              ),
-                            ),
-                          );
-                        });
-                      },
-                      title: Text(reminders[index]["billName"],
-                          style: TextStyle(fontSize: 16)),
-                      subtitle: Text(
-                        selectedCurrency +
-                            '. ' +
-                            reminders[index]["billAmount"].toString(),
-                        style: TextStyle(
-                            color: Colors.red, fontWeight: FontWeight.bold),
-                      ),
-                      trailing: Text(
-                        reminders[index]["paymentDate"],
-                        style: TextStyle(
-                            color: Colors.blue, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
-                );
+                        ),
+                      );
+                    },
+                  );
+                } else {
+                  return CircularProgressIndicator();
+                }
               },
-            );
-          } else {
-            return CircularProgressIndicator();
-          }
-        },
+            ),
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
