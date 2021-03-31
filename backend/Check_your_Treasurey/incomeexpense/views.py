@@ -228,6 +228,9 @@ class ReportPdfView(APIView):
 
 class ExportToExcel(APIView):
 
+    permission_classes = (IsAuthenticated,IsOwner)
+
+
     def get(self,request):
 
         year = self.request.query_params.get('year')
@@ -259,8 +262,8 @@ class ExportToExcel(APIView):
 
         """ First writing total income, expenses and saving for a month"""
 
-        total_monthly_income = Income.objects.filter(userID = 2,date__year=year, date__month=month).aggregate(total=Sum('amount'))["total"]
-        total_monthly_expense = Expense.objects.filter(userID = 2,date__year=year, date__month=month).aggregate(total=Sum('amount'))["total"]
+        total_monthly_income = Income.objects.filter(userID = self.request.user,date__year=year, date__month=month).aggregate(total=Sum('amount'))["total"]
+        total_monthly_expense = Expense.objects.filter(userID = self.request.user,date__year=year, date__month=month).aggregate(total=Sum('amount'))["total"]
         savings = 0
 
         if total_monthly_expense is not None and total_monthly_income is not None:
@@ -283,7 +286,7 @@ class ExportToExcel(APIView):
 
         """Now detail data of income and expense """
 
-        rows = Income.objects.filter(userID = 2,date__year=year, date__month=month).values_list('incomename','category','amount','date')
+        rows = Income.objects.filter(userID = self.request.user,date__year=year, date__month=month).values_list('incomename','category','amount','date')
         row_num = 5
         for row in rows:
             row_num += 1
@@ -298,7 +301,7 @@ class ExportToExcel(APIView):
         ws.write(row_num,2,"Amount")
         ws.write(row_num,3,"Date")
 
-        rows1 = Expense.objects.filter(userID = 2,date__year=year, date__month=month).values_list('expensename','category','amount','date')
+        rows1 = Expense.objects.filter(userID = self.request.user,date__year=year, date__month=month).values_list('expensename','category','amount','date')
         
         row_num += 1
         for row in rows1:

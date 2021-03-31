@@ -4,8 +4,10 @@ import 'package:Check_your_Treasury/models/budget.dart';
 import 'package:Check_your_Treasury/screens/addPlan.dart';
 import 'package:Check_your_Treasury/screens/addTransaction.dart';
 import 'package:Check_your_Treasury/services/api.dart';
+import 'package:Check_your_Treasury/utilities/constants.dart';
 import 'package:Check_your_Treasury/utilities/decorations.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 
 class BudgetList extends StatefulWidget {
@@ -14,7 +16,7 @@ class BudgetList extends StatefulWidget {
 }
 
 class _BudgetListState extends State<BudgetList> {
-  final String budgetUrl = 'http://10.0.2.2:8000/budget/';
+  final String budgetUrl = 'http://192.168.1.108:8000/budget/';
 
   Future<dynamic> getBudgetList() async {
     http.Response response = await http.get(
@@ -68,20 +70,22 @@ class _BudgetListState extends State<BudgetList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.cyan[100],
+      backgroundColor: Colors.grey[300],
       appBar: AppBar(
         title: Text('Budgeting'),
         centerTitle: true,
-        backgroundColor: Colors.cyan,
+        backgroundColor: kPrimaryColor,
       ),
       body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
             padding: EdgeInsets.all(8.0),
             child: Text(
               'My plans',
-              style: TextStyle(fontSize: 24),
+              style: GoogleFonts.montserrat(
+                  textStyle:
+                      TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
             ),
           ),
           Expanded(
@@ -105,10 +109,29 @@ class _BudgetListState extends State<BudgetList> {
                           margin:
                               EdgeInsets.symmetric(vertical: 8, horizontal: 10),
                           padding: EdgeInsets.all(15),
-                          child: Text(
-                            data[index]["plan"],
-                            style: TextStyle(
-                              fontSize: 18,
+                          child: IntrinsicHeight(
+                            child: Row(
+                              children: [
+                                CircleAvatar(
+                                  radius:
+                                      MediaQuery.of(context).size.width * 0.06,
+                                  backgroundColor: Colors.orange,
+                                  child: Icon(Icons.pending_actions,
+                                      color: Colors.white),
+                                ),
+                                SizedBox(width: 10),
+                                VerticalDivider(
+                                    color: Colors.orange, thickness: 2),
+                                SizedBox(width: 20),
+                                Flexible(
+                                  child: Text(data[index]["plan"],
+                                      style: GoogleFonts.montserrat(
+                                        textStyle: TextStyle(
+                                          fontSize: 18,
+                                        ),
+                                      )),
+                                ),
+                              ],
                             ),
                           ),
                         ),
@@ -147,7 +170,7 @@ class _BudgetListState extends State<BudgetList> {
                 'Edit Your plan',
                 style: TextStyle(
                   fontSize: 20,
-                  color: Colors.cyan,
+                  color: kPrimaryColor,
                 ),
               ),
               Padding(
@@ -176,7 +199,7 @@ class _BudgetListState extends State<BudgetList> {
                         });
                       }
                     },
-                    color: Colors.cyan,
+                    color: kPrimaryColor,
                     child: Text(
                       'Update',
                       style: TextStyle(

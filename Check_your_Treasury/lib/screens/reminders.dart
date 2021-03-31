@@ -2,6 +2,7 @@ import 'package:Check_your_Treasury/models/reminder.dart';
 import 'package:Check_your_Treasury/screens/addReminder.dart';
 import 'package:Check_your_Treasury/services/api.dart';
 import 'package:Check_your_Treasury/utilities/bottomNavBar.dart';
+import 'package:Check_your_Treasury/utilities/constants.dart';
 import 'package:Check_your_Treasury/utilities/customDrawer.dart';
 import 'package:Check_your_Treasury/utilities/decorations.dart';
 import 'package:flutter/material.dart';
@@ -17,23 +18,24 @@ class Reminders extends StatefulWidget {
 }
 
 class _RemindersState extends State<Reminders> {
+  bool isDone = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Reminders'),
         centerTitle: true,
-        backgroundColor: Colors.cyan,
+        backgroundColor: kPrimaryColor,
       ),
       bottomNavigationBar: BottomBar(selectedIndex: 1),
       drawer: CustomDrawer(),
       body: Column(
         children: [
-          Container(
-            height: 200,
-            color: Colors.blue,
-            child: Image.asset('assets/reminder_illustration.png'),
-          ),
+          // Container(
+          //   height: 200,
+          //   color: Colors.blue,
+          //   child: Image.asset('assets/reminder_illustration.png'),
+          // ),
           Expanded(
             child: FutureBuilder(
               future: API().getReminders(),
@@ -47,65 +49,75 @@ class _RemindersState extends State<Reminders> {
                       return Padding(
                         padding:
                             EdgeInsets.symmetric(vertical: 8, horizontal: 10),
-                        child: Container(
-                          height: MediaQuery.of(context).size.height * 0.1,
-                          decoration: BoxDecoration(
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black12,
-                                  blurRadius: 1.0,
-                                  spreadRadius: 1.0,
-                                  offset: Offset(
-                                    1.0,
-                                    2.0,
-                                  ),
-                                ),
-                              ],
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(15)),
-                          child: ListTile(
-                            leading: Icon(
-                              Icons.circle_notifications,
-                              color: Colors.yellow,
-                              size: 36,
-                            ),
-                            onTap: () {
-                              setState(() {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => UpdateDeleteReminder(
-                                      reminder: reminders[index]["billName"],
-                                      amount: reminders[index]["billAmount"],
-                                      id: reminders[index]["id"],
+                        child: Column(
+                          children: [
+                            Container(
+                              height: MediaQuery.of(context).size.height * 0.1,
+                              decoration: BoxDecoration(
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black12,
+                                      blurRadius: 1.0,
+                                      spreadRadius: 1.0,
+                                      offset: Offset(
+                                        1.0,
+                                        2.0,
+                                      ),
                                     ),
-                                  ),
-                                );
-                              });
-                            },
-                            title: Text(reminders[index]["billName"],
-                                style: TextStyle(fontSize: 16)),
-                            subtitle: Text(
-                              selectedCurrency +
-                                  '. ' +
-                                  reminders[index]["billAmount"].toString(),
-                              style: TextStyle(
-                                  color: Colors.red,
-                                  fontWeight: FontWeight.bold),
+                                  ],
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(15)),
+                              child: ListTile(
+                                leading: Icon(
+                                  Icons.circle_notifications,
+                                  color: Colors.orange,
+                                  size: MediaQuery.of(context).size.width * 0.1,
+                                ),
+                                onTap: () {
+                                  setState(() {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            UpdateDeleteReminder(
+                                          reminder: reminders[index]
+                                              ["billName"],
+                                          amount: reminders[index]
+                                              ["billAmount"],
+                                          id: reminders[index]["id"],
+                                        ),
+                                      ),
+                                    );
+                                  });
+                                },
+                                title: Text(reminders[index]["billName"],
+                                    style: TextStyle(fontSize: 16)),
+                                subtitle: Text(
+                                  selectedCurrency +
+                                      '. ' +
+                                      reminders[index]["billAmount"].toString(),
+                                  style: TextStyle(
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                trailing: Text(
+                                  reminders[index]["paymentDate"],
+                                  style: TextStyle(
+                                      color: Colors.blue,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
                             ),
-                            trailing: Text(
-                              reminders[index]["paymentDate"],
-                              style: TextStyle(
-                                  color: Colors.blue,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
+                            SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.01),
+                          ],
                         ),
                       );
                     },
                   );
                 } else {
-                  return CircularProgressIndicator();
+                  return Center(child: CircularProgressIndicator());
                 }
               },
             ),
@@ -143,7 +155,7 @@ class _RemindersState extends State<Reminders> {
   //                 'Edit your reminder',
   //                 style: TextStyle(
   //                   fontSize: 20,
-  //                   color: Colors.cyan,
+  //                   color: kPrimaryColor,
   //                 ),
   //               ),
   //               Padding(
@@ -166,7 +178,7 @@ class _RemindersState extends State<Reminders> {
   //                   IconButton(
   //                       icon: Icon(
   //                         Icons.calendar_today_outlined,
-  //                         color: Colors.cyan,
+  //                         color: kPrimaryColor,
   //                       ),
   //                       onPressed: () async {
   //                         DateTime selectedDate = await showDatePicker(
@@ -208,7 +220,7 @@ class _RemindersState extends State<Reminders> {
   //                         });
   //                       }
   //                     },
-  //                     color: Colors.cyan,
+  //                     color: kPrimaryColor,
   //                     child: Text(
   //                       'Update',
   //                       style: TextStyle(
@@ -314,27 +326,48 @@ class _UpdateDeleteReminderState extends State<UpdateDeleteReminder> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Update reminder'),
+        backgroundColor: kPrimaryColor,
+      ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            'Edit your reminder',
+            'Bill Name',
             style: TextStyle(
               fontSize: 20,
-              color: Colors.cyan,
+              color: kPrimaryColor,
             ),
           ),
           Padding(
-            padding: EdgeInsets.symmetric(vertical: 10),
+            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
             child: TextField(
               controller: _reminderController,
               decoration: buildInputDecoration('Enter your reminder'),
             ),
           ),
+          SizedBox(height: 15),
+          Text(
+            'Bill Amount',
+            style: TextStyle(
+              fontSize: 20,
+              color: kPrimaryColor,
+            ),
+          ),
           Padding(
-            padding: EdgeInsets.symmetric(vertical: 10),
+            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
             child: TextField(
               controller: _amountController,
               decoration: buildInputDecoration('Enter your amount'),
+            ),
+          ),
+          SizedBox(height: 15),
+          Text(
+            'Date',
+            style: TextStyle(
+              fontSize: 20,
+              color: kPrimaryColor,
             ),
           ),
           Row(
@@ -343,7 +376,7 @@ class _UpdateDeleteReminderState extends State<UpdateDeleteReminder> {
               IconButton(
                   icon: Icon(
                     Icons.calendar_today_outlined,
-                    color: Colors.cyan,
+                    color: kPrimaryColor,
                   ),
                   onPressed: () async {
                     DateTime selectedDate = await showDatePicker(
@@ -363,6 +396,7 @@ class _UpdateDeleteReminderState extends State<UpdateDeleteReminder> {
           ),
           SizedBox(height: 40),
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               FlatButton(
                 padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
@@ -384,7 +418,7 @@ class _UpdateDeleteReminderState extends State<UpdateDeleteReminder> {
                     });
                   }
                 },
-                color: Colors.cyan,
+                color: kPrimaryColor,
                 child: Text(
                   'Update',
                   style: TextStyle(

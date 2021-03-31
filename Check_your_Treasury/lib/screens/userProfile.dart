@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:Check_your_Treasury/screens/addTransaction.dart';
 import 'package:Check_your_Treasury/screens/updateProfile.dart';
 import 'package:Check_your_Treasury/services/api.dart';
+import 'package:Check_your_Treasury/utilities/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:gallery_saver/files.dart';
 
@@ -15,11 +16,11 @@ class _UserProfileState extends State<UserProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.teal[200],
+        backgroundColor: Colors.teal[100],
         appBar: AppBar(
           title: Text('Profile'),
           centerTitle: true,
-          backgroundColor: Colors.cyan,
+          backgroundColor: kPrimaryColor,
         ),
         body: FutureBuilder(
           future: API().getUserProfile(),
@@ -53,11 +54,20 @@ class _UserProfileState extends State<UserProfile> {
                                       Padding(
                                         padding: EdgeInsets.symmetric(
                                             horizontal: 30),
-                                        child: Text(
-                                            'Username:   ${data["username"]}',
-                                            style: TextStyle(
-                                              fontSize: 18,
-                                            )),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Icon(Icons.person,
+                                                color: Colors.grey),
+                                            SizedBox(width: 10),
+                                            Text(
+                                                'Username:   ${data["username"]}',
+                                                style: TextStyle(
+                                                  fontSize: 18,
+                                                )),
+                                          ],
+                                        ),
                                       ),
                                       SizedBox(
                                           height: MediaQuery.of(context)
@@ -67,10 +77,19 @@ class _UserProfileState extends State<UserProfile> {
                                       Padding(
                                         padding: EdgeInsets.symmetric(
                                             horizontal: 30),
-                                        child: Text('Email:  ${data["email"]}',
-                                            style: TextStyle(
-                                              fontSize: 18,
-                                            )),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Icon(Icons.mail,
+                                                color: Colors.grey),
+                                            SizedBox(width: 10),
+                                            Text('Email:  ${data["email"]}',
+                                                style: TextStyle(
+                                                  fontSize: 18,
+                                                )),
+                                          ],
+                                        ),
                                       ),
                                       SizedBox(height: 30),
                                       FlatButton(

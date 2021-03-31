@@ -1,5 +1,6 @@
 import 'package:Check_your_Treasury/services/api.dart';
 import 'package:Check_your_Treasury/utilities/bottomNavBar.dart';
+import 'package:Check_your_Treasury/utilities/constants.dart';
 import 'package:Check_your_Treasury/utilities/customDrawer.dart';
 import 'package:flutter/material.dart';
 
@@ -23,7 +24,7 @@ class _ExchangeRateState extends State<ExchangeRate> {
       appBar: AppBar(
         title: Text('Exchange Rates ($selectedCurrency)'),
         centerTitle: true,
-        backgroundColor: Colors.cyan,
+        backgroundColor: kPrimaryColor,
       ),
       bottomNavigationBar: BottomBar(selectedIndex: 3),
       drawer: CustomDrawer(),

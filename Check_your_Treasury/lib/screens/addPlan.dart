@@ -1,6 +1,7 @@
 import 'package:Check_your_Treasury/models/budget.dart';
 import 'package:Check_your_Treasury/screens/addTransaction.dart';
 import 'package:Check_your_Treasury/services/api.dart';
+import 'package:Check_your_Treasury/utilities/constants.dart';
 import 'package:Check_your_Treasury/utilities/decorations.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -11,7 +12,7 @@ class AddBudgetPlan extends StatefulWidget {
 }
 
 class _AddBudgetPlanState extends State<AddBudgetPlan> {
-  String budgetUrl = 'http://10.0.2.2:8000/budget/';
+  String budgetUrl = 'http://192.168.1.108:8000/budget/';
 
   TextEditingController _planController = TextEditingController();
 
@@ -35,7 +36,7 @@ class _AddBudgetPlanState extends State<AddBudgetPlan> {
       appBar: AppBar(
         title: Text('Add Budget'),
         centerTitle: true,
-        backgroundColor: Colors.cyan,
+        backgroundColor: kPrimaryColor,
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -53,7 +54,7 @@ class _AddBudgetPlanState extends State<AddBudgetPlan> {
                 'Your plan',
                 style: TextStyle(
                   fontSize: 20,
-                  color: Colors.cyan,
+                  color: kPrimaryColor,
                 ),
               ),
               Padding(
@@ -80,7 +81,7 @@ class _AddBudgetPlanState extends State<AddBudgetPlan> {
                     });
                   }
                 },
-                color: Colors.cyan,
+                color: kPrimaryColor,
                 child: Text(
                   'ADD',
                   style: TextStyle(

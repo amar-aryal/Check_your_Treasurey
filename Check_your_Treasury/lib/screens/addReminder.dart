@@ -1,10 +1,13 @@
 import 'package:Check_your_Treasury/models/reminder.dart';
 import 'package:Check_your_Treasury/screens/addTransaction.dart';
 import 'package:Check_your_Treasury/screens/exchangeRates.dart';
+import 'package:Check_your_Treasury/screens/reminders.dart';
 import 'package:Check_your_Treasury/services/api.dart';
+import 'package:Check_your_Treasury/utilities/constants.dart';
 import 'package:Check_your_Treasury/utilities/decorations.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class AddReminder extends StatefulWidget {
   @override
@@ -17,13 +20,18 @@ class _AddReminderState extends State<AddReminder> {
   TextEditingController _amountController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.cyan[50],
       appBar: AppBar(
         title: Text('Add Reminder'),
         centerTitle: true,
-        backgroundColor: Colors.cyan,
+        backgroundColor: kPrimaryColor,
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -42,7 +50,7 @@ class _AddReminderState extends State<AddReminder> {
                 'Bill Name',
                 style: TextStyle(
                   fontSize: 20,
-                  color: Colors.cyan,
+                  color: kPrimaryColor,
                 ),
               ),
               Padding(
@@ -57,7 +65,7 @@ class _AddReminderState extends State<AddReminder> {
                 'Bill Amount ($selectedCurrency)',
                 style: TextStyle(
                   fontSize: 20,
-                  color: Colors.cyan,
+                  color: kPrimaryColor,
                 ),
               ),
               Padding(
@@ -73,7 +81,7 @@ class _AddReminderState extends State<AddReminder> {
                 'Date',
                 style: TextStyle(
                   fontSize: 20,
-                  color: Colors.cyan,
+                  color: kPrimaryColor,
                 ),
               ),
               Row(
@@ -82,7 +90,7 @@ class _AddReminderState extends State<AddReminder> {
                   IconButton(
                       icon: Icon(
                         Icons.calendar_today_outlined,
-                        color: Colors.cyan,
+                        color: kPrimaryColor,
                       ),
                       onPressed: () async {
                         DateTime selectedDate = await showDatePicker(
@@ -116,7 +124,7 @@ class _AddReminderState extends State<AddReminder> {
                     API().addReminder(context, reminder);
                   }
                 },
-                color: Colors.cyan,
+                color: kPrimaryColor,
                 child: Text(
                   'ADD',
                   style: TextStyle(
@@ -124,7 +132,7 @@ class _AddReminderState extends State<AddReminder> {
                     color: Colors.white,
                   ),
                 ),
-              )
+              ),
             ],
           ),
         ),

@@ -2,6 +2,7 @@ import 'package:Check_your_Treasury/models/expense.dart';
 import 'package:Check_your_Treasury/models/income.dart';
 import 'package:Check_your_Treasury/screens/exchangeRates.dart';
 import 'package:Check_your_Treasury/services/api.dart';
+import 'package:Check_your_Treasury/utilities/constants.dart';
 import 'package:Check_your_Treasury/utilities/decorations.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -27,7 +28,7 @@ class _AddTransactionState extends State<AddTransaction> {
       appBar: AppBar(
         title: Text('Add Transaction'),
         centerTitle: true,
-        backgroundColor: Colors.cyan,
+        backgroundColor: kPrimaryColor,
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -46,7 +47,7 @@ class _AddTransactionState extends State<AddTransaction> {
                 'Select Transaction Type',
                 style: TextStyle(
                   fontSize: 20,
-                  color: Colors.cyan,
+                  color: kPrimaryColor,
                 ),
               ),
               Row(
@@ -77,7 +78,7 @@ class _AddTransactionState extends State<AddTransaction> {
                 'Name',
                 style: TextStyle(
                   fontSize: 20,
-                  color: Colors.cyan,
+                  color: kPrimaryColor,
                 ),
               ),
               Padding(
@@ -91,7 +92,7 @@ class _AddTransactionState extends State<AddTransaction> {
               Text('Select Category',
                   style: TextStyle(
                     fontSize: 20,
-                    color: Colors.cyan,
+                    color: kPrimaryColor,
                   )),
               DropdownButton<String>(
                 value: category,
@@ -107,7 +108,7 @@ class _AddTransactionState extends State<AddTransaction> {
                 'Amount ($selectedCurrency)',
                 style: TextStyle(
                   fontSize: 20,
-                  color: Colors.cyan,
+                  color: kPrimaryColor,
                 ),
               ),
               Padding(
@@ -123,7 +124,7 @@ class _AddTransactionState extends State<AddTransaction> {
                 'Date:',
                 style: TextStyle(
                   fontSize: 20,
-                  color: Colors.cyan,
+                  color: kPrimaryColor,
                 ),
               ),
               Row(
@@ -132,7 +133,7 @@ class _AddTransactionState extends State<AddTransaction> {
                   IconButton(
                       icon: Icon(
                         Icons.calendar_today_outlined,
-                        color: Colors.cyan,
+                        color: kPrimaryColor,
                       ),
                       onPressed: () async {
                         DateTime selectedDate = await showDatePicker(
@@ -177,7 +178,7 @@ class _AddTransactionState extends State<AddTransaction> {
                     API().addExpense(context, expense);
                   }
                 },
-                color: Colors.cyan[600],
+                color: kPrimaryColor,
                 child: Text(
                   'ADD',
                   style: TextStyle(

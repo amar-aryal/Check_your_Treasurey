@@ -124,7 +124,7 @@ class _LoginState extends State<Login> {
 
   _login() {
     if (_userNameController.text == "" || _passwordController.text == "") {
-      showMyDialog(context, "Empty fields!", "Do not leave the fieds empty");
+      showMyDialog(context, "Empty fields!", "Do not leave the fields empty");
     } else {
       API().login(context, _userNameController.text, _passwordController.text);
     }

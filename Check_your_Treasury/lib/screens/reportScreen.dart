@@ -2,13 +2,16 @@ import 'dart:convert';
 
 import 'package:Check_your_Treasury/screens/exchangeRates.dart';
 import 'package:Check_your_Treasury/services/api.dart';
+import 'package:Check_your_Treasury/utilities/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
+import 'package:path/path.dart';
 
 import 'package:pie_chart/pie_chart.dart';
 import 'package:Check_your_Treasury/screens/createPdf.dart';
+import 'package:Check_your_Treasury/screens/transactionsList.dart';
 
 void main() {
   runApp(MaterialApp(home: ReportScreen()));
@@ -20,7 +23,7 @@ class ReportScreen extends StatefulWidget {
 }
 
 class _ReportScreenState extends State<ReportScreen> {
-  final String reportUrl = 'http://10.0.2.2:8000/monthly_total/';
+  final String reportUrl = 'http://192.168.1.108:8000/monthly_total/';
 
   Future getReportData() async {
     http.Response response = await http.get(
@@ -41,12 +44,14 @@ class _ReportScreenState extends State<ReportScreen> {
   }
 
   List<Color> colorList = [
-    Colors.cyan,
+    Colors.red,
     Colors.lightGreen,
+    Colors.blue,
+    Colors.yellow,
+    Colors.orange,
+    Colors.pink,
     Colors.purple,
-    Colors.yellow[700],
-    Colors.blue[800],
-    Colors.deepOrange,
+    Colors.green,
   ];
 
   DateTime now = DateTime.now();
@@ -54,10 +59,11 @@ class _ReportScreenState extends State<ReportScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.blueGrey[100],
       appBar: AppBar(
         title: Text('Report'),
         centerTitle: true,
-        backgroundColor: Colors.cyan,
+        backgroundColor: kPrimaryColor,
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -71,7 +77,7 @@ class _ReportScreenState extends State<ReportScreen> {
                 IconButton(
                     icon: Icon(
                       Icons.calendar_today_outlined,
-                      color: Colors.cyan,
+                      color: kPrimaryColor,
                     ),
                     onPressed: () async {
                       DateTime selectedDate = await showDatePicker(
@@ -122,55 +128,83 @@ class _ReportScreenState extends State<ReportScreen> {
                           expenseTotal: total_expense,
                           savings: savings,
                         ),
-                        Text('Income Stats',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.green,
-                                fontSize:
-                                    MediaQuery.of(context).size.height * 0.05)),
-                        incomeData.isNotEmpty
-                            ? _showIncomeChart(incomeData)
-                            : Container(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.09,
-                                child: Text('No data'),
-                              ),
-                        Text(
-                          'Expense Stats',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.red,
-                            fontSize: MediaQuery.of(context).size.height * 0.05,
+                        SizedBox(height: 20),
+                        Card(
+                          child: Column(
+                            children: [
+                              header('Expense categories'),
+                              expData(expenseData, context),
+                            ],
                           ),
                         ),
-                        expData(expenseData),
-                        incData(incomeData),
-                        expenseData.isNotEmpty
-                            ? _showExpenseChart(expenseData)
-                            : Container(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.09,
-                                child: Text('No data'),
-                              ),
-                        FlatButton(
-                          child: Text(
-                            "Export to files",
-                            style: TextStyle(fontSize: 18),
+                        SizedBox(height: 20),
+                        Card(
+                          child: Column(
+                            children: [
+                              header('Income categories'),
+                              incData(incomeData, context),
+                            ],
                           ),
-                          color: Colors.blue[900],
-                          textColor: Colors.white,
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => PDF(
-                                  year: now.year.toString(),
-                                  month: now.month.toString(),
+                        ),
+                        SizedBox(height: 20),
+                        Card(
+                          child: Column(
+                            children: [
+                              header('Expense statistics'),
+                              expenseData.isNotEmpty
+                                  ? _showExpenseChart(expenseData, context)
+                                  : Container(
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.09,
+                                      child: Text('No data'),
+                                    ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 20),
+                        Card(
+                          child: Column(
+                            children: [
+                              header('Income statistics'),
+                              incomeData.isNotEmpty
+                                  ? _showIncomeChart(incomeData, context)
+                                  : Container(
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.09,
+                                      child: Text('No data'),
+                                    ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 20),
+                        ButtonTheme(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30)),
+                          minWidth: MediaQuery.of(context).size.width * 0.8,
+                          child: FlatButton(
+                            padding: EdgeInsets.symmetric(vertical: 15),
+                            child: Text(
+                              "Export to files",
+                              style: TextStyle(fontSize: 18),
+                            ),
+                            color: Colors.blue[900],
+                            textColor: Colors.white,
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => PDF(
+                                    year: now.year.toString(),
+                                    month: now.month.toString(),
+                                  ),
                                 ),
-                              ),
-                            );
-                          },
+                              );
+                            },
+                          ),
                         ),
+                        SizedBox(height: 20),
                       ],
                     );
                   }
@@ -188,7 +222,7 @@ class _ReportScreenState extends State<ReportScreen> {
     );
   }
 
-  PieChart _showIncomeChart(Map incomeData) {
+  PieChart _showIncomeChart(Map incomeData, BuildContext context) {
     return PieChart(
       dataMap: incomeData,
       animationDuration: Duration(milliseconds: 1500),
@@ -217,7 +251,7 @@ class _ReportScreenState extends State<ReportScreen> {
     );
   }
 
-  PieChart _showExpenseChart(Map expenseData) {
+  PieChart _showExpenseChart(Map expenseData, BuildContext context) {
     return PieChart(
       dataMap: expenseData,
       animationDuration: Duration(milliseconds: 1500),
@@ -246,18 +280,32 @@ class _ReportScreenState extends State<ReportScreen> {
     );
   }
 
-  Widget expData(Map expenseData) {
+  Widget expData(Map expenseData, BuildContext context) {
     return Container(
-      height: 200,
+      height: MediaQuery.of(context).size.height * 0.24,
       child: ListView.builder(
+        scrollDirection: Axis.horizontal,
         itemCount: expenseData.keys.length,
         itemBuilder: (BuildContext context, int index) {
           return Padding(
-            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-            child: Row(
+            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+            child: Column(
               children: [
-                Text(expenseData.keys.toList()[index]),
-                Text(expenseData.values.toList()[index].toString()),
+                CircleAvatar(
+                  backgroundColor: Colors.blue[100],
+                  radius: MediaQuery.of(context).size.height * 0.06,
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.07,
+                    child: categoryImage(expenseData.keys.toList()[index]),
+                  ),
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                Text(expenseData.keys.toList()[index],
+                    style: GoogleFonts.montserrat()),
+                Text(
+                    '$selectedCurrency ' +
+                        expenseData.values.toList()[index].toString(),
+                    style: GoogleFonts.montserrat()),
               ],
             ),
           );
@@ -266,18 +314,32 @@ class _ReportScreenState extends State<ReportScreen> {
     );
   }
 
-  Widget incData(Map incomeData) {
+  Widget incData(Map incomeData, BuildContext context) {
     return Container(
-      height: 200,
+      height: MediaQuery.of(context).size.height * 0.24,
       child: ListView.builder(
+        scrollDirection: Axis.horizontal,
         itemCount: incomeData.keys.length,
         itemBuilder: (BuildContext context, int index) {
           return Padding(
-            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-            child: Row(
+            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+            child: Column(
               children: [
-                Text(incomeData.keys.toList()[index]),
-                Text(incomeData.values.toList()[index].toString()),
+                CircleAvatar(
+                  backgroundColor: Colors.blue[100],
+                  radius: MediaQuery.of(context).size.height * 0.06,
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.07,
+                    child: categoryImage(incomeData.keys.toList()[index]),
+                  ),
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                Text(incomeData.keys.toList()[index],
+                    style: GoogleFonts.montserrat()),
+                Text(
+                    '$selectedCurrency ' +
+                        incomeData.values.toList()[index].toString(),
+                    style: GoogleFonts.montserrat()),
               ],
             ),
           );
@@ -292,27 +354,74 @@ class MonthlyTotal extends StatelessWidget {
   final double expenseTotal;
   final double savings;
 
-  final TextStyle _style1 = GoogleFonts.workSans(
-      textStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold));
+  final TextStyle _style1 =
+      GoogleFonts.montserrat(textStyle: TextStyle(fontSize: 18));
+
+  final TextStyle _style2 = GoogleFonts.montserrat(
+      textStyle: TextStyle(
+          fontSize: 18, fontWeight: FontWeight.bold, color: Colors.green));
+
+  final TextStyle _style3 = GoogleFonts.montserrat(
+      textStyle: TextStyle(
+          fontSize: 18, fontWeight: FontWeight.bold, color: Colors.red));
+
+  final TextStyle _style4 = GoogleFonts.montserrat(
+      textStyle: TextStyle(
+          fontSize: 18, fontWeight: FontWeight.bold, color: Colors.blue[900]));
 
   MonthlyTotal({this.incomeTotal = 0, this.expenseTotal = 0, this.savings = 0});
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(height: 15),
-          Text('Total Income: $selectedCurrency. $incomeTotal', style: _style1),
-          SizedBox(height: 15),
-          Text('Total Expenses: $selectedCurrency. $expenseTotal',
-              style: _style1),
-          SizedBox(height: 15),
-          Text('Savings: $selectedCurrency. $savings', style: _style1),
-          SizedBox(height: 15),
-        ],
+    return Container(
+      width: double.infinity,
+      child: Card(
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text('Total Income', style: _style1),
+                  Text('Total Expenses', style: _style1),
+                ],
+              ),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text('$selectedCurrency. $incomeTotal', style: _style2),
+                  Text('$selectedCurrency. $expenseTotal', style: _style3),
+                ],
+              ),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text('Savings', style: _style1),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                  Text('$selectedCurrency. $savings', style: _style4)
+                ],
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
+}
+
+Widget header(String title) {
+  return Padding(
+    padding: EdgeInsets.fromLTRB(15, 10, 0, 0),
+    child: Align(
+      alignment: Alignment.centerLeft,
+      child: Text(
+        title,
+        style: GoogleFonts.montserrat(
+            textStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+      ),
+    ),
+  );
 }

@@ -4,6 +4,7 @@ import 'package:Check_your_Treasury/screens/addTransaction.dart';
 import 'package:Check_your_Treasury/screens/exchangeRates.dart';
 import 'package:Check_your_Treasury/services/api.dart';
 import 'package:Check_your_Treasury/utilities/bottomNavBar.dart';
+import 'package:Check_your_Treasury/utilities/constants.dart';
 import 'package:Check_your_Treasury/utilities/customDrawer.dart';
 import 'package:flutter/material.dart';
 import 'package:gallery_saver/files.dart';
@@ -23,7 +24,7 @@ class _TransactionsListState extends State<TransactionsList> {
 
   Future getDailyTotal() async {
     http.Response response = await http.get(
-      'http://10.0.2.2:8000/today_total?date=${DateFormat("yyyy-MM-dd").format(now)}',
+      'http://192.168.1.108:8000/today_total?date=${DateFormat("yyyy-MM-dd").format(now)}',
       headers: {
         'Content-Type': "application/json",
         "Authorization": "Token " + pref.getString('token'),
@@ -44,7 +45,7 @@ class _TransactionsListState extends State<TransactionsList> {
       appBar: AppBar(
         title: Text('Incomes and Expenses'),
         centerTitle: true,
-        backgroundColor: Colors.cyan,
+        backgroundColor: kPrimaryColor,
       ),
       bottomNavigationBar: BottomBar(selectedIndex: 0),
       drawer: CustomDrawer(),
@@ -85,7 +86,7 @@ class _TransactionsListState extends State<TransactionsList> {
                             IconButton(
                                 icon: Icon(
                                   Icons.calendar_today_outlined,
-                                  color: Colors.cyan,
+                                  color: kPrimaryColor,
                                   size: 30,
                                 ),
                                 onPressed: () async {
@@ -117,15 +118,12 @@ class _TransactionsListState extends State<TransactionsList> {
                           children: [
                             Row(
                               children: [
-                                Icon(Icons.add, color: Colors.green),
                                 SizedBox(width: 5),
                                 Text(
-                                  'TOTAL INCOME',
+                                  'Total Income',
                                   style: GoogleFonts.montserrat(
                                       textStyle: TextStyle(
                                     fontSize: 18,
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.bold,
                                   )),
                                 ),
                               ],
@@ -148,15 +146,12 @@ class _TransactionsListState extends State<TransactionsList> {
                           children: [
                             Row(
                               children: [
-                                Icon(Icons.remove, color: Colors.red),
                                 SizedBox(width: 5),
                                 Text(
-                                  'TOTAL EXPENSES',
+                                  'Total Expenses',
                                   style: GoogleFonts.montserrat(
                                     textStyle: TextStyle(
                                       fontSize: 18,
-                                      color: Colors.grey,
-                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                 ),
@@ -206,7 +201,7 @@ class _TransactionsListState extends State<TransactionsList> {
                           });
                         },
                         color:
-                            _incomeClicked ? Colors.cyan : Colors.transparent,
+                            _incomeClicked ? kPrimaryColor : Colors.transparent,
                         child: Text(
                           'Income',
                           style: TextStyle(
@@ -222,8 +217,9 @@ class _TransactionsListState extends State<TransactionsList> {
                             _incomeClicked = false;
                           });
                         },
-                        color:
-                            _expenseClicked ? Colors.cyan : Colors.transparent,
+                        color: _expenseClicked
+                            ? kPrimaryColor
+                            : Colors.transparent,
                         child: Text(
                           'Expense',
                           style: TextStyle(
@@ -403,7 +399,7 @@ Image categoryImage(String category) {
       return Image.asset('assets/entertainment.png');
       break;
     case 'Housing':
-      return Image.asset('assets/housing.png');
+      return Image.asset('assets/house.png');
       break;
     case 'Food':
       return Image.asset('assets/food.png');

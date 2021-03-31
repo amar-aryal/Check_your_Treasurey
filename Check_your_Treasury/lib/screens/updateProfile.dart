@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:Check_your_Treasury/screens/addTransaction.dart';
 import 'package:Check_your_Treasury/services/api.dart';
+import 'package:Check_your_Treasury/utilities/constants.dart';
+import 'package:Check_your_Treasury/utilities/decorations.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -18,7 +20,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
   TextEditingController _userController;
   TextEditingController _emailController;
 
-  String profileUrl = 'http://10.0.2.2:8000/api/auth/user';
+  String profileUrl = 'http://192.168.1.108:8000/api/auth/user';
 
   @override
   void initState() {
@@ -33,18 +35,37 @@ class _UpdateProfileState extends State<UpdateProfile> {
       appBar: AppBar(
         title: Text('Update profile'),
         centerTitle: true,
-        backgroundColor: Colors.cyan,
+        backgroundColor: kPrimaryColor,
       ),
       body: Container(
         margin: EdgeInsets.symmetric(horizontal: 15),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Text(
+              'Username',
+              style: TextStyle(
+                fontSize: 20,
+                color: kPrimaryColor,
+              ),
+            ),
+            SizedBox(height: 10),
             TextField(
               controller: _userController,
+              decoration: buildInputDecoration('Enter username'),
             ),
+            SizedBox(height: 20),
+            Text(
+              'Email',
+              style: TextStyle(
+                fontSize: 20,
+                color: kPrimaryColor,
+              ),
+            ),
+            SizedBox(height: 10),
             TextField(
               controller: _emailController,
+              decoration: buildInputDecoration('Enter email'),
             ),
             SizedBox(height: 30),
             FlatButton(

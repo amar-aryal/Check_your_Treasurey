@@ -20,7 +20,7 @@ class Receipt extends StatefulWidget {
 class _ReceiptState extends State<Receipt> {
   File _image;
   final picker = ImagePicker();
-  final String imageUrl = 'http://10.0.2.2:8000/receipts/';
+  final String imageUrl = 'http://192.168.1.108:8000/receipts/';
 
   Future getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
@@ -219,7 +219,8 @@ class ReceiptsList extends StatefulWidget {
 
 class _ReceiptsListState extends State<ReceiptsList> {
   Future getImages() async {
-    http.Response response = await http.get('http://10.0.2.2:8000/receipts/');
+    http.Response response =
+        await http.get('http://192.168.1.108:8000/receipts/');
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
       return data;

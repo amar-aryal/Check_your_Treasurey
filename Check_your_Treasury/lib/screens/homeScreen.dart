@@ -6,6 +6,7 @@ import 'package:Check_your_Treasury/screens/reportScreen.dart';
 import 'package:Check_your_Treasury/screens/transactionsList.dart';
 import 'package:Check_your_Treasury/services/api.dart';
 import 'package:Check_your_Treasury/utilities/bottomNavBar.dart';
+import 'package:Check_your_Treasury/utilities/constants.dart';
 import 'package:Check_your_Treasury/utilities/customDrawer.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -67,11 +68,11 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue[300],
+      backgroundColor: Colors.blue[100],
       appBar: AppBar(
         title: Text(messageTitle),
         centerTitle: true,
-        backgroundColor: Colors.cyan,
+        backgroundColor: kPrimaryColor,
       ),
       bottomNavigationBar: BottomBar(
         selectedIndex: 2,
@@ -179,8 +180,7 @@ class Options extends StatelessWidget {
             context, MaterialPageRoute(builder: (context) => navigate));
       },
       child: Container(
-        width: 170.0,
-        // height: MediaQuery.of(context).size.height * 0.25,
+        width: MediaQuery.of(context).size.width * 0.415,
         margin: EdgeInsets.all(15.0),
         padding: EdgeInsets.all(30.0),
         decoration: BoxDecoration(

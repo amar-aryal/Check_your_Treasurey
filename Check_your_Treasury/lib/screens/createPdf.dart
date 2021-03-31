@@ -115,10 +115,12 @@
 //   }
 // }
 
+import 'dart:io';
 import 'dart:isolate';
 import 'dart:ui';
 
 import 'package:Check_your_Treasury/services/api.dart';
+import 'package:Check_your_Treasury/utilities/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:path_provider/path_provider.dart';
@@ -196,7 +198,7 @@ class _PDFState extends State<PDF> {
       appBar: AppBar(
         title: Text('Download Report'),
         centerTitle: true,
-        backgroundColor: Colors.cyan,
+        backgroundColor: kPrimaryColor,
       ),
       body: Center(
         child: Column(
@@ -209,58 +211,86 @@ class _PDFState extends State<PDF> {
             SizedBox(
               height: 60,
             ),
-            FlatButton(
-              child:
-                  Text("Start Downloading Pdf", style: TextStyle(fontSize: 18)),
-              color: Colors.cyan,
-              textColor: Colors.white,
-              onPressed: () async {
-                final status = await Permission.storage.request();
+            ButtonTheme(
+              padding: EdgeInsets.symmetric(vertical: 10),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30)),
+              minWidth: MediaQuery.of(context).size.width * 0.8,
+              child: FlatButton(
+                child: Text("DOWNLOAD PDF", style: TextStyle(fontSize: 18)),
+                color: kPrimaryColor,
+                textColor: Colors.white,
+                onPressed: () async {
+                  final status = await Permission.storage.request();
 
-                if (status.isGranted) {
-                  final externalDir = await getExternalStorageDirectory();
-
-                  final id = await FlutterDownloader.enqueue(
-                    url:
-                        "http://10.0.2.2:8000/report?year=${widget.year}&month=${widget.month}",
-                    headers: {
-                      "Authorization": "Token " + pref.getString("token"),
-                    },
-                    savedDir: externalDir.path,
-                    fileName: "report",
-                    showNotification: true,
-                    openFileFromNotification: true,
-                  );
-                } else {
-                  print("Permission deined");
-                }
-              },
+                  if (status.isGranted) {
+                    Directory externalDir = await getExternalStorageDirectory();
+                    String newPath = "";
+                    print(externalDir);
+                    List<String> paths = externalDir.path.split("/");
+                    for (int x = 1; x < paths.length; x++) {
+                      String folder = paths[x];
+                      if (folder != "Android") {
+                        newPath += "/" + folder;
+                      } else {
+                        break;
+                      }
+                    }
+                    newPath = newPath + "/Reports";
+                    externalDir = Directory(newPath);
+                    bool hasExisted = await externalDir.exists();
+                    if (!hasExisted) {
+                      externalDir.create(); //! to be run and tested
+                    }
+                    final id = await FlutterDownloader.enqueue(
+                      url:
+                          "http://192.168.1.108:8000/report?year=${widget.year}&month=${widget.month}",
+                      headers: {
+                        "Authorization": "Token " + pref.getString("token"),
+                      },
+                      savedDir: externalDir.path,
+                      fileName: "report",
+                      showNotification: true,
+                      openFileFromNotification: true,
+                    );
+                  } else {
+                    print("Permission deined");
+                  }
+                },
+              ),
             ),
             SizedBox(height: 80),
-            FlatButton(
-              child: Text("Export to excel", style: TextStyle(fontSize: 18)),
-              color: Colors.cyan,
-              textColor: Colors.white,
-              onPressed: () async {
-                final status = await Permission.storage.request();
+            ButtonTheme(
+              padding: EdgeInsets.symmetric(vertical: 10),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30)),
+              minWidth: MediaQuery.of(context).size.width * 0.8,
+              child: FlatButton(
+                child: Text("EXPORT TO EXCEL", style: TextStyle(fontSize: 18)),
+                color: kPrimaryColor,
+                textColor: Colors.white,
+                onPressed: () async {
+                  final status = await Permission.storage.request();
 
-                if (status.isGranted) {
-                  final externalDir = await getExternalStorageDirectory();
+                  if (status.isGranted) {
+                    final externalDir = await getExternalStorageDirectory();
 
-                  final id = await FlutterDownloader.enqueue(
-                    url: "http://10.0.2.2:8000/export",
-                    // headers: {
-                    //   "Authorization": "Token " + pref.getString("token"),
-                    // },
-                    savedDir: externalDir.path,
-                    fileName: "ExcelReport",
-                    showNotification: true,
-                    openFileFromNotification: true,
-                  );
-                } else {
-                  print("Permission deined");
-                }
-              },
+                    final id = await FlutterDownloader.enqueue(
+                      url:
+                          "http://192.168.1.108:8000/export?year=${widget.year}&month=${widget.month}",
+                      headers: {
+                        "Authorization": "Token " + pref.getString("token"),
+                      },
+                      savedDir: externalDir.path,
+                      fileName: "ExcelReport",
+                      showNotification: true,
+                      openFileFromNotification: true,
+                    );
+                  } else {
+                    print("Permission deined");
+                  }
+                },
+              ),
             ),
           ],
         ),
