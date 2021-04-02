@@ -1,6 +1,4 @@
-import 'dart:io';
-
-import 'package:Check_your_Treasury/screens/receiptAdd.dart';
+import 'package:Check_your_Treasury/screens/receiptList.dart';
 import 'package:Check_your_Treasury/screens/reminders.dart';
 import 'package:Check_your_Treasury/screens/reportScreen.dart';
 import 'package:Check_your_Treasury/screens/transactionsList.dart';
@@ -8,10 +6,11 @@ import 'package:Check_your_Treasury/services/api.dart';
 import 'package:Check_your_Treasury/utilities/bottomNavBar.dart';
 import 'package:Check_your_Treasury/utilities/constants.dart';
 import 'package:Check_your_Treasury/utilities/customDrawer.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:device_info/device_info.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import 'login.dart';
+import 'package:http/http.dart' as http;
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -19,58 +18,43 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  FirebaseMessaging _firebaseMessaging;
-  String messageTitle = "Empty";
-  String notificationAlert = "alert";
-
   @override
   void initState() {
     super.initState();
-    //device ID
-    _getId().then((id) => print(id));
-
-    _firebaseMessaging = FirebaseMessaging();
-    _firebaseMessaging.getToken().then((token) => print(token));
-
-    getMessage();
 
     print(pref.getString("token"));
+    checkIfTokenValid();
   }
 
-  void getMessage() {
-    _firebaseMessaging.configure(
-      onMessage: (message) async {
-        setState(() {
-          messageTitle = message["notification"]["title"];
-          notificationAlert = "New Notification Alert";
-        });
-      },
-      onResume: (message) async {
-        setState(() {
-          messageTitle = message["data"]["title"];
-          notificationAlert = "Application opened from Notification";
-        });
-      },
-    );
-  }
+  checkIfTokenValid() async {
+    if (pref.getString("token") != null) {
+      http.Response response = await http.get(
+        userProfileUrl,
+        headers: {
+          'Content-Type': "application/json",
+          "Authorization": "Token " + pref.getString('token'),
+        },
+      );
 
-  Future<String> _getId() async {
-    var deviceInfo = DeviceInfoPlugin();
-    if (Platform.isIOS) {
-      var iosDeviceInfo = await deviceInfo.iosInfo;
-      return iosDeviceInfo.identifierForVendor; // unique ID on iOS
-    } else {
-      var androidDeviceInfo = await deviceInfo.androidInfo;
-      return androidDeviceInfo.androidId; // unique ID on Android
+      print(response.statusCode);
+      if (response.statusCode == 401) {
+        Navigator.pushAndRemoveUntil(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (_, __, ___) => Login(),
+              transitionDuration: Duration(seconds: 0),
+            ),
+            (Route<dynamic> route) => false);
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue[100],
+      backgroundColor: Color(0xffede2c2),
       appBar: AppBar(
-        title: Text(messageTitle),
+        title: Text("Home"),
         centerTitle: true,
         backgroundColor: kPrimaryColor,
       ),
@@ -128,7 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         img: 'assets/budget.png',
                         text: 'Add transactions',
                         navigate: TransactionsList(),
-                        circleColor: Colors.purple,
+                        circleColor: Colors.red,
                       ),
                       Options(
                         img: 'assets/reminders.png',
@@ -144,13 +128,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         img: 'assets/chart.png',
                         text: 'View reports',
                         navigate: ReportScreen(),
-                        circleColor: Colors.red,
+                        circleColor: Colors.green,
                       ),
                       Options(
                         img: 'assets/bill.png',
                         text: 'Add receipts',
                         navigate: ReceiptsList(),
-                        circleColor: Colors.green,
+                        circleColor: Colors.purple,
                       ),
                     ],
                   ),

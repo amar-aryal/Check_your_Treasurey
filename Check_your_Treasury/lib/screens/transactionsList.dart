@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:Check_your_Treasury/screens/addTransaction.dart';
 import 'package:Check_your_Treasury/screens/exchangeRates.dart';
+import 'package:Check_your_Treasury/screens/updateTransactions.dart';
 import 'package:Check_your_Treasury/services/api.dart';
 import 'package:Check_your_Treasury/utilities/bottomNavBar.dart';
 import 'package:Check_your_Treasury/utilities/constants.dart';
@@ -41,7 +42,7 @@ class _TransactionsListState extends State<TransactionsList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.cyan[100],
+      backgroundColor: Color(0xffede2c2),
       appBar: AppBar(
         title: Text('Incomes and Expenses'),
         centerTitle: true,
@@ -184,7 +185,7 @@ class _TransactionsListState extends State<TransactionsList> {
               margin: EdgeInsets.only(top: 15),
               padding: EdgeInsets.all(15),
               decoration: BoxDecoration(
-                  color: Colors.grey[200],
+                  color: Colors.grey[100],
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(35),
                       topRight: Radius.circular(35))),
@@ -290,6 +291,22 @@ class _IncomeState extends State<Income> {
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(15)),
                     child: ListTile(
+                      onTap: () {
+                        setState(() {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => UpdateDeleteIncome(
+                                incomename: incomes[index]["incomename"],
+                                category: incomes[index]["category"],
+                                amount: incomes[index]["amount"],
+                                date: widget.date,
+                                id: incomes[index]["id"],
+                              ),
+                            ),
+                          );
+                        });
+                      },
                       leading: categoryImage(incomes[index]["category"]),
                       title: Text(incomes[index]["incomename"],
                           style: GoogleFonts.montserrat(
@@ -359,6 +376,22 @@ class _ExpenseState extends State<Expense> {
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(15)),
                     child: ListTile(
+                      onTap: () {
+                        setState(() {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => UpdateDeleteExpense(
+                                expensename: expenses[index]["expensename"],
+                                category: expenses[index]["category"],
+                                amount: expenses[index]["amount"],
+                                date: widget.date,
+                                id: expenses[index]["id"],
+                              ),
+                            ),
+                          );
+                        });
+                      },
                       leading: categoryImage(expenses[index]["category"]),
                       title: Text(expenses[index]["expensename"],
                           style: TextStyle(fontWeight: FontWeight.bold)),

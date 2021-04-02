@@ -84,6 +84,8 @@ class _RemindersState extends State<Reminders> {
                                               ["billName"],
                                           amount: reminders[index]
                                               ["billAmount"],
+                                          date: DateTime.parse(
+                                              reminders[index]["paymentDate"]),
                                           id: reminders[index]["id"],
                                         ),
                                       ),
@@ -269,9 +271,10 @@ class _RemindersState extends State<Reminders> {
 class UpdateDeleteReminder extends StatefulWidget {
   final String reminder;
   final double amount;
+  final DateTime date;
   final int id;
 
-  const UpdateDeleteReminder({this.reminder, this.amount, this.id});
+  const UpdateDeleteReminder({this.reminder, this.amount, this.date, this.id});
   @override
   _UpdateDeleteReminderState createState() => _UpdateDeleteReminderState();
 }
@@ -280,6 +283,8 @@ class _UpdateDeleteReminderState extends State<UpdateDeleteReminder> {
   TextEditingController _reminderController;
 
   TextEditingController _amountController;
+
+  DateTime now;
 
   updateReminder(Reminder reminder, int id) async {
     http.Response response = await http.put(url + 'reminders/$id/',
@@ -308,10 +313,10 @@ class _UpdateDeleteReminderState extends State<UpdateDeleteReminder> {
     print(response.statusCode);
     if (response.statusCode == 204) {
       showMyDialog(
-          context, 'Successfully deleted!', 'The plan has been deleted');
+          context, 'Successfully deleted!', 'The reminder has been deleted');
     } else {
       showMyDialog(context, 'Deletion Error!',
-          'The plan could not be deleted. Please try again');
+          'The reminder could not be deleted. Please try again');
     }
   }
 
@@ -320,9 +325,16 @@ class _UpdateDeleteReminderState extends State<UpdateDeleteReminder> {
     super.initState();
     _reminderController = TextEditingController(text: widget.reminder);
     _amountController = TextEditingController(text: widget.amount.toString());
+    now = widget.date;
   }
 
-  DateTime now = DateTime.now();
+  @override
+  void dispose() {
+    _reminderController.dispose();
+    _amountController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -381,7 +393,7 @@ class _UpdateDeleteReminderState extends State<UpdateDeleteReminder> {
                   onPressed: () async {
                     DateTime selectedDate = await showDatePicker(
                         context: context,
-                        initialDate: now,
+                        initialDate: widget.date,
                         firstDate: DateTime(2015, 8),
                         lastDate: DateTime(2100, 8));
                     setState(() {

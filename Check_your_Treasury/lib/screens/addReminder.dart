@@ -1,13 +1,15 @@
 import 'package:Check_your_Treasury/models/reminder.dart';
 import 'package:Check_your_Treasury/screens/addTransaction.dart';
 import 'package:Check_your_Treasury/screens/exchangeRates.dart';
-import 'package:Check_your_Treasury/screens/reminders.dart';
 import 'package:Check_your_Treasury/services/api.dart';
 import 'package:Check_your_Treasury/utilities/constants.dart';
 import 'package:Check_your_Treasury/utilities/decorations.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
+final FlutterLocalNotificationsPlugin flutterLocalNotif =
+    FlutterLocalNotificationsPlugin();
 
 class AddReminder extends StatefulWidget {
   @override
@@ -22,6 +24,50 @@ class _AddReminderState extends State<AddReminder> {
   @override
   void initState() {
     super.initState();
+    /* for local notif */
+
+    var androidInitilize =
+        new AndroidInitializationSettings('@mipmap/ic_launcher');
+    var iOSinitilize = new IOSInitializationSettings();
+    var initilizationsSettings =
+        new InitializationSettings(androidInitilize, iOSinitilize);
+    flutterLocalNotif.initialize(
+      initilizationsSettings,
+    );
+
+    // int notID = 0;
+    // API().getReminders().then((data) {
+    //   var reminders = data;
+
+    //   for (var rem in reminders) {
+    //     DateTime checkedDate = DateTime.parse(rem["paymentDate"]);
+    //     DateTime tomorrowDate = DateTime(
+    //         DateTime.now().year, DateTime.now().month, DateTime.now().day + 1);
+    //     print(checkedDate);
+    //     print(tomorrowDate);
+
+    //     if (checkedDate.compareTo(tomorrowDate) == 0) {
+    //       print("Ok");
+    //       _showReminderNotification(rem["billName"], notID);
+    //       notID++;
+    //     }
+    //   }
+    // });
+
+    /*local notif  */
+  }
+
+  Future _scheduledNotifications(DateTime date, String bill, int id) async {
+    var androidDetails = new AndroidNotificationDetails(
+        "channel_id", "channel_name", "channel_description",
+        icon: '@mipmap/ic_launcher', importance: Importance.Max);
+    var iosDetails = new IOSNotificationDetails();
+    var generalNotificationDetails =
+        new NotificationDetails(androidDetails, iosDetails);
+
+    await flutterLocalNotif.schedule(id, "Reminder",
+        "You have $bill due tomorrow", date, generalNotificationDetails,
+        payload: "Reminder");
   }
 
   @override
@@ -122,6 +168,31 @@ class _AddReminderState extends State<AddReminder> {
                         billAmount: double.parse(_amountController.text),
                         paymentDate: now);
                     API().addReminder(context, reminder);
+
+                    if (pref.getString("token") != null) {
+                      int notID = 0;
+                      API().getReminders().then((data) {
+                        var reminders = data;
+                        print(reminders);
+                        for (var rem in reminders) {
+                          DateTime reminderDate =
+                              DateTime.parse(rem["paymentDate"]);
+
+                          DateTime notifyDate = DateTime(reminderDate.year,
+                              reminderDate.month, reminderDate.day - 1);
+
+                          print(notifyDate);
+
+                          print(notifyDate.add(
+                              Duration(seconds: DateTime.now().second + 30)));
+
+                          _scheduledNotifications(
+                              notifyDate, rem["billName"], notID);
+
+                          notID++;
+                        }
+                      });
+                    }
                   }
                 },
                 color: kPrimaryColor,

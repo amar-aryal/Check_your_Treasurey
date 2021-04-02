@@ -1,5 +1,5 @@
 import 'package:Check_your_Treasury/screens/budgetList.dart';
-import 'package:Check_your_Treasury/screens/receiptAdd.dart';
+import 'package:Check_your_Treasury/screens/receiptList.dart';
 import 'package:Check_your_Treasury/screens/reportScreen.dart';
 import 'package:Check_your_Treasury/screens/userProfile.dart';
 import 'package:Check_your_Treasury/services/api.dart';
@@ -40,8 +40,8 @@ class CustomDrawer extends StatelessWidget {
             leading: Icon(Icons.receipt, color: Colors.orange),
             title: Text('Save receipts', style: style),
             onTap: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => Receipt()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => ReceiptsList()));
             },
           ),
           ListTile(

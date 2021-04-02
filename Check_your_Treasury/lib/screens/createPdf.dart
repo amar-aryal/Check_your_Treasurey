@@ -291,7 +291,7 @@ class _PDFState extends State<PDF> {
                     externalDir = Directory(newPath);
                     bool hasExisted = await externalDir.exists();
                     if (!hasExisted) {
-                      externalDir.create(); //! to be run and tested
+                      externalDir.create();
                     }
                     print(hasExisted);
                     if (hasExisted) {

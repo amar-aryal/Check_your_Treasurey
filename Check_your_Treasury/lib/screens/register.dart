@@ -19,6 +19,14 @@ class _RegisterState extends State<Register> {
   bool _obscure = true;
 
   @override
+  void dispose() {
+    _userNameController.dispose();
+    _passwordController.dispose();
+    _emailController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.blue,
@@ -29,8 +37,8 @@ class _RegisterState extends State<Register> {
             Card(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20))),
+                      topLeft: Radius.circular(30),
+                      topRight: Radius.circular(30))),
               margin: EdgeInsets.only(
                 top: MediaQuery.of(context).size.height * 0.14,
               ),

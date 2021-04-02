@@ -30,11 +30,6 @@ class ReminderRUD(generics.RetrieveUpdateDestroyAPIView):
     queryset = Reminder.objects.all()
     serializer_class = ReminderSerializer
 
-class Notify(APIView):
-    def get(self, request):
-        devices = FCMDevice.objects.all().first()
-        result = devices.send_message(title="Notification",body="Hello user",data={"success":"Okay"})
-        return Response(result)
 
 
 
