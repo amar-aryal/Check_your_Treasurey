@@ -6,8 +6,7 @@ from .permissions import IsOwner
 from rest_framework import status
 from rest_framework import generics
 from rest_framework.views import APIView
-from fcm_django.models import FCMDevice
-from fcm_django.api.rest_framework import FCMDeviceSerializer
+from datetime import date
 
 from rest_framework.views import Response
 
@@ -19,7 +18,7 @@ class ReminderListCreate(generics.ListCreateAPIView):
 
     def get_queryset(self):
         """Returns objects for current authenticated user only"""
-        return self.queryset.filter(userID=self.request.user)
+        return self.queryset.filter(userID=self.request.user, paymentDate__gte=date.today())
 
     def perform_create(self, serializer):
         """Assigns the logged in user's id to the object's userID foreign key"""

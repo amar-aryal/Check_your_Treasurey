@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:Check_your_Treasury/screens/exchangeRates.dart';
-import 'package:Check_your_Treasury/services/api.dart';
+import 'package:Check_your_Treasury/services/api.dart' as api;
 import 'package:Check_your_Treasury/utilities/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -23,14 +23,12 @@ class ReportScreen extends StatefulWidget {
 }
 
 class _ReportScreenState extends State<ReportScreen> {
-  final String reportUrl = 'http://192.168.1.108:8000/monthly_total/';
-
   Future getReportData() async {
     http.Response response = await http.get(
-      reportUrl + '?year=${now.year}&month=${now.month}',
+      api.url + 'monthly_total/?year=${now.year}&month=${now.month}',
       headers: {
         'Content-Type': "application/json",
-        "Authorization": "Token " + pref.getString('token'),
+        "Authorization": "Token " + api.pref.getString('token'),
       },
     );
     print("Code" + response.statusCode.toString());

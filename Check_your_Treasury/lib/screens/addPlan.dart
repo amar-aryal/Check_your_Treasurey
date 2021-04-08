@@ -12,7 +12,7 @@ class AddBudgetPlan extends StatefulWidget {
 }
 
 class _AddBudgetPlanState extends State<AddBudgetPlan> {
-  String budgetUrl = 'http://192.168.1.108:8000/budget/';
+  String budgetUrl = url + 'budget/';
 
   TextEditingController _planController = TextEditingController();
 
@@ -28,6 +28,12 @@ class _AddBudgetPlanState extends State<AddBudgetPlan> {
       showMyDialog(context, 'Successfully added!', 'New plan has been added');
       _planController.clear();
     }
+  }
+
+  @override
+  void dispose() {
+    _planController.dispose();
+    super.dispose();
   }
 
   @override

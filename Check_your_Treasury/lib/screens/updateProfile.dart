@@ -20,13 +20,19 @@ class _UpdateProfileState extends State<UpdateProfile> {
   TextEditingController _userController;
   TextEditingController _emailController;
 
-  String profileUrl = 'http://192.168.1.108:8000/api/auth/user';
-
   @override
   void initState() {
     super.initState();
     _userController = TextEditingController(text: widget.username);
     _emailController = TextEditingController(text: widget.email);
+  }
+
+  @override
+  void dispose() {
+    _userController.dispose();
+    _emailController.dispose();
+
+    super.dispose();
   }
 
   @override
@@ -92,7 +98,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
       'username': username,
       'email': email,
     };
-    http.Response response = await http.put(profileUrl,
+    http.Response response = await http.put(userProfileUrl,
         headers: {
           'Content-Type': "application/json",
           "Authorization": "Token " + pref.getString('token'),

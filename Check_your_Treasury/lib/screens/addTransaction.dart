@@ -22,9 +22,17 @@ class _AddTransactionState extends State<AddTransaction> {
   TextEditingController _amountController = TextEditingController();
 
   @override
+  void dispose() {
+    _transactionController.dispose();
+    _amountController.dispose();
+
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.cyan[50],
+      backgroundColor: kScaffoldBgColor,
       appBar: AppBar(
         title: Text('Add Transaction'),
         centerTitle: true,

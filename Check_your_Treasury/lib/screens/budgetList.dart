@@ -16,7 +16,7 @@ class BudgetList extends StatefulWidget {
 }
 
 class _BudgetListState extends State<BudgetList> {
-  final String budgetUrl = 'http://192.168.1.108:8000/budget/';
+  final String budgetUrl = url + 'budget/';
 
   Future<dynamic> getBudgetList() async {
     http.Response response = await http.get(
@@ -70,7 +70,7 @@ class _BudgetListState extends State<BudgetList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: Colors.blueGrey[50],
       appBar: AppBar(
         title: Text('Budgeting'),
         centerTitle: true,
@@ -127,7 +127,7 @@ class _BudgetListState extends State<BudgetList> {
                                   child: Text(data[index]["plan"],
                                       style: GoogleFonts.montserrat(
                                         textStyle: TextStyle(
-                                          fontSize: 18,
+                                          fontSize: 16,
                                         ),
                                       )),
                                 ),

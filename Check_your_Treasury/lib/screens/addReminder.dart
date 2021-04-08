@@ -57,6 +57,13 @@ class _AddReminderState extends State<AddReminder> {
     /*local notif  */
   }
 
+  @override
+  void dispose() {
+    _billController.dispose();
+    _amountController.dispose();
+    super.dispose();
+  }
+
   Future _scheduledNotifications(DateTime date, String bill, int id) async {
     var androidDetails = new AndroidNotificationDetails(
         "channel_id", "channel_name", "channel_description",
@@ -73,7 +80,7 @@ class _AddReminderState extends State<AddReminder> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.cyan[50],
+      backgroundColor: kScaffoldBgColor,
       appBar: AppBar(
         title: Text('Add Reminder'),
         centerTitle: true,

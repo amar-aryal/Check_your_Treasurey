@@ -6,6 +6,7 @@ import 'package:Check_your_Treasury/services/api.dart';
 import 'package:Check_your_Treasury/utilities/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:gallery_saver/files.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class UserProfile extends StatefulWidget {
   @override
@@ -16,7 +17,7 @@ class _UserProfileState extends State<UserProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color(0xffede2c2),
+        backgroundColor: kScaffoldBgColor,
         appBar: AppBar(
           title: Text('Profile'),
           centerTitle: true,
@@ -63,8 +64,10 @@ class _UserProfileState extends State<UserProfile> {
                                             SizedBox(width: 10),
                                             Text(
                                                 'Username:   ${data["username"]}',
-                                                style: TextStyle(
-                                                  fontSize: 18,
+                                                style: GoogleFonts.montserrat(
+                                                  textStyle: TextStyle(
+                                                    fontSize: 18,
+                                                  ),
                                                 )),
                                           ],
                                         ),
@@ -85,8 +88,10 @@ class _UserProfileState extends State<UserProfile> {
                                                 color: Colors.grey),
                                             SizedBox(width: 10),
                                             Text('Email:  ${data["email"]}',
-                                                style: TextStyle(
-                                                  fontSize: 18,
+                                                style: GoogleFonts.montserrat(
+                                                  textStyle: TextStyle(
+                                                    fontSize: 18,
+                                                  ),
                                                 )),
                                           ],
                                         ),
@@ -125,7 +130,7 @@ class _UserProfileState extends State<UserProfile> {
                           ),
                           Positioned(
                               top: MediaQuery.of(context).size.height * 0.1,
-                              left: MediaQuery.of(context).size.width * 0.32,
+                              left: MediaQuery.of(context).size.width * 0.3,
                               child: Center(
                                 child: CircleAvatar(
                                   radius:

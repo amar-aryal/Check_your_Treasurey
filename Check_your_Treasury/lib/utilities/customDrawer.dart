@@ -3,6 +3,7 @@ import 'package:Check_your_Treasury/screens/receiptList.dart';
 import 'package:Check_your_Treasury/screens/reportScreen.dart';
 import 'package:Check_your_Treasury/screens/userProfile.dart';
 import 'package:Check_your_Treasury/services/api.dart';
+import 'package:Check_your_Treasury/utilities/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -25,7 +26,7 @@ class CustomDrawer extends StatelessWidget {
               child: Image.asset('assets/account.png'),
             )),
             decoration: BoxDecoration(
-              color: Colors.cyan[100],
+              color: kScaffoldBgColor,
             ),
           ),
           ListTile(

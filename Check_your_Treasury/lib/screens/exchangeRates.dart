@@ -4,7 +4,7 @@ import 'package:Check_your_Treasury/utilities/constants.dart';
 import 'package:Check_your_Treasury/utilities/customDrawer.dart';
 import 'package:flutter/material.dart';
 
-String selectedCurrency = "NPR";
+String selectedCurrency;
 
 class ExchangeRate extends StatefulWidget {
   @override
@@ -15,7 +15,6 @@ class _ExchangeRateState extends State<ExchangeRate> {
   @override
   void initState() {
     super.initState();
-    API().getdata();
   }
 
   @override
@@ -29,7 +28,7 @@ class _ExchangeRateState extends State<ExchangeRate> {
       bottomNavigationBar: BottomBar(selectedIndex: 3),
       drawer: CustomDrawer(),
       body: FutureBuilder(
-          future: API().getdata(),
+          future: API().getdata(selectedCurrency),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               var data = snapshot.data; // data returns an instance of 'Rate'

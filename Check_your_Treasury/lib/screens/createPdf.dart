@@ -1,120 +1,3 @@
-// import 'dart:io';
-
-// import 'package:Check_your_Treasury/screens/pdfPreview.dart';
-// import 'package:flutter/cupertino.dart';
-// import 'package:flutter/material.dart';
-// import 'package:path_provider/path_provider.dart';
-// import 'package:pdf/pdf.dart';
-// import 'package:pdf/widgets.dart' as pw;
-// import 'package:pie_chart/pie_chart.dart';
-
-// void main() => runApp(MyApp());
-
-// class MyApp extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: 'Flutter Demo',
-//       theme: ThemeData(
-//         primarySwatch: Colors.blue,
-//       ),
-//       home: PDF(),
-//     );
-//   }
-// }
-
-// class PDF extends StatelessWidget {
-//   final PieChart inc;
-//   final PieChart exp;
-//   final pdf = pw.Document();
-
-//   PDF({this.inc, this.exp});
-
-//   writeOnPdf() {
-//     pdf.addPage(pw.MultiPage(
-//       pageFormat: PdfPageFormat.a5,
-//       margin: pw.EdgeInsets.all(32),
-//       build: (pw.Context context) {
-//         return <pw.Widget>[
-//           pw.Header(level: 0, child: pw.Text("Easy Approach Document")),
-//           pw.Paragraph(
-//               text:
-//                   "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Malesuada fames ac turpis egestas sed tempus urna. Quisque sagittis purus sit amet. A arcu cursus vitae congue mauris rhoncus aenean vel elit. Ipsum dolor sit amet consectetur adipiscing elit pellentesque. Viverra justo nec ultrices dui sapien eget mi proin sed."),
-//           pw.Paragraph(
-//               text:
-//                   "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Malesuada fames ac turpis egestas sed tempus urna. Quisque sagittis purus sit amet. A arcu cursus vitae congue mauris rhoncus aenean vel elit. Ipsum dolor sit amet consectetur adipiscing elit pellentesque. Viverra justo nec ultrices dui sapien eget mi proin sed."),
-//           pw.Header(level: 1, child: pw.Text("Second Heading")),
-//           pw.Paragraph(
-//               text:
-//                   "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Malesuada fames ac turpis egestas sed tempus urna. Quisque sagittis purus sit amet. A arcu cursus vitae congue mauris rhoncus aenean vel elit. Ipsum dolor sit amet consectetur adipiscing elit pellentesque. Viverra justo nec ultrices dui sapien eget mi proin sed."),
-//           pw.Paragraph(
-//               text:
-//                   "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Malesuada fames ac turpis egestas sed tempus urna. Quisque sagittis purus sit amet. A arcu cursus vitae congue mauris rhoncus aenean vel elit. Ipsum dolor sit amet consectetur adipiscing elit pellentesque. Viverra justo nec ultrices dui sapien eget mi proin sed."),
-//           pw.Paragraph(
-//               text:
-//                   "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Malesuada fames ac turpis egestas sed tempus urna. Quisque sagittis purus sit amet. A arcu cursus vitae congue mauris rhoncus aenean vel elit. Ipsum dolor sit amet consectetur adipiscing elit pellentesque. Viverra justo nec ultrices dui sapien eget mi proin sed."),
-//         ];
-//       },
-//     ));
-//   }
-
-//   Future savePdf() async {
-//     Directory documentDirectory = await getExternalStorageDirectory();
-
-//     String documentPath = documentDirectory.path;
-
-//     File file = File("$documentPath/example.pdf");
-
-//     file.writeAsBytesSync(await pdf.save());
-//   }
-
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text("PDF Flutter"),
-//       ),
-
-//       body: Container(
-//         width: double.infinity,
-//         height: double.infinity,
-//         child: Column(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: <Widget>[
-//             Text(
-//               "PDF TUTORIAL",
-//               style: TextStyle(fontSize: 34),
-//             )
-//           ],
-//         ),
-//       ),
-
-//       floatingActionButton: FloatingActionButton(
-//         onPressed: () async {
-//           writeOnPdf();
-//           await savePdf();
-
-//           Directory documentDirectory =
-//               await getApplicationDocumentsDirectory();
-
-//           String documentPath = documentDirectory.path;
-
-//           String fullPath = "$documentPath/example.pdf";
-
-//           print(documentDirectory);
-
-//           Navigator.push(
-//               context,
-//               MaterialPageRoute(
-//                   builder: (context) => PdfPreviewScreen(
-//                         path: fullPath,
-//                       )));
-//         },
-//         child: Icon(Icons.save),
-//       ), // This trailing comma makes auto-formatting nicer for build methods.
-//     );
-//   }
-// }
-
 import 'dart:io';
 import 'dart:isolate';
 import 'dart:ui';
@@ -125,29 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await FlutterDownloader.initialize(
-      debug: true // optional: set false to disable printing logs to console
-      );
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: PDF(),
-    );
-  }
-}
 
 class PDF extends StatefulWidget {
   final String year;
@@ -239,13 +99,13 @@ class _PDFState extends State<PDF> {
                     externalDir = Directory(newPath);
                     bool hasExisted = await externalDir.exists();
                     if (!hasExisted) {
-                      externalDir.create(); //! to be run and tested
+                      externalDir.create();
                     }
                     print(hasExisted);
                     if (hasExisted) {
                       final id = await FlutterDownloader.enqueue(
-                        url:
-                            "http://192.168.1.108:8000/report?year=${widget.year}&month=${widget.month}",
+                        url: url +
+                            "report?year=${widget.year}&month=${widget.month}",
                         headers: {
                           "Authorization": "Token " + pref.getString("token"),
                         },
@@ -296,8 +156,8 @@ class _PDFState extends State<PDF> {
                     print(hasExisted);
                     if (hasExisted) {
                       final id = await FlutterDownloader.enqueue(
-                        url:
-                            "http://192.168.1.108:8000/export?year=${widget.year}&month=${widget.month}",
+                        url: url +
+                            "export?year=${widget.year}&month=${widget.month}",
                         headers: {
                           "Authorization": "Token " + pref.getString("token"),
                         },

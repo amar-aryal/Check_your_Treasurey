@@ -90,6 +90,7 @@ class _UpdateDeleteExpenseState extends State<UpdateDeleteExpense> {
       appBar: AppBar(
         title: Text('Update transaction'),
         backgroundColor: kPrimaryColor,
+        centerTitle: true,
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -310,6 +311,7 @@ class _UpdateDeleteIncomeState extends State<UpdateDeleteIncome> {
       appBar: AppBar(
         title: Text('Update transaction'),
         backgroundColor: kPrimaryColor,
+        centerTitle: true,
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,

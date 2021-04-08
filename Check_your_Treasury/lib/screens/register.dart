@@ -1,3 +1,4 @@
+import 'package:Check_your_Treasury/models/user.dart';
 import 'package:Check_your_Treasury/screens/addTransaction.dart';
 import 'package:Check_your_Treasury/screens/login.dart';
 import 'package:Check_your_Treasury/services/api.dart';
@@ -17,6 +18,10 @@ class _RegisterState extends State<Register> {
   TextEditingController _passwordController = TextEditingController();
 
   bool _obscure = true;
+
+  String passVal = '';
+
+  String emailVal = '';
 
   @override
   void dispose() {
@@ -72,6 +77,10 @@ class _RegisterState extends State<Register> {
                           'Enter your email', Icons.mail),
                     ),
                   ),
+                  Text(
+                    emailVal,
+                    style: TextStyle(color: Colors.red),
+                  ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.008),
                   Padding(
                     padding: EdgeInsets.all(10.0),
@@ -81,6 +90,10 @@ class _RegisterState extends State<Register> {
                           'Enter your password', Icons.lock),
                       obscureText: _obscure,
                     ),
+                  ),
+                  Text(
+                    passVal,
+                    style: TextStyle(color: Colors.red),
                   ),
                   FlatButton(
                     onPressed: () {
@@ -151,8 +164,26 @@ class _RegisterState extends State<Register> {
         _passwordController.text == "") {
       showMyDialog(context, "Empty fields!", "Do not leave the fieds empty");
     } else {
-      API().register(context, _userNameController.text, _emailController.text,
-          _passwordController.text);
+      if (!isEmail(_emailController.text)) {
+        setState(() {
+          emailVal = 'Invalid email';
+        });
+      } else if (_passwordController.text.length < 8) {
+        setState(() {
+          passVal = 'Password must contain at least 8 characters';
+        });
+      } else {
+        setState(() {
+          emailVal = '';
+          passVal = '';
+        });
+        User user = User(
+          username: _userNameController.text.trim(),
+          email: _emailController.text.trim(),
+          password: _passwordController.text.trim(),
+        );
+        API().register(context, user);
+      }
     }
   }
 
@@ -170,5 +201,20 @@ class _RegisterState extends State<Register> {
       ),
       hintText: hintText,
     );
+  }
+
+  bool isEmail(String string) {
+    // Null or empty string is invalid
+    if (string == null || string.isEmpty) {
+      return false;
+    }
+
+    const pattern = r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
+    final regExp = RegExp(pattern);
+
+    if (!regExp.hasMatch(string)) {
+      return false;
+    }
+    return true;
   }
 }

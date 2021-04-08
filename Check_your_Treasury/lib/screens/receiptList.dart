@@ -16,7 +16,7 @@ class ReceiptsList extends StatefulWidget {
 class _ReceiptsListState extends State<ReceiptsList> {
   Future getImages() async {
     http.Response response = await http.get(
-      'http://192.168.1.108:8000/receipts/',
+      url + 'receipts/',
       headers: {
         "Authorization": "Token " + pref.getString("token"),
       },

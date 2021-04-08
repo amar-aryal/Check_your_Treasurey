@@ -4,18 +4,17 @@ import 'package:Check_your_Treasury/models/expense.dart';
 import 'package:Check_your_Treasury/models/income.dart';
 import 'package:Check_your_Treasury/models/rate.dart';
 import 'package:Check_your_Treasury/models/reminder.dart';
+import 'package:Check_your_Treasury/models/user.dart';
 import 'package:Check_your_Treasury/screens/addTransaction.dart';
-import 'package:Check_your_Treasury/screens/exchangeRates.dart';
-import 'package:Check_your_Treasury/screens/homeScreen.dart';
 import 'package:Check_your_Treasury/screens/login.dart';
+import 'package:Check_your_Treasury/screens/selectCurrency.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 SharedPreferences pref;
-final String rateUrl =
-    'https://api.exchangerate.host/latest?base=$selectedCurrency';
+final String rateUrl = 'https://api.exchangerate.host/latest?';
 
 List currencies = [
   'AED',
@@ -202,25 +201,19 @@ final String logoutUrl = url + 'api/auth/logout';
 final String userProfileUrl = url + 'api/auth/user';
 
 class API {
-  Future<Rate> getdata() async {
-    http.Response response = await http.get(rateUrl);
+  Future<Rate> getdata(String cur) async {
+    http.Response response = await http.get(rateUrl + 'base=$cur');
     final fetcheddata = rateFromJson(response.body);
     return fetcheddata; //returns Rate object
   }
 
-  register(BuildContext context, String username, String email,
-      String password) async {
-    Map<String, String> user = {
-      'username': username,
-      'email': email,
-      'password': password,
-    };
+  register(BuildContext context, User user) async {
     http.Response response = await http.post(
       registerUrl,
       headers: {
         'Content-Type': "application/json",
       },
-      body: json.encode(user),
+      body: userToJson(user),
     );
     print(response.statusCode);
     if (response.statusCode == 200) {
@@ -257,7 +250,7 @@ class API {
       Navigator.pushAndRemoveUntil(
           context,
           PageRouteBuilder(
-            pageBuilder: (_, __, ___) => HomeScreen(),
+            pageBuilder: (_, __, ___) => SelectCurrency(),
             transitionDuration: Duration(seconds: 0),
           ),
           (Route<dynamic> route) => false);
@@ -280,6 +273,7 @@ class API {
 
     if (response.statusCode == 204) {
       pref.remove("token");
+      pref.remove("currency");
 
       Navigator.pushAndRemoveUntil(
           context,

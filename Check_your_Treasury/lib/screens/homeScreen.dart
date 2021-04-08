@@ -9,6 +9,7 @@ import 'package:Check_your_Treasury/utilities/customDrawer.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'exchangeRates.dart';
 import 'login.dart';
 import 'package:http/http.dart' as http;
 
@@ -23,7 +24,14 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
 
     print(pref.getString("token"));
+
     checkIfTokenValid();
+
+    if (pref.getStringList("currency") != null) {
+      print("CURR " + pref.getStringList("currency").toString());
+
+      selectedCurrency = pref.getStringList("currency")[0];
+    }
   }
 
   checkIfTokenValid() async {
@@ -52,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffede2c2),
+      backgroundColor: kScaffoldBgColor,
       appBar: AppBar(
         title: Text("Home"),
         centerTitle: true,
@@ -85,9 +93,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             return Text(
                               data["username"],
                               style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold),
+                                // color: Colors.grey[500],
+                                fontSize: 18,
+                                // fontWeight: FontWeight.bold,
+                              ),
                             );
                           } else {
                             return Container();
@@ -106,17 +115,26 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               child: Column(
                 children: [
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.018),
+                  Text(
+                    'What do you want to do?',
+                    style: GoogleFonts.montserrat(
+                        textStyle: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey[700])),
+                  ),
                   Row(
                     children: [
                       Options(
                         img: 'assets/budget.png',
-                        text: 'Add transactions',
+                        text: 'My transactions',
                         navigate: TransactionsList(),
                         circleColor: Colors.red,
                       ),
                       Options(
                         img: 'assets/reminders.png',
-                        text: 'Add reminders',
+                        text: 'My reminders',
                         navigate: Reminders(),
                         circleColor: Colors.blue,
                       ),
@@ -132,7 +150,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       Options(
                         img: 'assets/bill.png',
-                        text: 'Add receipts',
+                        text: 'My receipts',
                         navigate: ReceiptsList(),
                         circleColor: Colors.purple,
                       ),
@@ -186,7 +204,7 @@ class Options extends StatelessWidget {
               text,
               textAlign: TextAlign.center,
               style: GoogleFonts.montserrat(
-                textStyle: TextStyle(fontSize: 18.0),
+                textStyle: TextStyle(fontSize: 16.0),
               ),
             )
           ],

@@ -25,7 +25,7 @@ class _TransactionsListState extends State<TransactionsList> {
 
   Future getDailyTotal() async {
     http.Response response = await http.get(
-      'http://192.168.1.108:8000/today_total?date=${DateFormat("yyyy-MM-dd").format(now)}',
+      url + 'today_total?date=${DateFormat("yyyy-MM-dd").format(now)}',
       headers: {
         'Content-Type': "application/json",
         "Authorization": "Token " + pref.getString('token'),
@@ -42,7 +42,7 @@ class _TransactionsListState extends State<TransactionsList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffede2c2),
+      backgroundColor: kScaffoldBgColor,
       appBar: AppBar(
         title: Text('Incomes and Expenses'),
         centerTitle: true,
@@ -312,11 +312,10 @@ class _IncomeState extends State<Income> {
                           style: GoogleFonts.montserrat(
                               textStyle:
                                   TextStyle(fontWeight: FontWeight.bold))),
-                      subtitle: Text(incomes[index]["category"]),
+                      subtitle: Text(incomes[index]["category"],
+                          style: GoogleFonts.montserrat()),
                       trailing: Text(
-                        selectedCurrency +
-                            '. ' +
-                            incomes[index]["amount"].toString(),
+                        '$selectedCurrency. ${incomes[index]["amount"]}',
                         style: GoogleFonts.montserrat(
                             textStyle: TextStyle(
                                 color: Colors.green,
@@ -393,15 +392,22 @@ class _ExpenseState extends State<Expense> {
                         });
                       },
                       leading: categoryImage(expenses[index]["category"]),
-                      title: Text(expenses[index]["expensename"],
-                          style: TextStyle(fontWeight: FontWeight.bold)),
-                      subtitle: Text(expenses[index]["category"]),
+                      title: Text(
+                        expenses[index]["expensename"],
+                        style: GoogleFonts.montserrat(
+                          textStyle: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      subtitle: Text(
+                        expenses[index]["category"],
+                        style: GoogleFonts.montserrat(),
+                      ),
                       trailing: Text(
-                        selectedCurrency +
-                            '. ' +
-                            expenses[index]["amount"].toString(),
-                        style: TextStyle(
-                            color: Colors.red, fontWeight: FontWeight.bold),
+                        '$selectedCurrency. ${expenses[index]["amount"]}',
+                        style: GoogleFonts.montserrat(
+                          textStyle: TextStyle(
+                              color: Colors.red, fontWeight: FontWeight.bold),
+                        ),
                       ),
                     ),
                   ),
