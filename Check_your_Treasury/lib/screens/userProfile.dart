@@ -60,13 +60,13 @@ class _UserProfileState extends State<UserProfile> {
                                               MainAxisAlignment.center,
                                           children: [
                                             Icon(Icons.person,
-                                                color: Colors.grey),
+                                                color: Colors.blue[600]),
                                             SizedBox(width: 10),
                                             Text(
                                                 'Username:   ${data["username"]}',
                                                 style: GoogleFonts.montserrat(
                                                   textStyle: TextStyle(
-                                                    fontSize: 18,
+                                                    fontSize: 16,
                                                   ),
                                                 )),
                                           ],
@@ -85,12 +85,12 @@ class _UserProfileState extends State<UserProfile> {
                                               MainAxisAlignment.center,
                                           children: [
                                             Icon(Icons.mail,
-                                                color: Colors.grey),
+                                                color: Colors.blue[600]),
                                             SizedBox(width: 10),
                                             Text('Email:  ${data["email"]}',
                                                 style: GoogleFonts.montserrat(
                                                   textStyle: TextStyle(
-                                                    fontSize: 18,
+                                                    fontSize: 16,
                                                   ),
                                                 )),
                                           ],

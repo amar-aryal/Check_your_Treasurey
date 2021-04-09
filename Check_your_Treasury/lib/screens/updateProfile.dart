@@ -19,6 +19,7 @@ class UpdateProfile extends StatefulWidget {
 class _UpdateProfileState extends State<UpdateProfile> {
   TextEditingController _userController;
   TextEditingController _emailController;
+  String emailVal = '';
 
   @override
   void initState() {
@@ -73,11 +74,25 @@ class _UpdateProfileState extends State<UpdateProfile> {
               controller: _emailController,
               decoration: buildInputDecoration('Enter email'),
             ),
+            Text(
+              emailVal,
+              style: TextStyle(color: Colors.red),
+            ),
             SizedBox(height: 30),
             FlatButton(
               padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-              onPressed: () =>
-                  _updateProfile(_userController.text, _emailController.text),
+              onPressed: () {
+                if (!isEmail(_emailController.text)) {
+                  setState(() {
+                    emailVal = 'Invalid email';
+                  });
+                } else {
+                  setState(() {
+                    emailVal = '';
+                  });
+                  _updateProfile(_userController.text, _emailController.text);
+                }
+              },
               color: Colors.blue[800],
               child: Text(
                 'Update profile',
@@ -105,12 +120,33 @@ class _UpdateProfileState extends State<UpdateProfile> {
         },
         body: json.encode(user));
 
+    var responseData = json.decode(response.body);
+
     if (response.statusCode == 200) {
       showMyDialog(
           context, "Successfully updated!", "Your profile has been updated");
+    } else if (response.statusCode == 400 &&
+        responseData["username"][0] ==
+            "A user with that username already exists.") {
+      showMyDialog(context, 'Username error!',
+          'A user with that username already exists');
     } else {
       showMyDialog(
           context, 'Error!', 'There was some problem.Please try again');
     }
+  }
+
+  bool isEmail(String string) {
+    if (string == null || string.isEmpty) {
+      return false;
+    }
+
+    const pattern = r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
+    final regExp = RegExp(pattern);
+
+    if (!regExp.hasMatch(string)) {
+      return false;
+    }
+    return true;
   }
 }

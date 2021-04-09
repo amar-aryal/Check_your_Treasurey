@@ -21,15 +21,9 @@ class Reminders extends StatefulWidget {
 class _RemindersState extends State<Reminders> {
   bool isDone = false;
 
-  List _reminders = [];
-
   @override
   void initState() {
     super.initState();
-    API().getReminders().then((data) {
-      _reminders = data;
-      print(_reminders);
-    });
   }
 
   @override

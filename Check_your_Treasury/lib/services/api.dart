@@ -216,10 +216,16 @@ class API {
       body: userToJson(user),
     );
     print(response.statusCode);
+    var responseData = json.decode(response.body);
     if (response.statusCode == 200) {
       print(response.body);
       showMyDialog(
           context, 'Successfully registered!', 'You have been registered');
+    } else if (response.statusCode == 400 &&
+        responseData["username"][0] ==
+            "A user with that username already exists.") {
+      showMyDialog(context, 'Username error!',
+          'A user with that username already exists');
     } else {
       showMyDialog(
           context, 'Error!', 'There was some problem.Please try again');
