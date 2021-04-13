@@ -122,6 +122,36 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     SizedBox(height: MediaQuery.of(context).size.height * 0.1),
                     Text(
+                      'Expenses this month',
+                      style: GoogleFonts.montserrat(
+                        textStyle: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey[700]),
+                      ),
+                    ),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.2,
+                      child: RecentExpenses(),
+                    ),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.04),
+                    Text(
+                      'Incomes this month',
+                      style: GoogleFonts.montserrat(
+                        textStyle: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey[700]),
+                      ),
+                    ),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.2,
+                      child: RecentIncomes(),
+                    ),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.04),
+                    Text(
                       'Actions',
                       style: GoogleFonts.montserrat(
                         textStyle: TextStyle(
@@ -308,6 +338,154 @@ class Slider extends StatelessWidget {
           ],
         ),
       ],
+    );
+  }
+}
+
+class RecentExpenses extends StatefulWidget {
+  @override
+  _RecentExpensesState createState() => _RecentExpensesState();
+}
+
+class _RecentExpensesState extends State<RecentExpenses> {
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: API().getRecentExpenses(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          List<dynamic> expenses = snapshot.data;
+          print(expenses);
+
+          if (expenses.isNotEmpty) {
+            return Expanded(
+              child: ListView.builder(
+                itemCount: expenses.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Padding(
+                    padding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black12,
+                              blurRadius: 1.0,
+                              spreadRadius: 1.0,
+                              offset: Offset(
+                                1.0,
+                                2.0,
+                              ),
+                            ),
+                          ],
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(15)),
+                      child: ListTile(
+                        leading: categoryImage(expenses[index]["category"]),
+                        title: Text(expenses[index]["expensename"],
+                            style: GoogleFonts.montserrat(
+                                textStyle:
+                                    TextStyle(fontWeight: FontWeight.bold))),
+                        subtitle: Text(expenses[index]["category"],
+                            style: GoogleFonts.montserrat()),
+                        trailing: Text(
+                          '$selectedCurrency. ${expenses[index]["amount"]}',
+                          style: GoogleFonts.montserrat(
+                              textStyle: TextStyle(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.bold)),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            );
+          } else {
+            return Text(
+              'No transactions recorded',
+              style: GoogleFonts.montserrat(
+                textStyle: TextStyle(color: Colors.grey, fontSize: 18),
+              ),
+            );
+          }
+        } else {
+          return Center(child: CircularProgressIndicator());
+        }
+      },
+    );
+  }
+}
+
+class RecentIncomes extends StatefulWidget {
+  @override
+  _RecentIncomesState createState() => _RecentIncomesState();
+}
+
+class _RecentIncomesState extends State<RecentIncomes> {
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: API().getRecentIncomes(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          List<dynamic> incomes = snapshot.data;
+          print(incomes);
+
+          if (incomes.isNotEmpty) {
+            return Expanded(
+              child: ListView.builder(
+                itemCount: incomes.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Padding(
+                    padding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black12,
+                              blurRadius: 1.0,
+                              spreadRadius: 1.0,
+                              offset: Offset(
+                                1.0,
+                                2.0,
+                              ),
+                            ),
+                          ],
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(15)),
+                      child: ListTile(
+                        leading: categoryImage(incomes[index]["category"]),
+                        title: Text(incomes[index]["incomename"],
+                            style: GoogleFonts.montserrat(
+                                textStyle:
+                                    TextStyle(fontWeight: FontWeight.bold))),
+                        subtitle: Text(incomes[index]["category"],
+                            style: GoogleFonts.montserrat()),
+                        trailing: Text(
+                          '$selectedCurrency. ${incomes[index]["amount"]}',
+                          style: GoogleFonts.montserrat(
+                              textStyle: TextStyle(
+                                  color: Colors.green,
+                                  fontWeight: FontWeight.bold)),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            );
+          } else {
+            return Text(
+              'No transactions recorded',
+              style: GoogleFonts.montserrat(
+                textStyle: TextStyle(color: Colors.grey, fontSize: 18),
+              ),
+            );
+          }
+        } else {
+          return Center(child: CircularProgressIndicator());
+        }
+      },
     );
   }
 }

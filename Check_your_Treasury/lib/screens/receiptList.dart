@@ -70,7 +70,7 @@ class _ReceiptsListState extends State<ReceiptsList> {
               },
             );
           } else {
-            return CircularProgressIndicator();
+            return Center(child: CircularProgressIndicator());
           }
         },
       ),

@@ -2,6 +2,7 @@ import 'package:Check_your_Treasury/screens/exchangeRates.dart';
 import 'package:Check_your_Treasury/screens/homeScreen.dart';
 import 'package:Check_your_Treasury/screens/reminders.dart';
 import 'package:Check_your_Treasury/screens/transactionsList.dart';
+import 'package:Check_your_Treasury/utilities/constants.dart';
 import 'package:flutter/material.dart';
 
 class BottomBar extends StatefulWidget {
@@ -55,7 +56,7 @@ class _BottomBarState extends State<BottomBar> {
         ),
       ],
       currentIndex: widget.selectedIndex,
-      selectedItemColor: Colors.cyan[800],
+      selectedItemColor: kPrimaryColor,
       unselectedItemColor: Colors.grey,
       onTap: _onItemTapped,
     );

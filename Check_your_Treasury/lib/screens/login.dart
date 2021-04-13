@@ -1,9 +1,14 @@
+import 'dart:convert';
+
 import 'package:Check_your_Treasury/screens/addTransaction.dart';
 import 'package:Check_your_Treasury/screens/homeScreen.dart';
+import 'package:http/http.dart' as http;
 import 'package:Check_your_Treasury/screens/register.dart';
+import 'package:Check_your_Treasury/screens/selectCurrency.dart';
 import 'package:Check_your_Treasury/services/api.dart';
 import 'package:Check_your_Treasury/utilities/decorations.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -17,6 +22,8 @@ class _LoginState extends State<Login> {
 
   bool _obscure = true;
 
+  String name = '';
+
   @override
   void dispose() {
     _userNameController.dispose();
@@ -27,7 +34,7 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue,
+      backgroundColor: Color(0xff4242b3),
       resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Stack(children: [
@@ -76,7 +83,7 @@ class _LoginState extends State<Login> {
                   },
                   child: Text(
                     _obscure ? 'Show password' : 'Hide password',
-                    style: TextStyle(color: Colors.cyan, fontSize: 18),
+                    style: TextStyle(color: Color(0xff4242b3), fontSize: 18),
                   ),
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.008),
@@ -87,7 +94,7 @@ class _LoginState extends State<Login> {
                   child: FlatButton(
                     padding: EdgeInsets.symmetric(vertical: 15),
                     onPressed: _login,
-                    color: Colors.blue[800],
+                    color: Color(0xff4242b3),
                     child: Text(
                       'LOGIN',
                       style: TextStyle(
@@ -107,7 +114,7 @@ class _LoginState extends State<Login> {
                   },
                   child: Text(
                     'Register',
-                    style: TextStyle(fontSize: 18, color: Colors.cyan),
+                    style: TextStyle(fontSize: 18, color: Color(0xff4242b3)),
                   ),
                 ),
               ],
@@ -121,6 +128,7 @@ class _LoginState extends State<Login> {
                 backgroundColor: Colors.grey[300],
                 child: Icon(
                   Icons.person,
+                  color: Color(0xff4242b3),
                   size: MediaQuery.of(context).size.height * 0.08,
                 )),
           ),
@@ -129,11 +137,56 @@ class _LoginState extends State<Login> {
     );
   }
 
+  login(BuildContext context, String username, String password) async {
+    pref = await SharedPreferences.getInstance();
+    String token;
+    Map<String, String> user = {
+      'username': username,
+      'password': password,
+    };
+    http.Response response = await http.post(
+      loginUrl,
+      headers: {
+        'Content-Type': "application/json",
+      },
+      body: json.encode(user),
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      print(response.body);
+      token = data["token"];
+      print(token);
+      pref.setString("token", token);
+
+      //*Now after token is set getprofile method is called*//
+      // API().getUserProfile().then((data) {
+      //   setState(() {
+      //     name = data["username"];
+      //   });
+      //   print('$name');
+      // });
+      Navigator.pushAndRemoveUntil(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (_, __, ___) => SelectCurrency(),
+            transitionDuration: Duration(seconds: 0),
+          ),
+          (Route<dynamic> route) => false);
+    } else if (response.statusCode == 400) {
+      showMyDialog(context, 'Incorrect username/password!',
+          'Your username or password was incorrect');
+    } else {
+      showMyDialog(
+          context, 'Error!', 'There was some problem.Please try again');
+    }
+  }
+
   _login() {
     if (_userNameController.text == "" || _passwordController.text == "") {
       showMyDialog(context, "Empty fields!", "Do not leave the fields empty");
     } else {
-      API().login(context, _userNameController.text, _passwordController.text);
+      login(context, _userNameController.text, _passwordController.text);
     }
   }
 }

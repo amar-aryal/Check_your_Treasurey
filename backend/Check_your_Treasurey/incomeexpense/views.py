@@ -311,3 +311,28 @@ class ExportToExcel(APIView):
 
         wb.save(response)
         return response
+
+class RecentExpenses(APIView):
+    queryset = Expense.objects.all()
+    serializer_class = ExpenseSerializer
+    permission_classes = (IsAuthenticated,IsOwner)
+
+
+    def get(self,request):
+        data = self.queryset.filter(userID=self.request.user,date__year=date.today().year,date__month=date.today().month).values()
+
+        return Response(data, status=status.HTTP_200_OK)
+
+class RecentIncomes(APIView):
+    queryset = Income.objects.all()
+    serializer_class = IncomeSerializer
+    permission_classes = (IsAuthenticated,IsOwner)
+
+
+    def get(self,request):
+        data = self.queryset.filter(userID=self.request.user,date__year=date.today().year,date__month=date.today().month).values()
+
+        return Response(data, status=status.HTTP_200_OK)        
+
+
+

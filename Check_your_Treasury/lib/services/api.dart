@@ -232,43 +232,6 @@ class API {
     }
   }
 
-  login(BuildContext context, String username, String password) async {
-    pref = await SharedPreferences.getInstance();
-    String token;
-    Map<String, String> user = {
-      'username': username,
-      'password': password,
-    };
-    http.Response response = await http.post(
-      loginUrl,
-      headers: {
-        'Content-Type': "application/json",
-      },
-      body: json.encode(user),
-    );
-    print(response.statusCode);
-    if (response.statusCode == 200) {
-      var data = json.decode(response.body);
-      print(response.body);
-      token = data["token"];
-      print(token);
-      pref.setString("token", token);
-      Navigator.pushAndRemoveUntil(
-          context,
-          PageRouteBuilder(
-            pageBuilder: (_, __, ___) => SelectCurrency(),
-            transitionDuration: Duration(seconds: 0),
-          ),
-          (Route<dynamic> route) => false);
-    } else if (response.statusCode == 400) {
-      showMyDialog(context, 'Incorrect username/password!',
-          'Your username or password was incorrect');
-    } else {
-      showMyDialog(
-          context, 'Error!', 'There was some problem.Please try again');
-    }
-  }
-
   Future logout(BuildContext context) async {
     pref = await SharedPreferences.getInstance();
 
@@ -424,6 +387,48 @@ class API {
 
     http.Response response = await http.get(
       url + 'reminders',
+      headers: {
+        'Content-Type': "application/json",
+        "Authorization": "Token " + pref.getString('token'),
+      },
+    );
+
+    print(response.statusCode);
+
+    var data = json.decode(response.body);
+
+    if (response.statusCode == 200) {
+      print(data);
+      return data;
+    }
+  }
+
+  Future<dynamic> getRecentExpenses() async {
+    pref = await SharedPreferences.getInstance();
+
+    http.Response response = await http.get(
+      url + 'recentExpenses/',
+      headers: {
+        'Content-Type': "application/json",
+        "Authorization": "Token " + pref.getString('token'),
+      },
+    );
+
+    print(response.statusCode);
+
+    var data = json.decode(response.body);
+
+    if (response.statusCode == 200) {
+      print(data);
+      return data;
+    }
+  }
+
+  Future<dynamic> getRecentIncomes() async {
+    pref = await SharedPreferences.getInstance();
+
+    http.Response response = await http.get(
+      url + 'recentIncomes/',
       headers: {
         'Content-Type': "application/json",
         "Authorization": "Token " + pref.getString('token'),

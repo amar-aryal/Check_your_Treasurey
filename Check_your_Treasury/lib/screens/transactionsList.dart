@@ -269,64 +269,77 @@ class _IncomeState extends State<Income> {
           List<dynamic> incomes = snapshot.data;
           print(incomes);
 
-          return Expanded(
-            child: ListView.builder(
-              itemCount: incomes.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Padding(
-                  padding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black12,
-                            blurRadius: 1.0,
-                            spreadRadius: 1.0,
-                            offset: Offset(
-                              1.0,
-                              2.0,
-                            ),
-                          ),
-                        ],
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(15)),
-                    child: ListTile(
-                      onTap: () {
-                        setState(() {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => UpdateDeleteIncome(
-                                incomename: incomes[index]["incomename"],
-                                category: incomes[index]["category"],
-                                amount: incomes[index]["amount"],
-                                date: widget.date,
-                                id: incomes[index]["id"],
+          if (incomes.isNotEmpty) {
+            return Expanded(
+              child: ListView.builder(
+                itemCount: incomes.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Padding(
+                    padding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black12,
+                              blurRadius: 1.0,
+                              spreadRadius: 1.0,
+                              offset: Offset(
+                                1.0,
+                                2.0,
                               ),
                             ),
-                          );
-                        });
-                      },
-                      leading: categoryImage(incomes[index]["category"]),
-                      title: Text(incomes[index]["incomename"],
+                          ],
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(15)),
+                      child: ListTile(
+                        onTap: () {
+                          setState(() {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => UpdateDeleteIncome(
+                                  incomename: incomes[index]["incomename"],
+                                  category: incomes[index]["category"],
+                                  amount: incomes[index]["amount"],
+                                  date: widget.date,
+                                  id: incomes[index]["id"],
+                                ),
+                              ),
+                            );
+                          });
+                        },
+                        leading: categoryImage(incomes[index]["category"]),
+                        title: Text(incomes[index]["incomename"],
+                            style: GoogleFonts.montserrat(
+                                textStyle:
+                                    TextStyle(fontWeight: FontWeight.bold))),
+                        subtitle: Text(incomes[index]["category"],
+                            style: GoogleFonts.montserrat()),
+                        trailing: Text(
+                          '$selectedCurrency. ${incomes[index]["amount"]}',
                           style: GoogleFonts.montserrat(
-                              textStyle:
-                                  TextStyle(fontWeight: FontWeight.bold))),
-                      subtitle: Text(incomes[index]["category"],
-                          style: GoogleFonts.montserrat()),
-                      trailing: Text(
-                        '$selectedCurrency. ${incomes[index]["amount"]}',
-                        style: GoogleFonts.montserrat(
-                            textStyle: TextStyle(
-                                color: Colors.green,
-                                fontWeight: FontWeight.bold)),
+                              textStyle: TextStyle(
+                                  color: Colors.green,
+                                  fontWeight: FontWeight.bold)),
+                        ),
                       ),
                     ),
-                  ),
-                );
-              },
-            ),
-          );
+                  );
+                },
+              ),
+            );
+          } else {
+            return Padding(
+              padding: EdgeInsets.only(
+                  top: MediaQuery.of(context).size.height * 0.15),
+              child: Text(
+                'No transacations recorded',
+                style: GoogleFonts.montserrat(
+                  textStyle: TextStyle(color: Colors.grey, fontSize: 18),
+                ),
+              ),
+            );
+          }
         } else {
           return Center(child: CircularProgressIndicator());
         }
@@ -353,68 +366,81 @@ class _ExpenseState extends State<Expense> {
           List<dynamic> expenses = snapshot.data;
           print(expenses);
 
-          return Expanded(
-            child: ListView.builder(
-              itemCount: expenses.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Padding(
-                  padding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black12,
-                            blurRadius: 1.0,
-                            spreadRadius: 1.0,
-                            offset: Offset(
-                              1.0,
-                              2.0,
-                            ),
-                          ),
-                        ],
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(15)),
-                    child: ListTile(
-                      onTap: () {
-                        setState(() {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => UpdateDeleteExpense(
-                                expensename: expenses[index]["expensename"],
-                                category: expenses[index]["category"],
-                                amount: expenses[index]["amount"],
-                                date: widget.date,
-                                id: expenses[index]["id"],
+          if (expenses.isNotEmpty) {
+            return Expanded(
+              child: ListView.builder(
+                itemCount: expenses.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Padding(
+                    padding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black12,
+                              blurRadius: 1.0,
+                              spreadRadius: 1.0,
+                              offset: Offset(
+                                1.0,
+                                2.0,
                               ),
                             ),
-                          );
-                        });
-                      },
-                      leading: categoryImage(expenses[index]["category"]),
-                      title: Text(
-                        expenses[index]["expensename"],
-                        style: GoogleFonts.montserrat(
-                          textStyle: TextStyle(fontWeight: FontWeight.bold),
+                          ],
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(15)),
+                      child: ListTile(
+                        onTap: () {
+                          setState(() {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => UpdateDeleteExpense(
+                                  expensename: expenses[index]["expensename"],
+                                  category: expenses[index]["category"],
+                                  amount: expenses[index]["amount"],
+                                  date: widget.date,
+                                  id: expenses[index]["id"],
+                                ),
+                              ),
+                            );
+                          });
+                        },
+                        leading: categoryImage(expenses[index]["category"]),
+                        title: Text(
+                          expenses[index]["expensename"],
+                          style: GoogleFonts.montserrat(
+                            textStyle: TextStyle(fontWeight: FontWeight.bold),
+                          ),
                         ),
-                      ),
-                      subtitle: Text(
-                        expenses[index]["category"],
-                        style: GoogleFonts.montserrat(),
-                      ),
-                      trailing: Text(
-                        '$selectedCurrency. ${expenses[index]["amount"]}',
-                        style: GoogleFonts.montserrat(
-                          textStyle: TextStyle(
-                              color: Colors.red, fontWeight: FontWeight.bold),
+                        subtitle: Text(
+                          expenses[index]["category"],
+                          style: GoogleFonts.montserrat(),
+                        ),
+                        trailing: Text(
+                          '$selectedCurrency. ${expenses[index]["amount"]}',
+                          style: GoogleFonts.montserrat(
+                            textStyle: TextStyle(
+                                color: Colors.red, fontWeight: FontWeight.bold),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                );
-              },
-            ),
-          );
+                  );
+                },
+              ),
+            );
+          } else {
+            return Padding(
+              padding: EdgeInsets.only(
+                  top: MediaQuery.of(context).size.height * 0.15),
+              child: Text(
+                'No transacations recorded',
+                style: GoogleFonts.montserrat(
+                  textStyle: TextStyle(color: Colors.grey, fontSize: 18),
+                ),
+              ),
+            );
+          }
         } else {
           return Center(child: CircularProgressIndicator());
         }

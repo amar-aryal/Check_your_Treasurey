@@ -10,7 +10,7 @@ InputDecoration buildInputDecorationWithIcon(String hintText, IconData icon) {
         borderSide: BorderSide(color: Colors.grey, width: 2.0)),
     icon: Icon(
       icon,
-      color: Colors.cyan,
+      color: Color(0xff4242b3),
     ),
     hintText: hintText,
   );

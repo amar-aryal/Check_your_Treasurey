@@ -1,6 +1,7 @@
 import 'package:Check_your_Treasury/screens/exchangeRates.dart';
 import 'package:Check_your_Treasury/screens/homeScreen.dart';
 import 'package:Check_your_Treasury/services/api.dart';
+import 'package:Check_your_Treasury/utilities/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -10,6 +11,18 @@ class SelectCurrency extends StatefulWidget {
 }
 
 class _SelectCurrencyState extends State<SelectCurrency> {
+  String name = '';
+  @override
+  void initState() {
+    super.initState();
+    API().getUserProfile().then((data) {
+      setState(() {
+        name = data["username"];
+      });
+      print('$name');
+    });
+  }
+
   String currency = 'NPR';
   @override
   Widget build(BuildContext context) {
@@ -52,10 +65,7 @@ class _SelectCurrencyState extends State<SelectCurrency> {
               child: FlatButton(
                 padding: EdgeInsets.symmetric(vertical: 15),
                 onPressed: () {
-                  // setState(() {
-                  //   selectedCurrency = currency;
-                  // });
-                  // pref.setBool("chosen", true);
+                  // pref.setBool(name, true);
                   pref.setStringList("currency", [currency]);
                   Navigator.pushAndRemoveUntil(
                       context,
@@ -65,7 +75,7 @@ class _SelectCurrencyState extends State<SelectCurrency> {
                       ),
                       (Route<dynamic> route) => false);
                 },
-                color: Colors.blue[800],
+                color: kPrimaryColor,
                 child: Text(
                   'PROCEED',
                   style: TextStyle(
