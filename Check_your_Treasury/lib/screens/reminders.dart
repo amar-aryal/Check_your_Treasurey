@@ -28,115 +28,123 @@ class _RemindersState extends State<Reminders> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Reminders'),
-        centerTitle: true,
-        backgroundColor: kPrimaryColor,
-      ),
-      bottomNavigationBar: BottomBar(selectedIndex: 1),
-      drawer: CustomDrawer(),
-      body: Column(
-        children: [
-          Expanded(
-            child: FutureBuilder(
-              future: API().getReminders(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  List<dynamic> reminders = snapshot.data;
+    return WillPopScope(
+      onWillPop: () {
+        onWillPop(context);
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Reminders'),
+          centerTitle: true,
+          backgroundColor: kPrimaryColor,
+        ),
+        bottomNavigationBar: BottomBar(selectedIndex: 1),
+        drawer: CustomDrawer(),
+        body: Column(
+          children: [
+            Expanded(
+              child: FutureBuilder(
+                future: API().getReminders(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    List<dynamic> reminders = snapshot.data;
 
-                  return ListView.builder(
-                    itemCount: reminders.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Padding(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 8, horizontal: 10),
-                        child: Column(
-                          children: [
-                            Container(
-                              height: MediaQuery.of(context).size.height * 0.1,
-                              decoration: BoxDecoration(
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black12,
-                                      blurRadius: 1.0,
-                                      spreadRadius: 1.0,
-                                      offset: Offset(
-                                        1.0,
-                                        2.0,
-                                      ),
-                                    ),
-                                  ],
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(15)),
-                              child: ListTile(
-                                leading: Icon(
-                                  Icons.circle_notifications,
-                                  color: Colors.orange,
-                                  size: MediaQuery.of(context).size.width * 0.1,
-                                ),
-                                onTap: () {
-                                  setState(() {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            UpdateDeleteReminder(
-                                          reminder: reminders[index]
-                                              ["billName"],
-                                          amount: reminders[index]
-                                              ["billAmount"],
-                                          date: DateTime.parse(
-                                              reminders[index]["paymentDate"]),
-                                          id: reminders[index]["id"],
+                    return ListView.builder(
+                      itemCount: reminders.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Padding(
+                          padding:
+                              EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+                          child: Column(
+                            children: [
+                              Container(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.1,
+                                decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black12,
+                                        blurRadius: 1.0,
+                                        spreadRadius: 1.0,
+                                        offset: Offset(
+                                          1.0,
+                                          2.0,
                                         ),
                                       ),
-                                    );
-                                  });
-                                },
-                                title: Text(reminders[index]["billName"],
-                                    style: GoogleFonts.montserrat(
-                                        textStyle: TextStyle(fontSize: 16))),
-                                subtitle: Text(
-                                  '$selectedCurrency. ${reminders[index]["billAmount"]}',
-                                  style: GoogleFonts.montserrat(
-                                    textStyle: TextStyle(
-                                        color: Colors.red,
-                                        fontWeight: FontWeight.bold),
+                                    ],
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(15)),
+                                child: ListTile(
+                                  leading: Icon(
+                                    Icons.circle_notifications,
+                                    color: Colors.orange,
+                                    size:
+                                        MediaQuery.of(context).size.width * 0.1,
                                   ),
-                                ),
-                                trailing: Text(
-                                  reminders[index]["paymentDate"],
-                                  style: GoogleFonts.montserrat(
-                                    textStyle: TextStyle(
-                                        color: Colors.blue,
-                                        fontWeight: FontWeight.bold),
+                                  onTap: () {
+                                    setState(() {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              UpdateDeleteReminder(
+                                            reminder: reminders[index]
+                                                ["billName"],
+                                            amount: reminders[index]
+                                                ["billAmount"],
+                                            date: DateTime.parse(
+                                                reminders[index]
+                                                    ["paymentDate"]),
+                                            id: reminders[index]["id"],
+                                          ),
+                                        ),
+                                      );
+                                    });
+                                  },
+                                  title: Text(reminders[index]["billName"],
+                                      style: GoogleFonts.montserrat(
+                                          textStyle: TextStyle(fontSize: 16))),
+                                  subtitle: Text(
+                                    '$selectedCurrency. ${reminders[index]["billAmount"]}',
+                                    style: GoogleFonts.montserrat(
+                                      textStyle: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                  trailing: Text(
+                                    reminders[index]["paymentDate"],
+                                    style: GoogleFonts.montserrat(
+                                      textStyle: TextStyle(
+                                          color: Colors.blue,
+                                          fontWeight: FontWeight.bold),
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                            SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.01),
-                          ],
-                        ),
-                      );
-                    },
-                  );
-                } else {
-                  return Center(child: CircularProgressIndicator());
-                }
-              },
+                              SizedBox(
+                                  height: MediaQuery.of(context).size.height *
+                                      0.01),
+                            ],
+                          ),
+                        );
+                      },
+                    );
+                  } else {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                },
+              ),
             ),
-          ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => AddReminder()));
-        },
-        child: Icon(Icons.add),
+          ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => AddReminder()));
+          },
+          child: Icon(Icons.add),
+        ),
       ),
     );
   }

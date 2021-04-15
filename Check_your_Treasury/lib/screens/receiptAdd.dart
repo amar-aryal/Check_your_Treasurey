@@ -1,4 +1,5 @@
 import 'package:Check_your_Treasury/screens/addTransaction.dart';
+import 'package:Check_your_Treasury/screens/receiptList.dart';
 import 'package:Check_your_Treasury/screens/reportScreen.dart';
 import 'package:Check_your_Treasury/services/api.dart';
 import 'package:Check_your_Treasury/utilities/constants.dart';
@@ -190,7 +191,11 @@ class _ReceiptState extends State<Receipt> {
       print(response.statusCode);
       if (response.statusCode == 201) {
         showMyDialog(
-            context, "Receipt saved", "The receipt image has been saved");
+                context, "Receipt saved", "The receipt image has been saved")
+            .then((data) {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => ReceiptsList()));
+        });
 
         setState(() {
           errMessage = "Uploaded";

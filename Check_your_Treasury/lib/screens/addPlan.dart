@@ -1,5 +1,6 @@
 import 'package:Check_your_Treasury/models/budget.dart';
 import 'package:Check_your_Treasury/screens/addTransaction.dart';
+import 'package:Check_your_Treasury/screens/budgetList.dart';
 import 'package:Check_your_Treasury/services/api.dart';
 import 'package:Check_your_Treasury/utilities/constants.dart';
 import 'package:Check_your_Treasury/utilities/decorations.dart';
@@ -25,7 +26,11 @@ class _AddBudgetPlanState extends State<AddBudgetPlan> {
         body: budgetToJson(budget));
     print(response.statusCode);
     if (response.statusCode == 201) {
-      showMyDialog(context, 'Successfully added!', 'New plan has been added');
+      showMyDialog(context, 'Successfully added!', 'New plan has been added')
+          .then((data) {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => BudgetList()));
+      });
       _planController.clear();
     }
   }

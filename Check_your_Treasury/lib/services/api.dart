@@ -7,7 +7,9 @@ import 'package:Check_your_Treasury/models/reminder.dart';
 import 'package:Check_your_Treasury/models/user.dart';
 import 'package:Check_your_Treasury/screens/addTransaction.dart';
 import 'package:Check_your_Treasury/screens/login.dart';
+import 'package:Check_your_Treasury/screens/reminders.dart';
 import 'package:Check_your_Treasury/screens/selectCurrency.dart';
+import 'package:Check_your_Treasury/screens/transactionsList.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -289,7 +291,11 @@ class API {
 
     if (response.statusCode == 201) {
       showMyDialog(
-          context, "Transaction added!", "Transaction added successfully");
+              context, "Transaction added!", "Transaction added successfully")
+          .then((data) {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => TransactionsList()));
+      });
     }
   }
 
@@ -318,7 +324,11 @@ class API {
 
     if (response.statusCode == 201) {
       showMyDialog(
-          context, "Transaction added!", "Transaction added successfully");
+              context, "Transaction added!", "Transaction added successfully")
+          .then((data) {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => TransactionsList()));
+      });
     }
   }
 
@@ -378,7 +388,11 @@ class API {
     print(data);
 
     if (response.statusCode == 201) {
-      showMyDialog(context, "Reminder added!", "Reminder added successfully");
+      showMyDialog(context, "Reminder added!", "Reminder added successfully")
+          .then((data) {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Reminders()));
+      });
     }
   }
 

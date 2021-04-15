@@ -3,7 +3,9 @@ import 'dart:convert';
 import 'package:Check_your_Treasury/screens/addTransaction.dart';
 import 'package:Check_your_Treasury/screens/receiptAdd.dart';
 import 'package:Check_your_Treasury/services/api.dart';
+import 'package:Check_your_Treasury/utilities/bottomNavBar.dart';
 import 'package:Check_your_Treasury/utilities/constants.dart';
+import 'package:Check_your_Treasury/utilities/customDrawer.dart';
 import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
@@ -30,56 +32,65 @@ class _ReceiptsListState extends State<ReceiptsList> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('My receipts'),
-        backgroundColor: kPrimaryColor,
-        centerTitle: true,
-      ),
-      body: FutureBuilder(
-        future: getImages(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            List<dynamic> data = snapshot.data;
-            return GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  crossAxisSpacing: 4.0,
-                  mainAxisSpacing: 4.0),
-              itemCount: data.length,
-              itemBuilder: (BuildContext context, int index) {
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ImageEnlarge(
-                          img: data[index]["receiptImage"],
+    return WillPopScope(
+      onWillPop: () {
+        onWillPop(context);
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('My receipts'),
+          backgroundColor: kPrimaryColor,
+          centerTitle: true,
+        ),
+        drawer: CustomDrawer(),
+        bottomNavigationBar: BottomBar(
+          selectedIndex: 3,
+        ),
+        body: FutureBuilder(
+          future: getImages(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              List<dynamic> data = snapshot.data;
+              return GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    crossAxisSpacing: 4.0,
+                    mainAxisSpacing: 4.0),
+                itemCount: data.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ImageEnlarge(
+                            img: data[index]["receiptImage"],
+                          ),
                         ),
-                      ),
-                    );
-                  },
-                  onLongPress: () {
-                    showModalBottomSheet(
-                      context: context,
-                      builder: ((builder) => bottomSheet(data[index]["id"])),
-                    );
-                  },
-                  child: Image.network(data[index]["receiptImage"]),
-                );
-              },
-            );
-          } else {
-            return Center(child: CircularProgressIndicator());
-          }
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => Receipt()));
-        },
-        child: Icon(Icons.add),
+                      );
+                    },
+                    onLongPress: () {
+                      showModalBottomSheet(
+                        context: context,
+                        builder: ((builder) => bottomSheet(data[index]["id"])),
+                      );
+                    },
+                    child: Image.network(data[index]["receiptImage"]),
+                  );
+                },
+              );
+            } else {
+              return Center(child: CircularProgressIndicator());
+            }
+          },
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => Receipt()));
+          },
+          child: Icon(Icons.add),
+        ),
       ),
     );
   }

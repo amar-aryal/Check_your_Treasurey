@@ -25,8 +25,6 @@ class _ExchangeRateState extends State<ExchangeRate> {
         centerTitle: true,
         backgroundColor: kPrimaryColor,
       ),
-      bottomNavigationBar: BottomBar(selectedIndex: 3),
-      drawer: CustomDrawer(),
       body: FutureBuilder(
           future: API().getdata(selectedCurrency),
           builder: (context, snapshot) {

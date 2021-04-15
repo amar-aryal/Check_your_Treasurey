@@ -1,5 +1,7 @@
+import 'package:Check_your_Treasury/screens/budgetList.dart';
 import 'package:Check_your_Treasury/screens/exchangeRates.dart';
 import 'package:Check_your_Treasury/screens/homeScreen.dart';
+import 'package:Check_your_Treasury/screens/receiptList.dart';
 import 'package:Check_your_Treasury/screens/reminders.dart';
 import 'package:Check_your_Treasury/screens/transactionsList.dart';
 import 'package:Check_your_Treasury/utilities/constants.dart';
@@ -18,7 +20,8 @@ class _BottomBarState extends State<BottomBar> {
     TransactionsList(),
     Reminders(),
     HomeScreen(),
-    ExchangeRate(),
+    ReceiptsList(),
+    BudgetList(),
   ];
 
   void _onItemTapped(int index) {
@@ -50,9 +53,17 @@ class _BottomBarState extends State<BottomBar> {
           icon: Icon(Icons.home),
           label: 'Home',
         ),
+        // BottomNavigationBarItem(
+        //   icon: Icon(Icons.monetization_on),
+        //   label: 'Currency rates',
+        // ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.monetization_on),
-          label: 'Currency rates',
+          icon: Icon(Icons.receipt),
+          label: 'Receipts',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.file_copy_rounded),
+          label: 'Plans',
         ),
       ],
       currentIndex: widget.selectedIndex,

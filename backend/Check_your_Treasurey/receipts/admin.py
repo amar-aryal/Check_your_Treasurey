@@ -1,5 +1,9 @@
 from django.contrib import admin
 from .models import Receipt
 
-# Register your models here.
-admin.site.register(Receipt)
+class ReceiptAdmin(admin.ModelAdmin):
+    list_display = ('id','receiptImage', 'userID')
+    list_display_links = ('id',)
+    list_filter = ('userID',)
+    
+admin.site.register(Receipt, ReceiptAdmin)

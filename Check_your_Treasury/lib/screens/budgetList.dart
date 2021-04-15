@@ -1,10 +1,15 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:Check_your_Treasury/models/budget.dart';
 import 'package:Check_your_Treasury/screens/addPlan.dart';
 import 'package:Check_your_Treasury/screens/addTransaction.dart';
+import 'package:Check_your_Treasury/screens/exchangeRates.dart';
+import 'package:Check_your_Treasury/screens/homeScreen.dart';
 import 'package:Check_your_Treasury/services/api.dart';
+import 'package:Check_your_Treasury/utilities/bottomNavBar.dart';
 import 'package:Check_your_Treasury/utilities/constants.dart';
+import 'package:Check_your_Treasury/utilities/customDrawer.dart';
 import 'package:Check_your_Treasury/utilities/decorations.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -69,89 +74,96 @@ class _BudgetListState extends State<BudgetList> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.blueGrey[50],
-      appBar: AppBar(
-        title: Text('Budgeting'),
-        centerTitle: true,
-        backgroundColor: kPrimaryColor,
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text(
-              'My plans',
-              style: GoogleFonts.montserrat(
-                  textStyle:
-                      TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+    return WillPopScope(
+      onWillPop: () {
+        onWillPop(context);
+      },
+      child: Scaffold(
+        backgroundColor: Colors.blueGrey[50],
+        appBar: AppBar(
+          title: Text('Budgeting'),
+          centerTitle: true,
+          backgroundColor: kPrimaryColor,
+        ),
+        drawer: CustomDrawer(),
+        bottomNavigationBar: BottomBar(selectedIndex: 4),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text(
+                'My plans',
+                style: GoogleFonts.montserrat(
+                    textStyle:
+                        TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+              ),
             ),
-          ),
-          Expanded(
-            child: FutureBuilder(
-              future: getBudgetList(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  List<dynamic> data = snapshot.data;
-                  return ListView.builder(
-                    itemCount: data.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            updateDeleteBudgetForm(
-                                data[index]["plan"], data[index]["id"]);
-                          });
-                        },
-                        child: Container(
-                          color: Colors.white,
-                          margin:
-                              EdgeInsets.symmetric(vertical: 8, horizontal: 10),
-                          padding: EdgeInsets.all(15),
-                          child: IntrinsicHeight(
-                            child: Row(
-                              children: [
-                                CircleAvatar(
-                                  radius:
-                                      MediaQuery.of(context).size.width * 0.06,
-                                  backgroundColor: Colors.orange,
-                                  child: Icon(Icons.pending_actions,
-                                      color: Colors.white),
-                                ),
-                                SizedBox(width: 10),
-                                VerticalDivider(
-                                    color: Colors.orange, thickness: 2),
-                                SizedBox(width: 20),
-                                Flexible(
-                                  child: Text(data[index]["plan"],
-                                      style: GoogleFonts.montserrat(
-                                        textStyle: TextStyle(
-                                          fontSize: 16,
-                                        ),
-                                      )),
-                                ),
-                              ],
+            Expanded(
+              child: FutureBuilder(
+                future: getBudgetList(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    List<dynamic> data = snapshot.data;
+                    return ListView.builder(
+                      itemCount: data.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              updateDeleteBudgetForm(
+                                  data[index]["plan"], data[index]["id"]);
+                            });
+                          },
+                          child: Container(
+                            color: Colors.white,
+                            margin: EdgeInsets.symmetric(
+                                vertical: 8, horizontal: 10),
+                            padding: EdgeInsets.all(15),
+                            child: IntrinsicHeight(
+                              child: Row(
+                                children: [
+                                  CircleAvatar(
+                                    radius: MediaQuery.of(context).size.width *
+                                        0.06,
+                                    backgroundColor: Colors.orange,
+                                    child: Icon(Icons.pending_actions,
+                                        color: Colors.white),
+                                  ),
+                                  SizedBox(width: 10),
+                                  VerticalDivider(
+                                      color: Colors.orange, thickness: 2),
+                                  SizedBox(width: 20),
+                                  Flexible(
+                                    child: Text(data[index]["plan"],
+                                        style: GoogleFonts.montserrat(
+                                          textStyle: TextStyle(
+                                            fontSize: 16,
+                                          ),
+                                        )),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      );
-                    },
-                  );
-                } else {
-                  return Center(child: CircularProgressIndicator());
-                }
-              },
+                        );
+                      },
+                    );
+                  } else {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                },
+              ),
             ),
-          ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => AddBudgetPlan()));
-        },
-        child: Icon(Icons.add),
+          ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => AddBudgetPlan()));
+          },
+          child: Icon(Icons.add),
+        ),
       ),
     );
   }

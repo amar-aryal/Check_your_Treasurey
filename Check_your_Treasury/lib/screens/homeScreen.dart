@@ -60,115 +60,126 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color(0xff4242b3),
-      appBar: AppBar(
-        title: Text("Home"),
-        centerTitle: true,
-        backgroundColor: Color(0xff4242b3),
-        elevation: 0,
-      ),
-      bottomNavigationBar: BottomBar(
-        selectedIndex: 2,
-      ),
-      drawer: CustomDrawer(),
-      body: SingleChildScrollView(
-        child: Stack(children: [
-          Column(
-            children: [
-              Container(
-                height: MediaQuery.of(context).size.height * 0.16,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(width: MediaQuery.of(context).size.width * 0.04),
-                    CircleAvatar(
-                      radius: MediaQuery.of(context).size.height * 0.04,
-                      child: Image.asset('assets/account.png'),
-                    ),
-                    SizedBox(width: MediaQuery.of(context).size.width * 0.04),
-                    Expanded(
-                      child: FutureBuilder(
-                          future: API().getUserProfile(),
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              var data = snapshot.data;
-                              return Text(data["username"],
-                                  style: GoogleFonts.montserrat(
-                                    textStyle: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 18,
-                                    ),
-                                  ));
-                            } else {
-                              return Container();
-                            }
-                          }),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.18),
-              Container(
-                padding: EdgeInsets.all(15),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(30),
-                      topRight: Radius.circular(30)),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.1),
-                    Text(
-                      'Expenses this month',
-                      style: GoogleFonts.montserrat(
-                        textStyle: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.grey[700]),
+    return WillPopScope(
+      onWillPop: () {
+        onWillPop(context);
+      },
+      child: Scaffold(
+        backgroundColor: kPrimaryColor,
+        appBar: AppBar(
+          title: Text("Home"),
+          centerTitle: true,
+          backgroundColor: kPrimaryColor,
+          elevation: 0,
+        ),
+        bottomNavigationBar: BottomBar(
+          selectedIndex: 2,
+        ),
+        drawer: CustomDrawer(),
+        body: SingleChildScrollView(
+          child: Stack(children: [
+            Column(
+              children: [
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.16,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(width: MediaQuery.of(context).size.width * 0.04),
+                      CircleAvatar(
+                        radius: MediaQuery.of(context).size.height * 0.04,
+                        child: Image.asset('assets/account.png'),
                       ),
-                    ),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                    Container(
-                      height: MediaQuery.of(context).size.height * 0.2,
-                      child: RecentExpenses(),
-                    ),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.04),
-                    Text(
-                      'Incomes this month',
-                      style: GoogleFonts.montserrat(
-                        textStyle: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.grey[700]),
+                      SizedBox(width: MediaQuery.of(context).size.width * 0.04),
+                      Expanded(
+                        child: FutureBuilder(
+                            future: API().getUserProfile(),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                var data = snapshot.data;
+                                return Text(data["username"],
+                                    style: GoogleFonts.montserrat(
+                                      textStyle: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 18,
+                                      ),
+                                    ));
+                              } else {
+                                return Container();
+                              }
+                            }),
                       ),
-                    ),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                    Container(
-                      height: MediaQuery.of(context).size.height * 0.2,
-                      child: RecentIncomes(),
-                    ),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.04),
-                    Text(
-                      'Actions',
-                      style: GoogleFonts.montserrat(
-                        textStyle: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.grey[700]),
-                      ),
-                    ),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.08),
-                    Slider(),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          ),
-          FLoatingWidget(),
-        ]),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.18),
+                Container(
+                  padding: EdgeInsets.all(15),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(30),
+                        topRight: Radius.circular(30)),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.1),
+                      Text(
+                        'Expenses this month',
+                        style: GoogleFonts.montserrat(
+                          textStyle: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey[700]),
+                        ),
+                      ),
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.02),
+                      Container(
+                        height: MediaQuery.of(context).size.height * 0.2,
+                        child: RecentExpenses(),
+                      ),
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.04),
+                      Text(
+                        'Incomes this month',
+                        style: GoogleFonts.montserrat(
+                          textStyle: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey[700]),
+                        ),
+                      ),
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.02),
+                      Container(
+                        height: MediaQuery.of(context).size.height * 0.2,
+                        child: RecentIncomes(),
+                      ),
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.04),
+                      Text(
+                        'Actions',
+                        style: GoogleFonts.montserrat(
+                          textStyle: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey[700]),
+                        ),
+                      ),
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.08),
+                      Slider(),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            FLoatingWidget(),
+          ]),
+        ),
       ),
     );
   }
