@@ -59,7 +59,7 @@ class _ReportScreenState extends State<ReportScreen> {
     return Scaffold(
       backgroundColor: Colors.blueGrey[50],
       appBar: AppBar(
-        title: Text('Report'),
+        title: Text('Report', style: GoogleFonts.montserrat()),
         centerTitle: true,
         backgroundColor: kPrimaryColor,
       ),
@@ -100,21 +100,19 @@ class _ReportScreenState extends State<ReportScreen> {
                   if (snapshot.hasData) {
                     Map<String, dynamic> incomeData;
                     Map<String, dynamic> expenseData;
-                    double total_income;
-                    double total_expense;
+                    double totalIncome;
+                    double totalExpense;
                     double savings;
 
                     Map<String, dynamic> data = snapshot.data;
                     print(data);
-                    total_income = data["total_income"] == null
+                    totalIncome = data["total_income"] == null
                         ? 0.0
                         : data["total_income"];
-                    total_expense = data["total_expenses"] == null
+                    totalExpense = data["total_expenses"] == null
                         ? 0.0
                         : data["total_expenses"];
-                    savings = data["savings"] == 0
-                        ? 0.0
-                        : data["savings"]; //!was giving error
+                    savings = data["savings"] == 0 ? 0.0 : data["savings"];
                     incomeData = data["income_details"].cast<String, double>();
                     expenseData =
                         data["expense_details"].cast<String, double>();
@@ -122,8 +120,8 @@ class _ReportScreenState extends State<ReportScreen> {
                     return Column(
                       children: [
                         MonthlyTotal(
-                          incomeTotal: total_income,
-                          expenseTotal: total_expense,
+                          incomeTotal: totalIncome,
+                          expenseTotal: totalExpense,
                           savings: savings,
                         ),
                         SizedBox(height: 20),

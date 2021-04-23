@@ -47,7 +47,7 @@ class _TransactionsListState extends State<TransactionsList> {
       child: Scaffold(
         backgroundColor: kScaffoldBgColor,
         appBar: AppBar(
-          title: Text('Incomes and Expenses'),
+          title: Text('Incomes and Expenses', style: GoogleFonts.montserrat()),
           centerTitle: true,
           backgroundColor: kPrimaryColor,
         ),
@@ -109,9 +109,11 @@ class _TransactionsListState extends State<TransactionsList> {
                                   }),
                               Text(
                                 DateFormat("yyyy-MM-dd").format(now),
-                                style: TextStyle(
-                                  color: Colors.blue[900],
-                                  fontSize: 18,
+                                style: GoogleFonts.montserrat(
+                                  textStyle: TextStyle(
+                                    color: Colors.blue[900],
+                                    fontSize: 18,
+                                  ),
                                 ),
                               ),
                             ],
@@ -212,11 +214,13 @@ class _TransactionsListState extends State<TransactionsList> {
                               : Colors.transparent,
                           child: Text(
                             'Income',
-                            style: TextStyle(
-                                fontSize: 20,
-                                color: _incomeClicked
-                                    ? Colors.white
-                                    : Colors.black),
+                            style: GoogleFonts.montserrat(
+                              textStyle: TextStyle(
+                                  fontSize: 16,
+                                  color: _incomeClicked
+                                      ? Colors.white
+                                      : Colors.black),
+                            ),
                           ),
                         ),
                         FlatButton(
@@ -231,11 +235,13 @@ class _TransactionsListState extends State<TransactionsList> {
                               : Colors.transparent,
                           child: Text(
                             'Expense',
-                            style: TextStyle(
-                                fontSize: 20,
-                                color: _expenseClicked
-                                    ? Colors.white
-                                    : Colors.black),
+                            style: GoogleFonts.montserrat(
+                              textStyle: TextStyle(
+                                  fontSize: 16,
+                                  color: _expenseClicked
+                                      ? Colors.white
+                                      : Colors.black),
+                            ),
                           ),
                         )
                       ],

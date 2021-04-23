@@ -6,6 +6,7 @@ import 'package:Check_your_Treasury/utilities/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
@@ -37,7 +38,7 @@ class _ReceiptState extends State<Receipt> {
       appBar: AppBar(
         backgroundColor: kPrimaryColor,
         centerTitle: true,
-        title: Text("Receipts"),
+        title: Text("Receipts", style: GoogleFonts.montserrat()),
       ),
       body: Container(
         padding: EdgeInsets.all(30.0),
@@ -87,7 +88,7 @@ class _ReceiptState extends State<Receipt> {
 
             return Flexible(child: Image.file(snapshot.data, fit: BoxFit.fill));
           } else if (null != snapshot.error) {
-            return Text("No Image Selected");
+            return Text("No Image Selected", style: GoogleFonts.montserrat());
           } else {
             return Center(
               child: Container(
@@ -114,7 +115,7 @@ class _ReceiptState extends State<Receipt> {
         vertical: 20,
       ),
       child: Column(children: <Widget>[
-        Text("Select source"),
+        Text("Select source", style: GoogleFonts.montserrat()),
         SizedBox(height: 20.0),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -128,7 +129,7 @@ class _ReceiptState extends State<Receipt> {
                 takePhoto(ImageSource.camera);
                 Navigator.pop(context);
               },
-              label: Text("Camera"),
+              label: Text("Camera", style: GoogleFonts.montserrat()),
             ),
             FlatButton.icon(
               icon: Icon(
@@ -139,7 +140,7 @@ class _ReceiptState extends State<Receipt> {
                 takePhoto(ImageSource.gallery);
                 Navigator.pop(context);
               },
-              label: Text("Gallery"),
+              label: Text("Gallery", style: GoogleFonts.montserrat()),
             )
           ],
         )

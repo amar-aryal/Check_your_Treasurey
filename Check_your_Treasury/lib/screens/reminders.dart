@@ -34,7 +34,7 @@ class _RemindersState extends State<Reminders> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Reminders'),
+          title: Text('Reminders', style: GoogleFonts.montserrat()),
           centerTitle: true,
           backgroundColor: kPrimaryColor,
         ),
@@ -156,7 +156,7 @@ class UpdateDeleteReminder extends StatefulWidget {
   final DateTime date;
   final int id;
 
-  const UpdateDeleteReminder({this.reminder, this.amount, this.date, this.id});
+  UpdateDeleteReminder({this.reminder, this.amount, this.date, this.id});
   @override
   _UpdateDeleteReminderState createState() => _UpdateDeleteReminderState();
 }
@@ -168,6 +168,12 @@ class _UpdateDeleteReminderState extends State<UpdateDeleteReminder> {
 
   DateTime now;
 
+  TextStyle _style = GoogleFonts.montserrat(
+    textStyle: TextStyle(
+      fontSize: 20,
+      color: kPrimaryColor,
+    ),
+  );
   updateReminder(Reminder reminder, int id) async {
     http.Response response = await http.put(url + 'reminders/$id/',
         headers: {
@@ -229,10 +235,7 @@ class _UpdateDeleteReminderState extends State<UpdateDeleteReminder> {
         children: [
           Text(
             'Bill Name',
-            style: TextStyle(
-              fontSize: 20,
-              color: kPrimaryColor,
-            ),
+            style: _style,
           ),
           Padding(
             padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
@@ -244,10 +247,7 @@ class _UpdateDeleteReminderState extends State<UpdateDeleteReminder> {
           SizedBox(height: 15),
           Text(
             'Bill Amount',
-            style: TextStyle(
-              fontSize: 20,
-              color: kPrimaryColor,
-            ),
+            style: _style,
           ),
           Padding(
             padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
@@ -259,10 +259,7 @@ class _UpdateDeleteReminderState extends State<UpdateDeleteReminder> {
           SizedBox(height: 15),
           Text(
             'Date',
-            style: TextStyle(
-              fontSize: 20,
-              color: kPrimaryColor,
-            ),
+            style: _style,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,

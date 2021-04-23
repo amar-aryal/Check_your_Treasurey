@@ -2,14 +2,10 @@
     background: #462a82;
 }
 
-div {
-    background-color: #30caa0;
-}
-
 #header #branding h1 {
     font-weight: bold;
     font-family: New Century Schoolbook, serif;
-    font-size: 90px;
+    font-size: 30px;
 }
 
 div.breadcrumbs {

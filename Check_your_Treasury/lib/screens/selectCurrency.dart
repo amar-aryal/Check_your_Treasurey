@@ -12,6 +12,7 @@ class SelectCurrency extends StatefulWidget {
 
 class _SelectCurrencyState extends State<SelectCurrency> {
   String name = '';
+
   @override
   void initState() {
     super.initState();
@@ -21,6 +22,19 @@ class _SelectCurrencyState extends State<SelectCurrency> {
       });
       print('$name');
     });
+    // if (pref.getBool(name) != null) {
+    //   if (pref.getBool(name)) {
+    //     WidgetsBinding.instance.addPostFrameCallback((_) {
+    //       Navigator.pushAndRemoveUntil(
+    //           context,
+    //           PageRouteBuilder(
+    //             pageBuilder: (_, __, ___) => HomeScreen(),
+    //             transitionDuration: Duration(seconds: 0),
+    //           ),
+    //           (Route<dynamic> route) => false);
+    //     });
+    //   }
+    // }
   }
 
   String currency = 'NPR';
@@ -65,7 +79,10 @@ class _SelectCurrencyState extends State<SelectCurrency> {
               child: FlatButton(
                 padding: EdgeInsets.symmetric(vertical: 15),
                 onPressed: () {
-                  // pref.setBool(name, true);
+                  // if (pref.getBool(name) == null) {
+                  //   pref.setBool(name, true);
+                  // }
+
                   pref.setStringList("currency", [currency]);
                   Navigator.pushAndRemoveUntil(
                       context,

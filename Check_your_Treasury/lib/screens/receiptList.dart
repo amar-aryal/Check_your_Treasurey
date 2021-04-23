@@ -7,6 +7,7 @@ import 'package:Check_your_Treasury/utilities/bottomNavBar.dart';
 import 'package:Check_your_Treasury/utilities/constants.dart';
 import 'package:Check_your_Treasury/utilities/customDrawer.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:http/http.dart' as http;
 
@@ -38,7 +39,7 @@ class _ReceiptsListState extends State<ReceiptsList> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text('My receipts'),
+          title: Text('My receipts', style: GoogleFonts.montserrat()),
           backgroundColor: kPrimaryColor,
           centerTitle: true,
         ),
@@ -121,7 +122,7 @@ class _ReceiptsListState extends State<ReceiptsList> {
         vertical: 20,
       ),
       child: Column(children: <Widget>[
-        Text("Select action"),
+        Text("Select action", style: GoogleFonts.montserrat()),
         SizedBox(height: 20.0),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -137,7 +138,7 @@ class _ReceiptsListState extends State<ReceiptsList> {
                 });
                 Navigator.pop(context);
               },
-              label: Text("Delete"),
+              label: Text("Delete", style: GoogleFonts.montserrat()),
             ),
             FlatButton.icon(
               icon: Icon(
@@ -147,7 +148,7 @@ class _ReceiptsListState extends State<ReceiptsList> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              label: Text("Cancel"),
+              label: Text("Cancel", style: GoogleFonts.montserrat()),
             )
           ],
         )

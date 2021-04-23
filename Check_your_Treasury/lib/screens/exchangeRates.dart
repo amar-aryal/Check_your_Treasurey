@@ -3,6 +3,7 @@ import 'package:Check_your_Treasury/utilities/bottomNavBar.dart';
 import 'package:Check_your_Treasury/utilities/constants.dart';
 import 'package:Check_your_Treasury/utilities/customDrawer.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 String selectedCurrency;
 
@@ -21,7 +22,8 @@ class _ExchangeRateState extends State<ExchangeRate> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Exchange Rates ($selectedCurrency)'),
+        title: Text('Exchange Rates ($selectedCurrency)',
+            style: GoogleFonts.montserrat()),
         centerTitle: true,
         backgroundColor: kPrimaryColor,
       ),
@@ -35,21 +37,26 @@ class _ExchangeRateState extends State<ExchangeRate> {
                 itemCount: currencies.length,
                 itemBuilder: (context, index) {
                   return ListTile(
-                      leading: Text(
-                        '1 ${data.base}',
-                        style: TextStyle(
+                    leading: Text(
+                      '1 ${data.base}',
+                      style: GoogleFonts.montserrat(
+                        textStyle: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                           color: Colors.blue,
                         ),
                       ),
-                      trailing: Text(
-                          '${data.rates[currencies[index]].toString()} ${currencies[index]}',
-                          style: TextStyle(
+                    ),
+                    trailing: Text(
+                        '${data.rates[currencies[index]].toString()} ${currencies[index]}',
+                        style: GoogleFonts.montserrat(
+                          textStyle: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                             color: Colors.green,
-                          )));
+                          ),
+                        )),
+                  );
                 },
               );
             } else {

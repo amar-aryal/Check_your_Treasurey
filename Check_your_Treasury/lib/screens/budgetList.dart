@@ -38,40 +38,6 @@ class _BudgetListState extends State<BudgetList> {
     }
   }
 
-  updateBudget(Budget budget, int id) async {
-    http.Response response = await http.put(budgetUrl + '$id',
-        headers: {
-          'Content-Type': "application/json",
-          "Authorization": "Token " + pref.getString('token'),
-        },
-        body: budgetToJson(budget));
-    print(response.statusCode);
-    if (response.statusCode == 200) {
-      showMyDialog(
-          context, 'Successfully updated!', 'The plan has been updated');
-    } else {
-      showMyDialog(context, 'Update Error!',
-          'The plan could not be updated. Please try again');
-    }
-  }
-
-  deleteBudget(int id) async {
-    http.Response response = await http.delete(
-      budgetUrl + '$id',
-      headers: {
-        "Authorization": "Token " + pref.getString('token'),
-      },
-    );
-    print(response.statusCode);
-    if (response.statusCode == 204) {
-      showMyDialog(
-          context, 'Successfully deleted!', 'The plan has been deleted');
-    } else {
-      showMyDialog(context, 'Deletion Error!',
-          'The plan could not be deleted. Please try again');
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -81,7 +47,7 @@ class _BudgetListState extends State<BudgetList> {
       child: Scaffold(
         backgroundColor: Colors.blueGrey[50],
         appBar: AppBar(
-          title: Text('Budgeting'),
+          title: Text('Budgeting', style: GoogleFonts.montserrat()),
           centerTitle: true,
           backgroundColor: kPrimaryColor,
         ),
@@ -110,10 +76,12 @@ class _BudgetListState extends State<BudgetList> {
                       itemBuilder: (BuildContext context, int index) {
                         return GestureDetector(
                           onTap: () {
-                            setState(() {
-                              updateDeleteBudgetForm(
-                                  data[index]["plan"], data[index]["id"]);
-                            });
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => UpdatePlan(
+                                        plan: data[index]["plan"],
+                                        id: data[index]["id"])));
                           },
                           child: Container(
                             color: Colors.white,
@@ -168,89 +136,231 @@ class _BudgetListState extends State<BudgetList> {
     );
   }
 
-  Future updateDeleteBudgetForm(String plan, int id) async {
-    TextEditingController _planController = TextEditingController(text: plan);
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Update/Delete budget'),
-          content: Column(
-            children: [
-              Text(
-                'Edit Your plan',
-                style: TextStyle(
+//   Future updateDeleteBudgetForm(String plan, int id) async {
+//     TextEditingController _planController = TextEditingController(text: plan);
+//     return showDialog<void>(
+//       context: context,
+//       barrierDismissible: false, // user must tap button!
+//       builder: (BuildContext context) {
+//         return AlertDialog(
+//           title: Text('Update/Delete budget'),
+//           content: Column(
+//             children: [
+//               Text(
+//                 'Edit Your plan',
+//                 style: GoogleFonts.montserrat(
+//                   textStyle: TextStyle(
+//                     fontSize: 20,
+//                     color: kPrimaryColor,
+//                   ),
+//                 ),
+//               ),
+//               Padding(
+//                 padding: EdgeInsets.symmetric(vertical: 10),
+//                 child: TextField(
+//                   maxLines: 8,
+//                   controller: _planController,
+//                   decoration: buildInputDecoration('Enter your plan'),
+//                 ),
+//               ),
+//               SizedBox(height: 40),
+//               Row(
+//                 children: [
+//                   FlatButton(
+//                     padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
+//                     onPressed: () {
+//                       if (_planController.text == "") {
+//                         showMyDialog(context, "Empty field!",
+//                             "Do not leave the fields empty");
+//                       } else {
+//                         setState(() {
+//                           Budget budget = Budget(
+//                             plan: _planController.text,
+//                           );
+//                           updateBudget(budget, id);
+//                         });
+//                       }
+//                     },
+//                     color: kPrimaryColor,
+//                     child: Text(
+//                       'Update',
+//                       style: TextStyle(
+//                         fontSize: 18,
+//                         color: Colors.white,
+//                       ),
+//                     ),
+//                   ),
+//                   SizedBox(width: 15),
+//                   FlatButton(
+//                     padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
+//                     onPressed: () {
+//                       setState(() {
+//                         deleteBudget(id);
+//                       });
+//                     },
+//                     color: Colors.red,
+//                     child: Text(
+//                       'Delete',
+//                       style: TextStyle(
+//                         fontSize: 18,
+//                         color: Colors.white,
+//                       ),
+//                     ),
+//                   )
+//                 ],
+//               )
+//             ],
+//           ),
+//           actions: <Widget>[
+//             TextButton(
+//               child: Text('Cancel'),
+//               onPressed: () {
+//                 Navigator.of(context).pop();
+//               },
+//             ),
+//           ],
+//         );
+//       },
+//     );
+//   }
+}
+
+class UpdatePlan extends StatefulWidget {
+  String plan;
+  int id;
+
+  UpdatePlan({this.plan, this.id});
+  @override
+  _UpdatePlanState createState() => _UpdatePlanState();
+}
+
+class _UpdatePlanState extends State<UpdatePlan> {
+  final String budgetUrl = url + 'budget/';
+
+  TextEditingController _planController;
+
+  @override
+  void initState() {
+    super.initState();
+    _planController = TextEditingController(text: widget.plan);
+  }
+
+  updateBudget(Budget budget, int id) async {
+    http.Response response = await http.put(budgetUrl + '$id',
+        headers: {
+          'Content-Type': "application/json",
+          "Authorization": "Token " + pref.getString('token'),
+        },
+        body: budgetToJson(budget));
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      showMyDialog(
+          context, 'Successfully updated!', 'The plan has been updated');
+    } else {
+      showMyDialog(context, 'Update Error!',
+          'The plan could not be updated. Please try again');
+    }
+  }
+
+  deleteBudget(int id) async {
+    http.Response response = await http.delete(
+      budgetUrl + '$id',
+      headers: {
+        "Authorization": "Token " + pref.getString('token'),
+      },
+    );
+    print(response.statusCode);
+    if (response.statusCode == 204) {
+      showMyDialog(
+          context, 'Successfully deleted!', 'The plan has been deleted');
+    } else {
+      showMyDialog(context, 'Deletion Error!',
+          'The plan could not be deleted. Please try again');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: kScaffoldBgColor,
+      appBar: AppBar(
+        backgroundColor: kPrimaryColor,
+        title: Text('Update Plan', style: GoogleFonts.montserrat()),
+        centerTitle: true,
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(
+              height: 80,
+            ),
+            Text(
+              'Edit Your plan',
+              style: GoogleFonts.montserrat(
+                textStyle: TextStyle(
                   fontSize: 20,
                   color: kPrimaryColor,
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 10),
-                child: TextField(
-                  maxLines: 8,
-                  controller: _planController,
-                  decoration: buildInputDecoration('Enter your plan'),
-                ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+              child: TextField(
+                maxLines: 8,
+                controller: _planController,
+                decoration: buildInputDecoration('Enter your plan'),
               ),
-              SizedBox(height: 40),
-              Row(
-                children: [
-                  FlatButton(
-                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-                    onPressed: () {
-                      if (_planController.text == "") {
-                        showMyDialog(context, "Empty field!",
-                            "Do not leave the fields empty");
-                      } else {
-                        setState(() {
-                          Budget budget = Budget(
-                            plan: _planController.text,
-                          );
-                          updateBudget(budget, id);
-                        });
-                      }
-                    },
-                    color: kPrimaryColor,
-                    child: Text(
-                      'Update',
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.white,
-                      ),
+            ),
+            SizedBox(height: 40),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                FlatButton(
+                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
+                  onPressed: () {
+                    if (_planController.text == "") {
+                      showMyDialog(context, "Empty field!",
+                          "Do not leave the fields empty");
+                    } else {
+                      setState(() {
+                        Budget budget = Budget(
+                          plan: _planController.text,
+                        );
+                        updateBudget(budget, widget.id);
+                      });
+                    }
+                  },
+                  color: kPrimaryColor,
+                  child: Text(
+                    'Update',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.white,
                     ),
                   ),
-                  SizedBox(width: 15),
-                  FlatButton(
-                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-                    onPressed: () {
-                      setState(() {
-                        deleteBudget(id);
-                      });
-                    },
-                    color: Colors.red,
-                    child: Text(
-                      'Delete',
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.white,
-                      ),
+                ),
+                SizedBox(width: 15),
+                FlatButton(
+                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
+                  onPressed: () {
+                    setState(() {
+                      deleteBudget(widget.id);
+                    });
+                  },
+                  color: Colors.red,
+                  child: Text(
+                    'Delete',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.white,
                     ),
-                  )
-                ],
-              )
-            ],
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
+                  ),
+                )
+              ],
+            )
           ],
-        );
-      },
+        ),
+      ),
     );
   }
 }

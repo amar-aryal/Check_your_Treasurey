@@ -5,6 +5,7 @@ import 'package:Check_your_Treasury/services/api.dart';
 import 'package:Check_your_Treasury/utilities/constants.dart';
 import 'package:Check_your_Treasury/utilities/decorations.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 
 class UpdateProfile extends StatefulWidget {
@@ -20,6 +21,13 @@ class _UpdateProfileState extends State<UpdateProfile> {
   TextEditingController _userController;
   TextEditingController _emailController;
   String emailVal = '';
+
+  TextStyle _style = GoogleFonts.montserrat(
+    textStyle: TextStyle(
+      fontSize: 20,
+      color: kPrimaryColor,
+    ),
+  );
 
   @override
   void initState() {
@@ -40,7 +48,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Update profile'),
+        title: Text('Update profile', style: GoogleFonts.montserrat()),
         centerTitle: true,
         backgroundColor: kPrimaryColor,
       ),
@@ -51,10 +59,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
           children: [
             Text(
               'Username',
-              style: TextStyle(
-                fontSize: 20,
-                color: kPrimaryColor,
-              ),
+              style: _style,
             ),
             SizedBox(height: 10),
             TextField(
@@ -64,10 +69,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
             SizedBox(height: 20),
             Text(
               'Email',
-              style: TextStyle(
-                fontSize: 20,
-                color: kPrimaryColor,
-              ),
+              style: _style,
             ),
             SizedBox(height: 10),
             TextField(

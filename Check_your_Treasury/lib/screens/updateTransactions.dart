@@ -5,6 +5,7 @@ import 'package:Check_your_Treasury/services/api.dart';
 import 'package:Check_your_Treasury/utilities/constants.dart';
 import 'package:Check_your_Treasury/utilities/decorations.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
@@ -29,6 +30,13 @@ class _UpdateDeleteExpenseState extends State<UpdateDeleteExpense> {
   String cat;
 
   DateTime now;
+
+  TextStyle _style = GoogleFonts.montserrat(
+    textStyle: TextStyle(
+      fontSize: 20,
+      color: kPrimaryColor,
+    ),
+  );
 
   updateExpense(Expense expense, int id) async {
     http.Response response = await http.put(url + 'expenses/$id/',
@@ -88,7 +96,7 @@ class _UpdateDeleteExpenseState extends State<UpdateDeleteExpense> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text('Update transaction'),
+        title: Text('Update transaction', style: GoogleFonts.montserrat()),
         backgroundColor: kPrimaryColor,
         centerTitle: true,
       ),
@@ -97,10 +105,7 @@ class _UpdateDeleteExpenseState extends State<UpdateDeleteExpense> {
         children: [
           Text(
             'Name',
-            style: TextStyle(
-              fontSize: 20,
-              color: kPrimaryColor,
-            ),
+            style: _style,
           ),
           Padding(
             padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
@@ -110,11 +115,7 @@ class _UpdateDeleteExpenseState extends State<UpdateDeleteExpense> {
             ),
           ),
           SizedBox(height: 15),
-          Text('Select Category',
-              style: TextStyle(
-                fontSize: 20,
-                color: kPrimaryColor,
-              )),
+          Text('Select Category', style: _style),
           DropdownButton<String>(
             value: cat,
             onChanged: (newValue) {
@@ -126,10 +127,7 @@ class _UpdateDeleteExpenseState extends State<UpdateDeleteExpense> {
           ),
           Text(
             'Amount',
-            style: TextStyle(
-              fontSize: 20,
-              color: kPrimaryColor,
-            ),
+            style: _style,
           ),
           Padding(
             padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
@@ -141,10 +139,7 @@ class _UpdateDeleteExpenseState extends State<UpdateDeleteExpense> {
           SizedBox(height: 15),
           Text(
             'Date',
-            style: TextStyle(
-              fontSize: 20,
-              color: kPrimaryColor,
-            ),
+            style: _style,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -251,6 +246,13 @@ class _UpdateDeleteIncomeState extends State<UpdateDeleteIncome> {
 
   DateTime now;
 
+  TextStyle _style = GoogleFonts.montserrat(
+    textStyle: TextStyle(
+      fontSize: 20,
+      color: kPrimaryColor,
+    ),
+  );
+
   updateIncome(Income income, int id) async {
     http.Response response = await http.put(url + 'incomes/$id/',
         headers: {
@@ -309,7 +311,7 @@ class _UpdateDeleteIncomeState extends State<UpdateDeleteIncome> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text('Update transaction'),
+        title: Text('Update transaction', style: GoogleFonts.montserrat()),
         backgroundColor: kPrimaryColor,
         centerTitle: true,
       ),
@@ -318,10 +320,7 @@ class _UpdateDeleteIncomeState extends State<UpdateDeleteIncome> {
         children: [
           Text(
             'Name',
-            style: TextStyle(
-              fontSize: 20,
-              color: kPrimaryColor,
-            ),
+            style: _style,
           ),
           Padding(
             padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
@@ -331,11 +330,10 @@ class _UpdateDeleteIncomeState extends State<UpdateDeleteIncome> {
             ),
           ),
           SizedBox(height: 15),
-          Text('Select Category',
-              style: TextStyle(
-                fontSize: 20,
-                color: kPrimaryColor,
-              )),
+          Text(
+            'Select Category',
+            style: _style,
+          ),
           DropdownButton<String>(
             value: cat,
             onChanged: (newValue) {
@@ -347,10 +345,7 @@ class _UpdateDeleteIncomeState extends State<UpdateDeleteIncome> {
           ),
           Text(
             'Amount',
-            style: TextStyle(
-              fontSize: 20,
-              color: kPrimaryColor,
-            ),
+            style: _style,
           ),
           Padding(
             padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
@@ -362,10 +357,7 @@ class _UpdateDeleteIncomeState extends State<UpdateDeleteIncome> {
           SizedBox(height: 15),
           Text(
             'Date',
-            style: TextStyle(
-              fontSize: 20,
-              color: kPrimaryColor,
-            ),
+            style: _style,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,

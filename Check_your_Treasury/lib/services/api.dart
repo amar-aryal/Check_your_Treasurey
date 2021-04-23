@@ -16,7 +16,6 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 SharedPreferences pref;
-final String rateUrl = 'https://api.exchangerate.host/latest?';
 
 List currencies = [
   'AED',
@@ -192,7 +191,7 @@ List currencies = [
   'ZWL'
 ];
 
-String url = 'http://192.168.1.108:8000/';
+String url = 'http://192.168.1.109:8000/';
 
 final String registerUrl = url + 'api/auth/register';
 
@@ -201,6 +200,8 @@ final String loginUrl = url + 'api/auth/login';
 final String logoutUrl = url + 'api/auth/logout';
 
 final String userProfileUrl = url + 'api/auth/user';
+
+final String rateUrl = 'https://api.exchangerate.host/latest?';
 
 class API {
   Future<Rate> getdata(String cur) async {

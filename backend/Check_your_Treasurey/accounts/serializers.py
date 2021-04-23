@@ -4,11 +4,10 @@ from django.contrib.auth import authenticate
 from incomeexpense.models import Expense
 
 class UserSerializer(serializers.ModelSerializer):
-    expense_set = serializers.PrimaryKeyRelatedField(many=True,read_only=True)
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'email', 'expense_set')
+        fields = ('id', 'username', 'email')
 
 class UserRegisterSerializer(serializers.ModelSerializer):
     class Meta:

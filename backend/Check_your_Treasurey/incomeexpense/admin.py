@@ -5,13 +5,13 @@ class ExpenseAdmin(admin.ModelAdmin):
     list_display = ('id','expensename', 'category','amount','date','userID')
     list_display_links = ('date','id',)
     list_editable = ('expensename','amount')
-    list_filter = ('category',)
+    list_filter = ('userID',)
 
 class IncomeAdmin(admin.ModelAdmin):
     list_display = ('id','incomename','category','amount','date','userID')
     list_display_links = ('date','id',)
     list_editable = ('incomename','amount')
-    list_filter = ('category',)
+    list_filter = ('userID',)
 
 # Register your models here.
 admin.site.register(Income,IncomeAdmin)

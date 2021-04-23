@@ -19,7 +19,7 @@ class _UserProfileState extends State<UserProfile> {
     return Scaffold(
         backgroundColor: kScaffoldBgColor,
         appBar: AppBar(
-          title: Text('Profile'),
+          title: Text('Profile', style: GoogleFonts.montserrat()),
           centerTitle: true,
           backgroundColor: kPrimaryColor,
         ),

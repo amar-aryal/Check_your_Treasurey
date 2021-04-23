@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:Check_your_Treasury/screens/addTransaction.dart';
-import 'package:Check_your_Treasury/screens/homeScreen.dart';
 import 'package:http/http.dart' as http;
 import 'package:Check_your_Treasury/screens/register.dart';
 import 'package:Check_your_Treasury/screens/selectCurrency.dart';
@@ -21,8 +20,6 @@ class _LoginState extends State<Login> {
   TextEditingController _passwordController = TextEditingController();
 
   bool _obscure = true;
-
-  String name = '';
 
   @override
   void dispose() {
@@ -159,13 +156,6 @@ class _LoginState extends State<Login> {
       print(token);
       pref.setString("token", token);
 
-      //*Now after token is set getprofile method is called*//
-      // API().getUserProfile().then((data) {
-      //   setState(() {
-      //     name = data["username"];
-      //   });
-      //   print('$name');
-      // });
       Navigator.pushAndRemoveUntil(
           context,
           PageRouteBuilder(

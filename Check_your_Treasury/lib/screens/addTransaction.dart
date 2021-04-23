@@ -5,6 +5,7 @@ import 'package:Check_your_Treasury/services/api.dart';
 import 'package:Check_your_Treasury/utilities/constants.dart';
 import 'package:Check_your_Treasury/utilities/decorations.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 class AddTransaction extends StatefulWidget {
@@ -17,6 +18,12 @@ class _AddTransactionState extends State<AddTransaction> {
   bool _checkboxExpense = false;
   String category = 'Salary';
   DateTime now = new DateTime.now();
+  TextStyle _style = GoogleFonts.montserrat(
+    textStyle: TextStyle(
+      fontSize: 20,
+      color: kPrimaryColor,
+    ),
+  );
 
   TextEditingController _transactionController = TextEditingController();
   TextEditingController _amountController = TextEditingController();
@@ -34,7 +41,7 @@ class _AddTransactionState extends State<AddTransaction> {
     return Scaffold(
       backgroundColor: kScaffoldBgColor,
       appBar: AppBar(
-        title: Text('Add Transaction'),
+        title: Text('Add Transaction', style: GoogleFonts.montserrat()),
         centerTitle: true,
         backgroundColor: kPrimaryColor,
       ),
@@ -51,13 +58,7 @@ class _AddTransactionState extends State<AddTransaction> {
           child: Column(
             children: [
               SizedBox(height: 15),
-              Text(
-                'Select Transaction Type',
-                style: TextStyle(
-                  fontSize: 20,
-                  color: kPrimaryColor,
-                ),
-              ),
+              Text('Select Transaction Type', style: _style),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -81,14 +82,8 @@ class _AddTransactionState extends State<AddTransaction> {
                   Text('Expense', style: TextStyle(fontSize: 16)),
                 ],
               ),
-              SizedBox(height: 40),
-              Text(
-                'Name',
-                style: TextStyle(
-                  fontSize: 20,
-                  color: kPrimaryColor,
-                ),
-              ),
+              SizedBox(height: 20),
+              Text('Name', style: _style),
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 10, horizontal: 70),
                 child: TextField(
@@ -96,7 +91,7 @@ class _AddTransactionState extends State<AddTransaction> {
                   decoration: buildInputDecoration('Enter transaction name'),
                 ),
               ),
-              SizedBox(height: 40),
+              SizedBox(height: 20),
               Text('Select Category',
                   style: TextStyle(
                     fontSize: 20,
@@ -111,14 +106,8 @@ class _AddTransactionState extends State<AddTransaction> {
                 },
                 items: ditem(),
               ),
-              SizedBox(height: 40),
-              Text(
-                'Amount ($selectedCurrency)',
-                style: TextStyle(
-                  fontSize: 20,
-                  color: kPrimaryColor,
-                ),
-              ),
+              SizedBox(height: 20),
+              Text('Amount ($selectedCurrency)', style: _style),
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 10, horizontal: 70),
                 child: TextField(
@@ -127,14 +116,8 @@ class _AddTransactionState extends State<AddTransaction> {
                   decoration: buildInputDecoration('Enter your amount'),
                 ),
               ),
-              SizedBox(height: 40),
-              Text(
-                'Date:',
-                style: TextStyle(
-                  fontSize: 20,
-                  color: kPrimaryColor,
-                ),
-              ),
+              SizedBox(height: 20),
+              Text('Date:', style: _style),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

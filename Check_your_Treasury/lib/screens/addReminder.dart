@@ -5,6 +5,7 @@ import 'package:Check_your_Treasury/services/api.dart';
 import 'package:Check_your_Treasury/utilities/constants.dart';
 import 'package:Check_your_Treasury/utilities/decorations.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
@@ -20,6 +21,13 @@ class _AddReminderState extends State<AddReminder> {
   DateTime now = new DateTime.now();
   TextEditingController _billController = TextEditingController();
   TextEditingController _amountController = TextEditingController();
+
+  TextStyle _style = GoogleFonts.montserrat(
+    textStyle: TextStyle(
+      fontSize: 20,
+      color: kPrimaryColor,
+    ),
+  );
 
   @override
   void initState() {
@@ -82,7 +90,7 @@ class _AddReminderState extends State<AddReminder> {
     return Scaffold(
       backgroundColor: kScaffoldBgColor,
       appBar: AppBar(
-        title: Text('Add Reminder'),
+        title: Text('Add Reminder', style: GoogleFonts.montserrat()),
         centerTitle: true,
         backgroundColor: kPrimaryColor,
       ),
@@ -99,13 +107,7 @@ class _AddReminderState extends State<AddReminder> {
           child: Column(
             children: [
               SizedBox(height: 15),
-              Text(
-                'Bill Name',
-                style: TextStyle(
-                  fontSize: 20,
-                  color: kPrimaryColor,
-                ),
-              ),
+              Text('Bill Name', style: _style),
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 10, horizontal: 70),
                 child: TextField(
@@ -114,13 +116,7 @@ class _AddReminderState extends State<AddReminder> {
                 ),
               ),
               SizedBox(height: 40),
-              Text(
-                'Bill Amount ($selectedCurrency)',
-                style: TextStyle(
-                  fontSize: 20,
-                  color: kPrimaryColor,
-                ),
-              ),
+              Text('Bill Amount ($selectedCurrency)', style: _style),
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 10, horizontal: 70),
                 child: TextField(
@@ -130,13 +126,7 @@ class _AddReminderState extends State<AddReminder> {
                 ),
               ),
               SizedBox(height: 40),
-              Text(
-                'Date',
-                style: TextStyle(
-                  fontSize: 20,
-                  color: kPrimaryColor,
-                ),
-              ),
+              Text('Date', style: _style),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -187,11 +177,6 @@ class _AddReminderState extends State<AddReminder> {
 
                           DateTime notifyDate = DateTime(reminderDate.year,
                               reminderDate.month, reminderDate.day - 1);
-
-                          print(notifyDate);
-
-                          print(notifyDate.add(
-                              Duration(seconds: DateTime.now().second + 30)));
 
                           _scheduledNotifications(
                               notifyDate, rem["billName"], notID);

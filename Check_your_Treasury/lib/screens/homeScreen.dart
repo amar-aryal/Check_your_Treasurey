@@ -67,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Scaffold(
         backgroundColor: kPrimaryColor,
         appBar: AppBar(
-          title: Text("Home"),
+          title: Text("Home", style: GoogleFonts.montserrat()),
           centerTitle: true,
           backgroundColor: kPrimaryColor,
           elevation: 0,

@@ -6,6 +6,7 @@ import 'package:Check_your_Treasury/services/api.dart';
 import 'package:Check_your_Treasury/utilities/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -56,7 +57,7 @@ class _PDFState extends State<PDF> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Download Report'),
+        title: Text('Download Report', style: GoogleFonts.montserrat()),
         centerTitle: true,
         backgroundColor: kPrimaryColor,
       ),
@@ -66,7 +67,7 @@ class _PDFState extends State<PDF> {
           children: <Widget>[
             Text(
               "$progress",
-              style: TextStyle(fontSize: 60),
+              style: GoogleFonts.montserrat(textStyle: TextStyle(fontSize: 60)),
             ),
             SizedBox(
               height: 60,

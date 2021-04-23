@@ -5,6 +5,7 @@ import 'package:Check_your_Treasury/services/api.dart';
 import 'package:Check_your_Treasury/utilities/constants.dart';
 import 'package:Check_your_Treasury/utilities/decorations.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 
 class AddBudgetPlan extends StatefulWidget {
@@ -45,7 +46,7 @@ class _AddBudgetPlanState extends State<AddBudgetPlan> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Budget'),
+        title: Text('Add Budget', style: GoogleFonts.montserrat()),
         centerTitle: true,
         backgroundColor: kPrimaryColor,
       ),
@@ -63,9 +64,11 @@ class _AddBudgetPlanState extends State<AddBudgetPlan> {
             children: [
               Text(
                 'Your plan',
-                style: TextStyle(
-                  fontSize: 20,
-                  color: kPrimaryColor,
+                style: GoogleFonts.montserrat(
+                  textStyle: TextStyle(
+                    fontSize: 20,
+                    color: kPrimaryColor,
+                  ),
                 ),
               ),
               Padding(
