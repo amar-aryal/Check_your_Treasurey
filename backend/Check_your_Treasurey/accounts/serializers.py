@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
-from incomeexpense.models import Expense
 
 class UserSerializer(serializers.ModelSerializer):
 

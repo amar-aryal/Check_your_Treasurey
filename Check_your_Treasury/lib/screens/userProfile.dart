@@ -5,7 +5,6 @@ import 'package:Check_your_Treasury/screens/updateProfile.dart';
 import 'package:Check_your_Treasury/services/api.dart';
 import 'package:Check_your_Treasury/utilities/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:gallery_saver/files.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class UserProfile extends StatefulWidget {
