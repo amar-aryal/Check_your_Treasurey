@@ -15,6 +15,8 @@ import 'login.dart';
 import 'package:http/http.dart' as http;
 
 class HomeScreen extends StatefulWidget {
+  final String username;
+  HomeScreen({this.username});
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -28,10 +30,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
     checkIfTokenValid();
 
-    if (pref.getStringList("currency") != null) {
-      print("CURR " + pref.getStringList("currency").toString());
+    if (pref.getStringList(widget.username) != null) {
+      print("CURR " + pref.getStringList(widget.username).toString());
 
-      selectedCurrency = pref.getStringList("currency")[0];
+      selectedCurrency = pref.getStringList(widget.username)[0];
     }
   }
 

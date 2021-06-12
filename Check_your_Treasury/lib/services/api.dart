@@ -191,7 +191,7 @@ List currencies = [
   'ZWL'
 ];
 
-String url = 'http://192.168.1.109:8000/';
+String url = 'http://192.168.1.102:8000/';
 
 final String registerUrl = url + 'api/auth/register';
 

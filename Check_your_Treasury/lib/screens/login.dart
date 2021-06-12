@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:Check_your_Treasury/screens/addTransaction.dart';
+import 'package:Check_your_Treasury/screens/homeScreen.dart';
 import 'package:http/http.dart' as http;
 import 'package:Check_your_Treasury/screens/register.dart';
 import 'package:Check_your_Treasury/screens/selectCurrency.dart';
@@ -156,13 +157,25 @@ class _LoginState extends State<Login> {
       print(token);
       pref.setString("token", token);
 
-      Navigator.pushAndRemoveUntil(
-          context,
-          PageRouteBuilder(
-            pageBuilder: (_, __, ___) => SelectCurrency(),
-            transitionDuration: Duration(seconds: 0),
-          ),
-          (Route<dynamic> route) => false);
+      if (pref.getStringList(username)?.isEmpty ?? true) {
+        Navigator.pushAndRemoveUntil(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (_, __, ___) =>
+                  SelectCurrency(username: username.trim()),
+              transitionDuration: Duration(seconds: 0),
+            ),
+            (Route<dynamic> route) => false);
+      } else {
+        Navigator.pushAndRemoveUntil(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (_, __, ___) =>
+                  HomeScreen(username: username.trim()),
+              transitionDuration: Duration(seconds: 0),
+            ),
+            (Route<dynamic> route) => false);
+      }
     } else if (response.statusCode == 400) {
       showMyDialog(context, 'Incorrect username/password!',
           'Your username or password was incorrect');

@@ -1,4 +1,3 @@
-import 'package:Check_your_Treasury/screens/exchangeRates.dart';
 import 'package:Check_your_Treasury/screens/homeScreen.dart';
 import 'package:Check_your_Treasury/services/api.dart';
 import 'package:Check_your_Treasury/utilities/constants.dart';
@@ -6,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SelectCurrency extends StatefulWidget {
+  final String username;
+  SelectCurrency({this.username});
   @override
   _SelectCurrencyState createState() => _SelectCurrencyState();
 }
@@ -16,12 +17,13 @@ class _SelectCurrencyState extends State<SelectCurrency> {
   @override
   void initState() {
     super.initState();
-    API().getUserProfile().then((data) {
-      setState(() {
-        name = data["username"];
-      });
-      print('$name');
-    });
+    // API().getUserProfile().then((data) {
+    //   setState(() {
+    //     name = data["username"];
+    //   });
+    //   print('$name');
+    // });
+    print(widget.username);
     // if (pref.getBool(name) != null) {
     //   if (pref.getBool(name)) {
     //     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -79,15 +81,12 @@ class _SelectCurrencyState extends State<SelectCurrency> {
               child: FlatButton(
                 padding: EdgeInsets.symmetric(vertical: 15),
                 onPressed: () {
-                  // if (pref.getBool(name) == null) {
-                  //   pref.setBool(name, true);
-                  // }
-
-                  pref.setStringList("currency", [currency]);
+                  pref.setStringList(widget.username, [currency]);
                   Navigator.pushAndRemoveUntil(
                       context,
                       PageRouteBuilder(
-                        pageBuilder: (_, __, ___) => HomeScreen(),
+                        pageBuilder: (_, __, ___) =>
+                            HomeScreen(username: widget.username.trim()),
                         transitionDuration: Duration(seconds: 0),
                       ),
                       (Route<dynamic> route) => false);
