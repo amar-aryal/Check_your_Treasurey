@@ -1,5 +1,5 @@
 myvenv/
-backend/Check_your_Treasurey/secrets.py
+/Check_your_Treasurey/secrets.py
 
 # Miscellaneous
 *.class
