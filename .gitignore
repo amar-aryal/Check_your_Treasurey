@@ -1,5 +1,5 @@
 myvenv/
-Check_your_Treasurey\Check_your_Treasurey\secrets.py
+.env
 
 # Miscellaneous
 *.class
