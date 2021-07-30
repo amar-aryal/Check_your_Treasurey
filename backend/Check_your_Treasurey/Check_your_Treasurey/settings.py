@@ -56,9 +56,6 @@ INSTALLED_APPS = [
     "fcm_django",
 ]
 
-FCM_DJANGO_SETTINGS = {
-    "FCM_SERVER_KEY": "AAAAt1kvc2s:APA91bHaCR75PQx0t0H517G3i2DpyVDRl4gZsB8asizauzXO3MVYrKa7aR_kydNZMb59NEikgKINs4UWKIk5o5mGS9MTSRoGrWhkJC9Rrt_VUjKOvSdQZDPc9JEdix6MAD1L5b8soD9X",
-}
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',),
@@ -164,9 +161,3 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 MEDIA_URL = '/media/'
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST_USER = "amararyal878@gmail.com"
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_PASSWORD = "users"
